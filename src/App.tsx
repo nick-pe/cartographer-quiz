@@ -25,7 +25,11 @@ function useTheme() {
 export function App() {
   useTheme();
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  // Braces matter: Chrome's scrollTo now returns a Promise, and an effect's
+  // return value is called as its cleanup, which crashed every navigation.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   return (
     <Layout>

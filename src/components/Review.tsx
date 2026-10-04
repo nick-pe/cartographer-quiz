@@ -35,7 +35,9 @@ export function ScoreRing({ score, total }: { score: number; total: number }) {
   const pct = total ? score / total : 0;
   // Starts empty and fills, like the app.
   const [shown, setShown] = useState(0);
-  useEffect(() => setShown(pct), [pct]);
+  useEffect(() => {
+    setShown(pct);
+  }, [pct]);
   return (
     <div className="relative size-[140px]" role="img" aria-label={`Scored ${score} out of ${total}, ${Math.round(pct * 100)} percent`}>
       <svg viewBox="0 0 140 140" className="size-full -rotate-90">
