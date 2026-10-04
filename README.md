@@ -49,20 +49,16 @@ loudly if the Swift files change shape.
 
 ## Deploy
 
-**Main site: Cloudflare Pages.** Connect this repo in the Cloudflare dashboard:
+**Main site: a Cloudflare Worker serving static assets** (Workers Builds, connected to this repo).
 
-- Workers & Pages → Create → Pages → Connect to Git
 - Build command: `npm run build`
-- Output directory: `dist`
-- Node version: read from `.node-version` (22). If you set a `NODE_VERSION` variable, it overrides that file, so it must be exactly `22`.
+- Deploy command: `npx wrangler deploy`
+- Node version: read from `.node-version` (22). A `NODE_VERSION` build variable overrides that file (Worker → Settings → Build → Build variables), so if you set one it must be exactly `22`.
 
-Every push to `main` deploys, and every PR gets a preview URL. `public/_redirects` sends all
-routes to the app, so links like `/quiz/german-states` and `/daily` work directly.
-
-**Custom domain: cartographerquiz.com** (registered with Cloudflare). Pages project → Custom domains → Set up a domain.
-
-- If you buy the domain with Cloudflare Registrar, DNS and HTTPS are configured for you.
-- If you buy it elsewhere, point its nameservers at Cloudflare, or add the CNAME record Cloudflare shows you.
+`wrangler.jsonc` is the Worker config. It serves `dist/`, sends unknown paths to the app (so `/daily` and
+`/quiz/german-states` work directly), and keeps `support.html` and `privacy.html` at those exact URLs.
+It also lists the custom domains **cartographerquiz.com** and **www.cartographerquiz.com**, so a deploy never removes
+them. Change domains there, not only in the dashboard.
 
 **GitHub Pages copy.** `.github/workflows/deploy.yml` tests the code on every push and PR.
 On `main` it also publishes a copy to `nick-pe.github.io/cartographer-quiz/`. The App Store

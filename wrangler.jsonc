@@ -1,0 +1,21 @@
+// Cloudflare Worker that serves the built site (dist/) as static assets.
+// Deployed by Workers Builds on every push to main: build `npm run build`, deploy `npx wrangler deploy`.
+{
+  "$schema": "https://unpkg.com/wrangler/config-schema.json",
+  "name": "cartographer-quiz",
+  "compatibility_date": "2026-10-04",
+  "assets": {
+    "directory": "./dist",
+    // Unknown paths (/daily, /quiz/german-states…) get index.html, so the app handles routing.
+    "not_found_handling": "single-page-application",
+    // Serve support.html and privacy.html at exactly those URLs (the App Store links to them).
+    "html_handling": "none"
+  },
+  // Kept in this file so a deploy never drops the custom domains set up in the dashboard.
+  "routes": [
+    { "pattern": "cartographerquiz.com", "custom_domain": true },
+    { "pattern": "www.cartographerquiz.com", "custom_domain": true }
+  ],
+  "workers_dev": false,
+  "preview_urls": false
+}
