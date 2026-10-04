@@ -1,3 +1,4 @@
+/** Returns a float in [0, 1). Seeded for the Daily, Math.random everywhere else. */
 export type Rng = () => number;
 
 /** Small, fast seeded PRNG (mulberry32). Same seed, same sequence, on every device. */
@@ -22,7 +23,7 @@ export function hash(text: string): number {
   return h >>> 0;
 }
 
-export function shuffle<T>(items: readonly T[], rng: Rng): T[] {
+export function shuffle<T>(items: readonly T[], rng: Rng = Math.random): T[] {
   const out = items.slice();
   for (let i = out.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
@@ -31,6 +32,11 @@ export function shuffle<T>(items: readonly T[], rng: Rng): T[] {
   return out;
 }
 
-export function pick<T>(items: readonly T[], rng: Rng): T {
-  return items[Math.floor(rng() * items.length)];
+export function pick<T>(items: readonly T[], rng: Rng = Math.random): T | undefined {
+  return items.length ? items[Math.floor(rng() * items.length)] : undefined;
+}
+
+/** Integer in [lo, hi], inclusive. */
+export function randomInt(lo: number, hi: number, rng: Rng = Math.random): number {
+  return lo + Math.floor(rng() * (hi - lo + 1));
 }

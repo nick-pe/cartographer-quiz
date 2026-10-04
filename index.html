@@ -1,17 +1,26 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>Cartographer — Daily World Geography Quiz</title>
-    <meta name="description" content="A daily world geography quiz. Capitals, countries and flags across three levels, a shared Daily Challenge and Speed Runs. No account, no tracking." />
+    <meta name="description" content="A daily world geography quiz: 60 quizzes on capitals, regions, flags, rivers, mountains, seas and islands at three difficulty levels. A shared Daily Challenge, Speed Runs and trends. No account, no tracking." />
     <meta name="theme-color" content="#0f1629" />
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%235B4BC4'/><path d='M50 8 L58 42 L92 50 L58 58 L50 92 L42 58 L8 50 L42 42 Z' fill='%23FFB829'/></svg>" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Cartographer — Daily World Geography Quiz" />
+    <meta property="og:description" content="Capitals, regions, flags, rivers and more. One shared Daily Challenge a day." />
+    <meta property="og:image" content="%BASE_URL%icon-512.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="apple-itunes-app" content="app-id=6811782173" />
+    <link rel="icon" type="image/png" href="%BASE_URL%favicon.png" />
+    <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
+    <link rel="manifest" href="%BASE_URL%manifest.webmanifest" />
     <script>
-      // Apply the saved theme before first paint.
+      // Apply the saved theme before first paint. Dark, the app's look, by default.
       try {
-        var t = JSON.parse(localStorage.getItem("cartographer:v1") || "{}").settings?.theme;
-        var dark = t === "dark" || (t !== "light" && matchMedia("(prefers-color-scheme: dark)").matches);
+        var s = JSON.parse(localStorage.getItem("cartographer:v2") || localStorage.getItem("cartographer:v1") || "{}").settings || {};
+        var t = s.theme || "dark";
+        var dark = t === "dark" || (t === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
         document.documentElement.dataset.theme = dark ? "dark" : "light";
       } catch (e) {}
     </script>

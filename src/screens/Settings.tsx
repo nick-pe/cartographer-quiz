@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, Card, Segmented } from "../components/ui";
 import { deleteAllHistory, updateSettings, useStore, type Theme } from "../lib/store";
+import { useTitle } from "../lib/useTitle";
 
 const THEMES: { id: Theme; name: string }[] = [
   { id: "system", name: "System" },
@@ -9,15 +10,16 @@ const THEMES: { id: Theme; name: string }[] = [
 ];
 
 export function Settings() {
+  useTitle("Settings");
   const settings = useStore((s) => s.settings);
   const [confirming, setConfirming] = useState(false);
   const [deleted, setDeleted] = useState(false);
 
   return (
-    <div className="animate-rise space-y-6">
-      <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+    <div className="mx-auto max-w-[620px] animate-rise space-y-6">
+      <h1 className="text-3xl font-bold">Settings</h1>
 
-      <Card className="divide-y divide-black/5 dark:divide-white/5">
+      <Card className="divide-y divide-surface-line">
         <div className="flex items-center justify-between gap-6 p-5">
           <div>
             <div className="font-semibold">Appearance</div>
@@ -27,7 +29,7 @@ export function Settings() {
         <label className="flex cursor-pointer items-center justify-between gap-6 p-5">
           <div>
             <div className="font-semibold">Record quiz history</div>
-            <div className="text-sm text-slate-500 dark:text-slate-400">
+            <div className="text-sm text-fg-2">
               Turning this off stops new results and Speed Run bests being saved. Existing results stay until you delete them.
             </div>
           </div>
@@ -38,13 +40,13 @@ export function Settings() {
             onChange={(e) => updateSettings({ recordHistory: e.target.checked })}
             className="peer sr-only"
           />
-          <span className="relative h-7 w-12 shrink-0 rounded-full bg-black/15 transition peer-checked:bg-emerald-500 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-violet-brand after:absolute after:left-0.5 after:top-0.5 after:size-6 after:rounded-full after:bg-white after:shadow after:transition peer-checked:after:translate-x-5 dark:bg-white/15" />
+          <span className="relative h-7 w-12 shrink-0 rounded-full bg-fg/15 transition peer-checked:bg-correct peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-blue after:absolute after:left-0.5 after:top-0.5 after:size-6 after:rounded-full after:bg-white after:shadow after:transition peer-checked:after:translate-x-5" />
         </label>
       </Card>
 
       <Card className="p-5">
         <div className="font-semibold">Delete All History</div>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        <p className="mt-1 text-sm text-fg-2">
           Permanently erases your results, Daily Challenge record, streak and Speed Run bests from this browser. This can’t be undone.
         </p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
@@ -65,16 +67,16 @@ export function Settings() {
               </Button>
             </>
           ) : (
-            <Button variant="ghost" className="text-rose-600 dark:text-rose-400" onClick={() => { setConfirming(true); setDeleted(false); }}>
+            <Button variant="ghost" className="text-wrong" onClick={() => { setConfirming(true); setDeleted(false); }}>
               Delete All History
             </Button>
           )}
-          <span role="status" className="text-sm text-emerald-600 dark:text-emerald-400">{deleted && "All history deleted."}</span>
+          <span role="status" className="text-sm text-correct">{deleted && "All history deleted."}</span>
         </div>
       </Card>
 
-      <Card className="p-5 text-sm text-slate-600 dark:text-slate-300">
-        <div className="mb-1 font-semibold text-ink dark:text-white">Your data stays here</div>
+      <Card className="p-5 text-sm text-fg-2">
+        <div className="mb-1 font-semibold text-fg">Your data stays here</div>
         Everything is stored in this browser only. Cartographer has no accounts, no analytics and no ads, and sends nothing
         to any server. Your history doesn’t sync with the iPhone app or between browsers.
       </Card>

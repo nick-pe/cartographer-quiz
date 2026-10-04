@@ -2,8 +2,9 @@
 // Flags from flag-icons (MIT, https://github.com/lipis/flag-icons).
 import { copyFileSync, mkdirSync, readFileSync } from "node:fs";
 
-const src = readFileSync(new URL("../src/data/countries.ts", import.meta.url), "utf8");
-const codes = [...src.matchAll(/"code": "([A-Z]{2})"/g)].map((m) => m[1].toLowerCase());
+const src = readFileSync(new URL("../src/data/ios/countries.ts", import.meta.url), "utf8");
+const codes = [...src.matchAll(/"code":"([A-Z]{2})"/g)].map((m) => m[1].toLowerCase());
+if (codes.length !== 193) throw new Error(`expected 193 flags, found ${codes.length}`);
 const out = new URL("../public/flags/", import.meta.url);
 mkdirSync(out, { recursive: true });
 for (const code of codes) {

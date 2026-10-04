@@ -1,13 +1,12 @@
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router";
+import { Navigate, Route, Routes, useLocation } from "react-router";
 import { Layout } from "./components/Layout";
 import { useStore } from "./lib/store";
-import { Home } from "./screens/Home";
 import { Daily } from "./screens/Daily";
-import { Practice } from "./screens/Practice";
-import { SpeedRun } from "./screens/SpeedRun";
-import { History } from "./screens/History";
+import { Home } from "./screens/Home";
+import { Quiz } from "./screens/Quiz";
 import { Settings } from "./screens/Settings";
+import { Trends } from "./screens/Trends";
 
 function useTheme() {
   const theme = useStore((s) => s.settings.theme);
@@ -33,12 +32,22 @@ export function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/daily" element={<Daily />} />
-        <Route path="/play/:kind/:level" element={<Practice />} />
-        <Route path="/speed/:kind" element={<SpeedRun />} />
-        <Route path="/history" element={<History />} />
+        <Route path="/quiz/:slug" element={<Quiz />} />
+        <Route path="/trends" element={<Trends />} />
         <Route path="/settings" element={<Settings />} />
-        <Route path="*" element={<Home />} />
+        {/* Links from the first version of the site. */}
+        <Route path="/history" element={<Navigate to="/trends" replace />} />
+        <Route path="/speed/*" element={<Navigate to="/quiz/speed-run" replace />} />
+        <Route path="/play/:kind/*" element={<LegacyPlay />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Layout>
   );
+}
+
+function LegacyPlay() {
+  const { pathname } = useLocation();
+  const kind = pathname.split("/")[2];
+  const to = kind === "flags" ? "/quiz/flags" : kind === "capitals" ? "/quiz/world-capitals" : "/";
+  return <Navigate to={to} replace />;
 }

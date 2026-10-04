@@ -1,31 +1,30 @@
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router";
+import { asset } from "../lib/site";
 import { Logo } from "./Logo";
 
 const nav = [
   { to: "/", label: "Play" },
-  { to: "/history", label: "History" },
+  { to: "/trends", label: "Trends" },
   { to: "/settings", label: "Settings" },
 ];
 
 export function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className="chart-bg flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-20 border-b border-black/5 bg-[#f5f6fb]/75 backdrop-blur-lg dark:border-white/5 dark:bg-night/75">
-        <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-4 py-3">
-          <Link to="/" className="flex items-center gap-2.5 font-bold tracking-tight">
+    <div className="flex min-h-dvh flex-col">
+      <header className="sticky top-0 z-20 border-b border-surface-line bg-[var(--bg-top)]/80 backdrop-blur-lg">
+        <div className="mx-auto flex max-w-[860px] items-center justify-between gap-4 px-4 py-2.5">
+          <Link to="/" className="flex items-center gap-2.5 font-bold">
             <Logo className="size-8" />
-            <span className="text-lg max-[380px]:hidden">Cartographer</span>
+            <span className="text-lg max-[360px]:hidden">Cartographer</span>
           </Link>
-          <nav className="flex gap-0.5 text-sm font-medium sm:gap-1">
+          <nav className="flex gap-0.5 text-sm font-semibold sm:gap-1">
             {nav.map((n) => (
               <NavLink
                 key={n.to}
                 to={n.to}
                 end
-                className={({ isActive }) =>
-                  `rounded-lg px-2.5 py-1.5 transition sm:px-3 ${isActive ? "bg-violet-brand/10 text-violet-brand dark:bg-white/10 dark:text-white" : "text-slate-500 hover:text-ink dark:text-slate-400 dark:hover:text-white"}`
-                }
+                className={({ isActive }) => `rounded-lg px-2.5 py-1.5 transition sm:px-3 ${isActive ? "bg-fg/10 text-fg" : "text-fg-2 hover:text-fg"}`}
               >
                 {n.label}
               </NavLink>
@@ -33,11 +32,13 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-3xl flex-1 px-4 pb-16 pt-6 sm:pt-10">{children}</main>
-      <footer className="border-t border-black/5 py-6 text-center text-sm text-slate-500 dark:border-white/5 dark:text-slate-400">
-        <a className="hover:text-violet-brand" href="./support.html">Support</a>
+      <main className="mx-auto w-full max-w-[860px] flex-1 px-4 pb-16 pt-5 sm:pt-8">{children}</main>
+      <footer className="border-t border-surface-line py-6 text-center text-sm text-fg-2">
+        <a className="hover:text-fg" href={asset("support.html")}>Support</a>
         <span className="mx-2">·</span>
-        <a className="hover:text-violet-brand" href="./privacy.html">Privacy</a>
+        <a className="hover:text-fg" href={asset("privacy.html")}>Privacy</a>
+        <span className="mx-2">·</span>
+        <a className="hover:text-fg" href="https://apps.apple.com/app/id6811782173">iPhone app</a>
         <span className="mx-2">·</span>
         <span>No account, no tracking</span>
       </footer>

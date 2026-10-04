@@ -1,131 +1,141 @@
-import type { ReactNode } from "react";
+// Port of Views/HomeView.swift + DailyChallengeBanner + CategoryCardView.
+import { useState } from "react";
 import { Link } from "react-router";
-import { Card, LinkButton, Segmented } from "../components/ui";
-import { Flag } from "../components/Flag";
-import { DAILY_LENGTH, dailyNumber, dateKey, formatDuration } from "../lib/daily";
-import { KIND_ORDER, KINDS, LEVEL_ORDER, LEVELS, type QuizKind } from "../lib/levels";
-import { streak, updateSettings, useStore } from "../lib/store";
-
-const ICONS: Record<QuizKind, ReactNode> = {
-  capitals: (
-    <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M3 21h18M5 21V10m14 11V10M9 21v-6h6v6M2 10l10-6 10 6" />
-    </svg>
-  ),
-  countries: (
-    <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="12" cy="12" r="9" />
-      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" />
-    </svg>
-  ),
-  flags: (
-    <svg viewBox="0 0 24 24" className="size-6" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M5 21V4m0 0c5-2 9 2 14 0v10c-5 2-9-2-14 0" />
-    </svg>
-  ),
-};
+import { ShareButton } from "../components/Results";
+import { Segmented } from "../components/ui";
+import { DAILY_LENGTH, dailyNumber, emojiGrid, shareText } from "../lib/engine/daily";
+import { dateKey } from "../lib/engine/dates";
+import { DIFFICULTIES, TIERS } from "../lib/engine/difficulty";
+import { DAILY_QUIZ, HOME_SECTIONS, gradientCss, type QuizDef, type QuizSection } from "../lib/engine/quizzes";
+import { formatSpeed } from "../lib/engine/speedRun";
+import { updateSettings, useStore, useStreaks } from "../lib/store";
+import { useTitle } from "../lib/useTitle";
 
 export function Home() {
-  const today = dateKey();
-  const daily = useStore((s) => s.daily);
-  const level = useStore((s) => s.settings.level);
-  const bests = useStore((s) => s.speedBests);
-  const done = daily[today];
-  const current = streak(daily, today);
+  useTitle();
+  const difficulty = useStore((s) => s.settings.difficulty);
+  const { current } = useStreaks();
 
   return (
-    <div className="space-y-10">
-      <section className="animate-rise">
-        <Card className="relative overflow-hidden p-6 sm:p-8">
-          <div className="pointer-events-none absolute -right-10 -top-10 size-56 rounded-full bg-gold/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-16 -left-10 size-56 rounded-full bg-violet-brand/25 blur-3xl" />
-          <div className="relative flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <div className="mb-2 text-xs font-bold uppercase tracking-[.18em] text-violet-brand dark:text-violet-300">
-                Daily Challenge · #{dailyNumber(today)}
-              </div>
-              <h1 className="text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-                {done ? `You scored ${done.grid.filter(Boolean).length}/${DAILY_LENGTH} today.` : "Ten questions. One attempt."}
-              </h1>
-              <p className="mt-2 max-w-md text-slate-600 dark:text-slate-300">
-                {done
-                  ? `Finished in ${formatDuration(done.durationMs)}. A new map unfolds at midnight.`
-                  : "The same puzzle for everyone, generated from today’s date. It gets harder as it goes."}
-              </p>
-              {done && (
-                <div className="mt-3 flex gap-1" aria-label="Your answers">
-                  {done.grid.map((ok, i) => (
-                    <span key={i} className={`size-4 rounded-[4px] ${ok ? "bg-emerald-500" : "bg-rose-500"}`} />
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="flex shrink-0 items-center gap-4">
-              <div className="text-center">
-                <div className="text-3xl font-bold tabular-nums">{current}</div>
-                <div className="text-xs font-medium uppercase tracking-wider text-slate-500 dark:text-slate-400">day streak</div>
-              </div>
-              <LinkButton to="/daily" variant={done ? "ghost" : "gold"}>
-                {done ? "View result" : "Play today"}
-              </LinkButton>
-            </div>
+    <div className="mx-auto max-w-[860px] space-y-7">
+      <header className="flex flex-col items-center gap-2 pt-2 text-center">
+        <h1 className="text-[36px] font-bold leading-tight">Cartographer</h1>
+        <p className="text-[15px] text-fg-2">Test your geography knowledge</p>
+        {current > 0 && (
+          <div className="flex items-center gap-1.5 rounded-full bg-flame/15 px-3 py-1 text-[13px] font-semibold text-flame">
+            <span aria-hidden="true">🔥</span>
+            {current} day streak
           </div>
-        </Card>
-      </section>
+        )}
+        <Segmented
+          label="Difficulty"
+          className="mt-2 w-full max-w-md"
+          value={difficulty}
+          options={DIFFICULTIES.map((d) => ({ id: d, name: TIERS[d].title }))}
+          onChange={(d) => updateSettings({ difficulty: d })}
+        />
+        <p className="text-xs font-medium transition-colors" style={{ color: TIERS[difficulty].accent }}>
+          {TIERS[difficulty].blurb}
+        </p>
+      </header>
 
-      <section className="animate-rise [animation-delay:80ms]">
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="text-xl font-bold tracking-tight">Practice</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{LEVELS[level].blurb}</p>
-          </div>
-          <Segmented label="Difficulty" value={level} options={LEVEL_ORDER.map((l) => LEVELS[l])} onChange={(l) => updateSettings({ level: l })} />
-        </div>
-        <div className="grid gap-3 sm:grid-cols-3">
-          {KIND_ORDER.map((k) => (
-            <Link key={k} to={`/play/${k}/${level}`} className="group">
-              <Card className="flex h-full items-center gap-4 p-4 transition group-hover:-translate-y-0.5 group-hover:border-violet-brand/40 group-hover:shadow-lg sm:block sm:p-5">
-                <div className="flex size-11 shrink-0 sm:mb-4 items-center justify-center rounded-xl bg-violet-brand/10 text-violet-brand dark:bg-violet-400/15 dark:text-violet-300">
-                  {ICONS[k]}
-                </div>
-                <div>
-                  <div className="font-bold">{KINDS[k].name}</div>
-                  <div className="text-sm text-slate-500 dark:text-slate-400">{KINDS[k].blurb}</div>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <DailyBanner streak={current} />
 
-      <section className="animate-rise [animation-delay:160ms]">
-        <div className="mb-4">
-          <h2 className="text-xl font-bold tracking-tight">Speed Run</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400">Twenty questions against the clock. Each miss adds five seconds.</p>
-        </div>
-        <Card className="divide-y divide-black/5 dark:divide-white/5">
-          {KIND_ORDER.map((k) => (
-            <Link key={k} to={`/speed/${k}`} className="flex items-center justify-between gap-4 px-5 py-4 transition hover:bg-violet-brand/[.04]">
-              <div className="flex items-center gap-3">
-                <span className="text-violet-brand dark:text-violet-300">{ICONS[k]}</span>
-                <span className="font-semibold">{KINDS[k].name}</span>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <span className="text-slate-500 dark:text-slate-400">
-                  Best <span className="font-semibold tabular-nums text-ink dark:text-white">{bests[k] ? formatDuration(bests[k]) : "—"}</span>
-                </span>
-                <span aria-hidden className="text-slate-400">→</span>
-              </div>
-            </Link>
-          ))}
-        </Card>
-      </section>
-
-      <section className="flex items-center justify-center gap-3 pt-2 opacity-80" aria-hidden="true">
-        {["jp", "br", "ke", "is", "np", "ca", "bt"].map((c, i) => (
-          <Flag key={c} code={c} className={`w-10 shadow-sm ${i % 2 ? "rotate-3" : "-rotate-3"}`} />
-        ))}
-      </section>
+      {HOME_SECTIONS.map((s) => (
+        <Section key={s.id} section={s} />
+      ))}
     </div>
+  );
+}
+
+function DailyBanner({ streak }: { streak: number }) {
+  const today = dateKey();
+  const result = useStore((s) => s.daily[today]);
+  const score = result?.grid.filter(Boolean).length ?? 0;
+
+  return (
+    <section
+      className="space-y-3.5 rounded-card border border-white/18 p-4 text-white shadow-[0_4px_20px_rgb(0_0_0/.3)]"
+      style={{ background: gradientCss(DAILY_QUIZ.gradient) }}
+      aria-label="Daily Challenge"
+    >
+      <div className="flex items-center gap-2">
+        <span className="text-[22px]" aria-hidden="true">📅</span>
+        <div>
+          <div className="text-xs font-black tracking-[.1em]">DAILY CHALLENGE</div>
+          <div className="text-xs font-medium text-white/75">#{dailyNumber(today)} · same quiz for everyone</div>
+        </div>
+      </div>
+      {result ? (
+        <div className="space-y-3">
+          <div className="flex items-baseline gap-2">
+            <span className="text-[34px] font-bold leading-none">
+              {score}/{result.grid.length}
+            </span>
+            <span className="text-[13px] font-medium text-white/70">today</span>
+          </div>
+          <div className="text-lg leading-none" aria-label={`${score} of ${result.grid.length} correct`}>
+            {emojiGrid(result.grid)}
+          </div>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <ShareButton text={shareText(today, result.grid, streak)} className="!bg-white/92 !py-2 !text-sm !text-black/80" />
+            <Link to="/daily" className="text-xs font-semibold text-white/85 underline-offset-2 hover:underline">
+              Review answers
+            </Link>
+            <span className="text-xs font-medium text-white/75">Next quiz tomorrow</span>
+          </div>
+        </div>
+      ) : (
+        <Link
+          to="/daily?start=1"
+          className="flex w-full items-center justify-center gap-1.5 rounded-full bg-white/92 py-3 text-[15px] font-bold text-black/80 transition hover:bg-white active:scale-[.98]"
+        >
+          ▶ Play today’s {DAILY_LENGTH} questions
+        </Link>
+      )}
+    </section>
+  );
+}
+
+function Section({ section }: { section: QuizSection }) {
+  const [open, setOpen] = useState(true);
+  return (
+    <section className="space-y-3">
+      <button onClick={() => setOpen(!open)} aria-expanded={open} className="flex min-h-11 w-full items-center gap-2.5 text-left">
+        <h2 className="text-xl font-bold">{section.title}</h2>
+        <span className="rounded-full bg-fg/12 px-2 py-0.5 text-[13px] font-bold text-fg-2">{section.quizzes.length}</span>
+        <span className="flex-1" />
+        <svg viewBox="0 0 24 24" className={`size-4 text-fg-2 transition-transform ${open ? "" : "-rotate-90"}`} fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="m6 9 6 6 6-6" />
+        </svg>
+      </button>
+      {open && (
+        <div className="grid animate-rise grid-cols-2 gap-4 lg:grid-cols-4">
+          {section.quizzes.map((q) => (
+            <Tile key={q.id} quiz={q} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}
+
+function Tile({ quiz }: { quiz: QuizDef }) {
+  const difficulty = useStore((s) => s.settings.difficulty);
+  const best = useStore((s) => (quiz.isSpeedRun ? s.speedBests[difficulty]?.ms : undefined));
+  return (
+    <Link
+      to={`/quiz/${quiz.slug}`}
+      className="flex h-[140px] flex-col items-center justify-center gap-3 rounded-card border border-white/15 px-2 text-center text-white shadow-[0_4px_16px_rgb(0_0_0/.3)] transition hover:-translate-y-0.5 hover:brightness-110 active:scale-95"
+      style={{ background: gradientCss(quiz.gradient) }}
+    >
+      <span className="text-[40px] leading-none drop-shadow-[0_1px_2px_rgb(0_0_0/.25)]" aria-hidden="true">
+        {quiz.emoji}
+      </span>
+      <span className="space-y-1">
+        <span className="line-clamp-2 block text-sm font-semibold leading-tight">{quiz.title}</span>
+        <span className="block text-[11px] font-medium text-white/70">{best ? `Best ${formatSpeed(best)}` : quiz.subtitle}</span>
+      </span>
+    </Link>
   );
 }
