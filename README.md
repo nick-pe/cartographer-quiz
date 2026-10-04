@@ -59,7 +59,7 @@ loudly if the Swift files change shape.
 Every push to `main` deploys, and every PR gets a preview URL. `public/_redirects` sends all
 routes to the app, so links like `/quiz/german-states` and `/daily` work directly.
 
-**Custom domain.** Pages project → Custom domains → Set up a domain.
+**Custom domain: cartographerquiz.com** (registered with Cloudflare). Pages project → Custom domains → Set up a domain.
 
 - If you buy the domain with Cloudflare Registrar, DNS and HTTPS are configured for you.
 - If you buy it elsewhere, point its nameservers at Cloudflare, or add the CNAME record Cloudflare shows you.
