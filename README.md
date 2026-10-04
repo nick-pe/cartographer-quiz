@@ -54,7 +54,7 @@ loudly if the Swift files change shape.
 - Workers & Pages → Create → Pages → Connect to Git
 - Build command: `npm run build`
 - Output directory: `dist`
-- Environment variable: `NODE_VERSION=22`
+- Node version: read from `.node-version` (22). If you set a `NODE_VERSION` variable, it overrides that file, so it must be exactly `22`.
 
 Every push to `main` deploys, and every PR gets a preview URL. `public/_redirects` sends all
 routes to the app, so links like `/quiz/german-states` and `/daily` work directly.
