@@ -10,12 +10,15 @@ import { RANGES, byDifficulty, dailySeries, inRange, overview, standings, streak
 import { useStore } from "../lib/store";
 import { SITE_URL } from "../lib/site";
 import { useTitle } from "../lib/useTitle";
+import { useI18n } from "../i18n";
 
 const GREEN = "rgb(38 179 89)";
 const BLUE = "rgb(77 128 242)";
 
 export function Trends() {
-  useTitle("Trends");
+  const i18n = useI18n();
+  const { t } = i18n;
+  useTitle(t.trends.title);
   const attempts = useStore((s) => s.attempts);
   const recording = useStore((s) => s.settings.recordHistory);
   const bests = useStore((s) => s.speedBests);
@@ -36,10 +39,10 @@ export function Trends() {
         <svg viewBox="0 0 24 24" className="size-11 text-fg-3" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
           <path d="M3 3v18h18M7 15l4-5 3 3 6-7" />
         </svg>
-        <h1 className="text-xl font-bold">No quizzes yet</h1>
-        <p className="text-fg-2">Play a quiz and your progress will show up here.</p>
-        {!recording && <p className="text-sm text-gold">History recording is off in Settings.</p>}
-        <LinkButton to="/" className="mt-3">Play a quiz</LinkButton>
+        <h1 className="text-xl font-bold">{t.trends.emptyTitle}</h1>
+        <p className="text-fg-2">{t.trends.emptyBody}</p>
+        {!recording && <p className="text-sm text-gold">{t.trends.recordingOffShort}</p>}
+        <LinkButton to="/" className="mt-3">{t.trends.playQuiz}</LinkButton>
       </div>
     );
   }
@@ -51,22 +54,28 @@ export function Trends() {
 
   return (
     <div className="mx-auto max-w-[620px] space-y-4">
-      <h1 className="sr-only">Trends</h1>
-      <Segmented label="Range" value={range} options={RANGES} onChange={setRange} />
+      <h1 className="sr-only">{t.trends.title}</h1>
+      <Segmented label={t.trends.range} value={range} options={RANGES.map((x) => ({ id: x.id, name: t.trends.ranges[x.id] }))} onChange={setRange} />
 
       {!recording && (
         <div className="flex items-center gap-2 rounded-[10px] bg-gold/12 p-3 text-xs font-medium text-gold">
-          <span aria-hidden="true">⏸</span> History recording is off — new quizzes aren’t being saved.
+          <span aria-hidden="true">⏸</span> {t.trends.recordingOff}
         </div>
       )}
 
-      <StatCard title="Overview" icon="📊" tint={BLUE}>
-        <Metrics items={[[stats.quizzes, "Quizzes"], [`${Math.floor(stats.accuracy)}%`, "Accuracy"], [stats.questions, "Questions"]]} />
+      <StatCard title={t.trends.overview} icon="📊" tint={BLUE}>
+        <Metrics
+          items={[
+            [i18n.number(stats.quizzes), t.trends.quizzes],
+            [i18n.number(Math.floor(stats.accuracy) / 100, { style: "percent" }), t.trends.accuracy],
+            [i18n.number(stats.questions), t.trends.questions],
+          ]}
+        />
       </StatCard>
 
-      <StatCard title="Streak" icon="🔥" tint="rgb(255 115 51)">
-        <Metrics items={[[streak.current, streak.current === 1 ? "Day" : "Days"], [streak.longest, "Longest"]]} />
-        <div className="mt-3.5 flex gap-[5px]" role="img" aria-label="Active days in the last two weeks">
+      <StatCard title={t.trends.streak} icon="🔥" tint="rgb(255 115 51)">
+        <Metrics items={[[streak.current, t.trends.days(streak.current)], [streak.longest, t.trends.longest]]} />
+        <div className="mt-3.5 flex gap-[5px]" role="img" aria-label={t.trends.activeDays}>
           {Array.from({ length: 14 }, (_, i) => addDays(dateKey(), i - 13)).map((d) => (
             <span key={d} title={d} className={`h-3.5 flex-1 rounded-full ${days.has(d) ? "bg-flame" : "bg-answer-line"}`} />
           ))}
@@ -74,22 +83,22 @@ export function Trends() {
         {streak.current > 0 && (
           <div className="mt-3.5">
             <ShareButton
-              label="Share streak"
-              text={`🔥 ${streak.current} day streak on Cartographer\nLongest ${streak.longest} · ${Math.floor(all.accuracy)}% accuracy · ${all.quizzes} quizzes\n\nThink you can beat that?\n${SITE_URL}`}
+              label={t.trends.shareStreak}
+              text={`${t.share.streakCard(streak.current, streak.longest, Math.floor(all.accuracy), all.quizzes)}\n\n${t.share.invite}\n${SITE_URL}${i18n.code === "en" ? "" : i18n.path("/")}`}
             />
           </div>
         )}
       </StatCard>
 
-      <StatCard title="Speed Run bests" icon="⚡" tint="rgb(255 204 51)">
+      <StatCard title={t.trends.speedBests} icon="⚡" tint="rgb(255 204 51)">
         {Object.keys(bests).length === 0 ? (
-          <Muted>Play a Speed Run to set your first time.</Muted>
+          <Muted>{t.trends.speedEmpty}</Muted>
         ) : (
           <div className="space-y-2.5">
             {DIFFICULTIES.map((d) => (
               <div key={d} className="flex items-center gap-2 text-sm">
                 <span aria-hidden="true" className="text-xs">{TIERS[d].icon}</span>
-                <span className="flex-1 font-medium">{TIERS[d].title}</span>
+                <span className="flex-1 font-medium">{t.tiers[d].title}</span>
                 <span className={`text-[15px] font-bold tabular-nums ${bests[d] ? "text-gold" : "text-fg-3"}`}>{bests[d] ? formatSpeed(bests[d].ms) : "—"}</span>
               </div>
             ))}
@@ -97,7 +106,7 @@ export function Trends() {
         )}
       </StatCard>
 
-      <StatCard title="Accuracy" icon="🎯" tint={GREEN}>
+      <StatCard title={t.trends.accuracy} icon="🎯" tint={GREEN}>
         {activePoints.length < 2 ? <NotEnough /> : (
           <>
             <AccuracyChart points={series} color={GREEN} />
@@ -106,21 +115,21 @@ export function Trends() {
         )}
       </StatCard>
 
-      <StatCard title="Quizzes per day" icon="📅" tint={BLUE}>
+      <StatCard title={t.trends.perDay} icon="📅" tint={BLUE}>
         {activePoints.length === 0 ? <NotEnough /> : <VolumeChart points={series} color={BLUE} />}
       </StatCard>
 
-      <StatCard title={`By difficulty · ${r.label}`} icon="📶" tint="rgb(255 204 51)">
+      <StatCard title={t.trends.byDifficulty(t.trends.rangeLabels[range])} icon="📶" tint="rgb(255 204 51)">
         {tiers.length === 0 ? <NotEnough /> : (
           <div className="space-y-3">
-            {tiers.map((t) => (
-              <div key={t.difficulty} className="grid grid-cols-[6.5rem_1fr] items-center gap-3 text-sm">
-                <span className="font-medium">{TIERS[t.difficulty].title}</span>
+            {tiers.map((row) => (
+              <div key={row.difficulty} className="grid grid-cols-[6.5rem_1fr] items-center gap-3 text-sm">
+                <span className="font-medium">{t.tiers[row.difficulty].title}</span>
                 <div className="flex items-center gap-2">
-                  <div className="h-6 rounded-r-[4px]" style={{ width: `${Math.max(2, t.accuracy * 0.7)}%`, background: TIERS[t.difficulty].accent }} />
+                  <div className="h-6 rounded-r-[4px]" style={{ width: `${Math.max(2, row.accuracy * 0.7)}%`, background: TIERS[row.difficulty].accent }} />
                   {/* The round count matters: one lucky round at 100% looks like twenty steady ones without it. */}
                   <span className="whitespace-nowrap text-[11px] font-semibold text-fg-2">
-                    {Math.floor(t.accuracy)}% · {t.rounds} {t.rounds === 1 ? "round" : "rounds"}
+                    {i18n.number(Math.floor(row.accuracy) / 100, { style: "percent" })} · {t.trends.rounds(row.rounds)}
                   </span>
                 </div>
               </div>
@@ -129,13 +138,13 @@ export function Trends() {
         )}
       </StatCard>
 
-      <StatCard title="Highlights" icon="⭐" tint="rgb(255 204 51)">
+      <StatCard title={t.trends.highlights} icon="⭐" tint="rgb(255 204 51)">
         {ranked.strongest.length === 0 ? (
-          <Muted>Play a quiz at least twice to see where you’re strong.</Muted>
+          <Muted>{t.trends.highlightsEmpty}</Muted>
         ) : (
           <div className="space-y-3">
-            <Standing title="Strongest" rows={ranked.strongest} tint="text-correct" />
-            {ranked.weakest[0]?.title !== ranked.strongest[0]?.title && <Standing title="Needs work" rows={ranked.weakest} tint="text-wrong" />}
+            <Standing title={t.trends.strongest} rows={ranked.strongest} tint="text-correct" />
+            {ranked.weakest[0]?.title !== ranked.strongest[0]?.title && <Standing title={t.trends.needsWork} rows={ranked.weakest} tint="text-wrong" />}
           </div>
         )}
       </StatCard>
@@ -168,14 +177,15 @@ function Metrics({ items }: { items: [string | number, string][] }) {
   );
 }
 
-function Standing({ title, rows, tint }: { title: string; rows: { title: string; accuracy: number }[]; tint: string }) {
+function Standing({ title, rows, tint }: { title: string; rows: { title: string; quizId: string; accuracy: number }[]; tint: string }) {
+  const i18n = useI18n();
   return (
     <div className="space-y-1.5">
       <h3 className="text-[10px] font-bold uppercase text-fg-3">{title}</h3>
       {rows.map((row) => (
         <div key={row.title} className="flex justify-between gap-3 text-[13px]">
-          <span className="truncate font-medium">{row.title}</span>
-          <span className={`font-bold ${tint}`}>{Math.floor(row.accuracy)}%</span>
+          <span className="truncate font-medium">{i18n.quizTitle({ id: row.quizId, title: row.title })}</span>
+          <span className={`font-bold ${tint}`}>{i18n.number(Math.floor(row.accuracy) / 100, { style: "percent" })}</span>
         </div>
       ))}
     </div>
@@ -183,4 +193,4 @@ function Standing({ title, rows, tint }: { title: string; rows: { title: string;
 }
 
 const Muted = ({ children }: { children: ReactNode }) => <p className="text-[13px] text-fg-3">{children}</p>;
-const NotEnough = () => <Muted>Not enough data yet for this range.</Muted>;
+const NotEnough = () => <Muted>{useI18n().t.trends.notEnough}</Muted>;

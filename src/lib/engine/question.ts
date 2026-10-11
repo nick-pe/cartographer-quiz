@@ -6,9 +6,51 @@ import { pickDistractors } from "./distractors";
 
 export type QuestionKind = "capital" | "regionCount" | "pickRegion" | "geoFeature" | "flag";
 
+/**
+ * What a name refers to, so each language can render it: countries via the
+ * browser's built-in names, capitals and natural features via the place
+ * dictionaries, regional (local) names as they are, numbers via Intl.
+ */
+export type TermKind = "country" | "capital" | "feature" | "local" | "number";
+
+export interface Term {
+  kind: TermKind;
+  /** The English name from the app's data (the id answers are checked against). */
+  id: string;
+  /** For dual-capital countries: which capital is meant, e.g. "constitutional". */
+  qualifier?: string;
+}
+
+/** The phrasings of category questions, from the app's `questionPrefix`. */
+export const PREFIX_KEYS = {
+  "What is the capital of": "capitalOf",
+  "Which US state has this capital:": "usStateWithCapital",
+  "In which region is this city located:": "regionOfCity",
+  "What is the county town of": "countyTownOf",
+  "What is the administrative center of": "adminCenterOf",
+  "What is the main centre of": "mainCentreOf",
+  "What is the regional centre of": "regionalCentreOf",
+  "What is the seat of": "seatOf",
+  "In which country is this city:": "countryOfCity",
+} as const;
+
+export type PrefixKey = (typeof PREFIX_KEYS)[keyof typeof PREFIX_KEYS];
+
+/** Language-neutral description of a question's wording; each locale renders it. */
+export type Prompt =
+  | { key: PrefixKey; place: Term }
+  | { key: "howMany" | "pickRegion"; category: string }
+  | { key: "riverThrough" | "riverOutflow" | "riverCountry" | "mountainCountry" | "mountainRange"; place: Term }
+  | { key: "seaBorder" | "seaOpensInto" | "islandCountry" | "islandWater" | "flagWhich"; place: Term }
+  | { key: "longestRiver" | "highestMountain" | "largestSea" | "largestIsland" | "flagWhose" };
+
 export interface Question {
   id: string;
+  /** English wording, used for de-duplication and tests; screens render `prompt`. */
   text: string;
+  prompt: Prompt;
+  /** What the options name (all options in a question are the same kind). */
+  optionKind: TermKind;
   options: string[];
   answer: string;
   kind: QuestionKind;
@@ -23,6 +65,8 @@ export interface Question {
 /** A question before its options are assembled. Generators describe *what* to ask; `make` decides the options. */
 export interface QuestionSpec {
   text: string;
+  prompt: Prompt;
+  optionKind: TermKind;
   correct: string;
   /** Candidate wrong answers, fame-ordered (an index is a fame rank). */
   distractorPool?: readonly string[];
@@ -42,6 +86,8 @@ export function make(spec: QuestionSpec, difficulty: Difficulty, rng?: Rng): Que
   const base = {
     id: `q${nextId++}`,
     text: spec.text,
+    prompt: spec.prompt,
+    optionKind: spec.optionKind,
     answer: spec.correct,
     kind: spec.kind,
     quizId: spec.quizId,

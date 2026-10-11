@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { TIERS, type Difficulty } from "../lib/engine/difficulty";
 import type { Question } from "../lib/engine/question";
 import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
+import { useI18n } from "../i18n";
 import { Flag } from "./Flag";
 import { DifficultyChip } from "./ui";
 
@@ -53,6 +54,8 @@ function usePausableClock() {
 }
 
 export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }: Props) {
+  const i18n = useI18n();
+  const { t } = i18n;
   const [index, setIndex] = useState(0);
   // undefined while playing; the pick (or null for a timeout) while revealing.
   const [picked, setPicked] = useState<string | null | undefined>(undefined);
@@ -158,12 +161,12 @@ export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }
               {misses > 0 && <span className="text-wrong">+{(misses * PENALTY_PER_WRONG_MS) / 1000}s</span>}
             </span>
           )}
-          <span className="tabular-nums">Score: {score}</span>
+          <span className="tabular-nums">{t.quiz.score(score)}</span>
         </div>
       </div>
 
       {seconds !== null && (
-        <div aria-live="off" aria-label={`${Math.ceil(remaining)} seconds remaining`}>
+        <div aria-live="off" aria-label={t.quiz.secondsLeft(Math.ceil(remaining))}>
           <div
             className={`mb-1.5 flex items-center justify-center gap-1.5 text-3xl font-bold tabular-nums transition ${remaining <= 5 ? "scale-[1.06] text-wrong" : "text-blue"}`}
           >
@@ -185,9 +188,9 @@ export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }
             <Flag code={q.flag} className="w-56 sm:w-72" />
           </div>
         )}
-        <h1 className={`text-center font-bold text-balance ${compact ? "text-xl" : "text-[22px]"} sm:text-2xl`}>{q.text}</h1>
+        <h1 className={`text-center font-bold text-balance ${compact ? "text-xl" : "text-[22px]"} sm:text-2xl`}>{i18n.prompt(q.prompt)}</h1>
         <div className="h-5 text-center text-sm font-medium text-wrong" role="status">
-          {answered && picked === null && `Out of time — it’s ${q.answer}.`}
+          {answered && picked === null && t.quiz.outOfTime(i18n.option(q, q.answer))}
         </div>
 
         <div className={flagOptions ? "grid grid-cols-2 gap-3 sm:grid-cols-3" : `flex flex-col ${compact ? "gap-2.5" : "gap-3"}`}>
@@ -205,7 +208,7 @@ export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }
                 key={option}
                 disabled={answered}
                 onClick={() => choose(option)}
-                aria-label={flagOptions ? `Flag ${i + 1}` : undefined}
+                aria-label={flagOptions ? t.quiz.flagOption(i + 1) : undefined}
                 className={`relative flex items-center justify-center rounded-button border-[1.5px] px-3 text-center font-medium transition duration-300 ${style} ${
                   flagOptions ? "p-2.5" : compact ? "min-h-[52px] py-2 text-[15px]" : "min-h-[62px] py-2.5 text-base"
                 }`}
@@ -214,7 +217,7 @@ export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }
                 {flagOptions ? (
                   <Flag code={q.optionFlags![option]} className={`w-full shadow-none ${state === "dimmed" ? "opacity-40" : ""}`} />
                 ) : (
-                  <span className="px-5">{option}</span>
+                  <span className="px-5">{i18n.option(q, option)}</span>
                 )}
               </button>
             );

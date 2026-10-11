@@ -4,14 +4,16 @@ import { Backdrop } from "../components/Backdrop";
 import { QuizRunner, type Answer, type RunResult } from "../components/QuizRunner";
 import { Results, ShareButton } from "../components/Results";
 import { Button, Card, DifficultyChip, LinkButton } from "../components/ui";
-import { DAILY_DIFFICULTY, DAILY_LENGTH, dailyNumber, dailyQuiz, emojiGrid, shareText } from "../lib/engine/daily";
+import { useI18n } from "../i18n";
+import { DAILY_DIFFICULTY, DAILY_LENGTH, dailyNumber, dailyQuiz, emojiGrid } from "../lib/engine/daily";
 import { dateKey } from "../lib/engine/dates";
 import { TIERS } from "../lib/engine/difficulty";
 import { recordAttempt, recordDaily, useStore, useStreaks } from "../lib/store";
 import { useTitle } from "../lib/useTitle";
 
 export function Daily() {
-  useTitle("Daily Challenge");
+  const { t } = useI18n();
+  useTitle(t.daily.title);
   // Keyed to when the puzzle was opened: finishing after midnight must not
   // file yesterday's puzzle as today's and lock you out of the real one.
   const today = useRef(dateKey()).current;
@@ -43,16 +45,16 @@ export function Daily() {
   else {
     body = (
       <Card className="mx-auto max-w-[620px] animate-rise p-8 text-center">
-        <div className="mb-2 text-xs font-black tracking-[.1em] text-flame">DAILY CHALLENGE · #{dailyNumber(today)}</div>
-        <h1 className="text-3xl font-bold">Ready, cartographer?</h1>
+        <div className="mb-2 text-xs font-black tracking-[.1em] text-flame">{t.daily.banner} · #{dailyNumber(today)}</div>
+        <h1 className="text-3xl font-bold">{t.daily.ready}</h1>
         <ul className="mx-auto mt-6 max-w-sm space-y-2 text-left text-fg-2">
-          <li className="flex gap-3"><span className="text-gold">◆</span>{DAILY_LENGTH} questions from every kind of quiz, flags included.</li>
-          <li className="flex gap-3"><span className="text-gold">◆</span>The same puzzle for everyone today.</li>
-          <li className="flex gap-3"><span className="text-gold">◆</span>{TIERS[DAILY_DIFFICULTY].seconds}s per question, and one attempt only.</li>
+          <li className="flex gap-3"><span className="text-gold">◆</span>{t.daily.point1(DAILY_LENGTH)}</li>
+          <li className="flex gap-3"><span className="text-gold">◆</span>{t.daily.point2}</li>
+          <li className="flex gap-3"><span className="text-gold">◆</span>{t.daily.point3(TIERS[DAILY_DIFFICULTY].seconds ?? 0)}</li>
         </ul>
         <div className="mt-5 flex justify-center"><DifficultyChip difficulty={DAILY_DIFFICULTY} /></div>
         <Button className="mt-6 w-full sm:w-auto" onClick={() => setPlaying(true)}>
-          Start today’s challenge
+          {t.daily.start}
         </Button>
       </Card>
     );
@@ -67,6 +69,7 @@ export function Daily() {
 }
 
 function DailyResult({ today }: { today: string }) {
+  const { t, dailyShare } = useI18n();
   const result = useStore((s) => s.daily[today])!;
   const { current } = useStreaks();
   const questions = useMemo(() => dailyQuiz(today), [today]);
@@ -74,10 +77,10 @@ function DailyResult({ today }: { today: string }) {
 
   const block = (
     <div className="space-y-2.5">
-      <div className="text-2xl leading-none" aria-label={`${score} of ${result.grid.length} correct`}>
+      <div className="text-2xl leading-none" aria-label={t.daily.correctOf(score, result.grid.length)}>
         {emojiGrid(result.grid)}
       </div>
-      <ShareButton text={shareText(today, result.grid, current)} />
+      <ShareButton text={dailyShare(today, result.grid, current)} />
       <NextIn />
     </div>
   );
@@ -86,21 +89,22 @@ function DailyResult({ today }: { today: string }) {
     // Played on the first version of the site, whose questions were different.
     return (
       <Card className="mx-auto flex max-w-[620px] animate-rise flex-col items-center gap-4 p-8 text-center">
-        <div className="text-xs font-black tracking-[.1em] text-flame">DAILY CHALLENGE · #{dailyNumber(today)}</div>
+        <div className="text-xs font-black tracking-[.1em] text-flame">{t.daily.banner} · #{dailyNumber(today)}</div>
         <div className="text-[34px] font-bold">
           {score}/{result.grid.length}
         </div>
         {block}
-        <LinkButton to="/" variant="violet" className="w-full">Back to Home</LinkButton>
+        <LinkButton to="/" variant="violet" className="w-full">{t.results.backHome}</LinkButton>
       </Card>
     );
   }
 
   const answers: Answer[] = questions.map((question, i) => ({ question, picked: result.picks[i] ?? null, correct: result.grid[i], ms: 0 }));
-  return <Results title={`Daily Challenge #${dailyNumber(today)}`} difficulty={DAILY_DIFFICULTY} answers={answers} extra={block} />;
+  return <Results title={t.daily.numbered(dailyNumber(today))} difficulty={DAILY_DIFFICULTY} answers={answers} extra={block} />;
 }
 
 function NextIn() {
+  const { t } = useI18n();
   const [now, setNow] = useState(() => new Date());
   useEffect(() => {
     const t = window.setInterval(() => setNow(new Date()), 1000);
@@ -114,7 +118,7 @@ function NextIn() {
   const ss = String(s % 60).padStart(2, "0");
   return (
     <p className="text-xs font-medium text-fg-3">
-      Next quiz in <span className="font-semibold tabular-nums text-fg">{`${hh}:${mm}:${ss}`}</span>
+      {t.daily.nextIn} <span className="font-semibold tabular-nums text-fg">{`${hh}:${mm}:${ss}`}</span>
     </p>
   );
 }

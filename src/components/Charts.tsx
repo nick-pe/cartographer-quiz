@@ -1,6 +1,7 @@
 // Small hand-rolled SVG charts for Trends: one series each, thin marks,
 // recessive grid, a hover tooltip, and a table view for screen readers.
 import { useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { useI18n } from "../i18n";
 import type { DailyPoint } from "../lib/engine/stats";
 
 function useWidth<T extends HTMLElement>() {
@@ -15,7 +16,11 @@ function useWidth<T extends HTMLElement>() {
   return [ref, width] as const;
 }
 
-const shortDate = (day: string) => new Date(`${day}T12:00:00`).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+/** "3 Oct" in the page's language. */
+function useShortDate() {
+  const { date } = useI18n();
+  return (day: string) => date(day, { month: "short", day: "numeric" });
+}
 
 const PAD = { top: 10, right: 12, bottom: 22, left: 32 };
 
@@ -31,16 +36,20 @@ function Tooltip({ x, y, width, children }: { x: number; y: number; width: numbe
 }
 
 function AxisDates({ points, x, y }: { points: DailyPoint[]; x: (i: number) => number; y: number }) {
+  const { t } = useI18n();
+  const shortDate = useShortDate();
   return (
     <>
       <text x={x(0)} y={y} className="fill-fg-3 text-[10px]" textAnchor="start">{shortDate(points[0].day)}</text>
-      <text x={x(points.length - 1)} y={y} className="fill-fg-3 text-[10px]" textAnchor="end">Today</text>
+      <text x={x(points.length - 1)} y={y} className="fill-fg-3 text-[10px]" textAnchor="end">{t.trends.today}</text>
     </>
   );
 }
 
 /** Average accuracy on active days: line + light area, with a crosshair tooltip. */
 export function AccuracyChart({ points, color }: { points: DailyPoint[]; color: string }) {
+  const { t } = useI18n();
+  const shortDate = useShortDate();
   const [ref, width] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
   const height = 160;
@@ -57,7 +66,7 @@ export function AccuracyChart({ points, color }: { points: DailyPoint[]; color: 
         width={width}
         height={height}
         role="img"
-        aria-label="Average accuracy per active day"
+        aria-label={t.trends.chartAccuracy}
         onPointerMove={(e) => {
           const px = e.clientX - e.currentTarget.getBoundingClientRect().left;
           let best = 0;
@@ -83,7 +92,7 @@ export function AccuracyChart({ points, color }: { points: DailyPoint[]; color: 
       {h && (
         <Tooltip x={x(h.i)} y={y(h.accuracy)} width={width}>
           <div className="text-fg-3">{shortDate(h.day)}</div>
-          <div className="font-semibold">{Math.round(h.accuracy)}% · {h.quizzes} {h.quizzes === 1 ? "quiz" : "quizzes"}</div>
+          <div className="font-semibold">{Math.round(h.accuracy)}% · {t.trends.quizCount(h.quizzes)}</div>
         </Tooltip>
       )}
     </div>
@@ -92,6 +101,8 @@ export function AccuracyChart({ points, color }: { points: DailyPoint[]; color: 
 
 /** Quizzes per day as columns, every day in the range. */
 export function VolumeChart({ points, color }: { points: DailyPoint[]; color: string }) {
+  const { t } = useI18n();
+  const shortDate = useShortDate();
   const [ref, width] = useWidth<HTMLDivElement>();
   const [hover, setHover] = useState<number | null>(null);
   const height = 140;
@@ -106,7 +117,7 @@ export function VolumeChart({ points, color }: { points: DailyPoint[]; color: st
 
   return (
     <div ref={ref} className="relative">
-      <svg width={width} height={height} role="img" aria-label="Quizzes played per day" onPointerLeave={() => setHover(null)}>
+      <svg width={width} height={height} role="img" aria-label={t.trends.chartVolume} onPointerLeave={() => setHover(null)}>
         {ticks.map((v) => (
           <g key={v}>
             <line x1={PAD.left} x2={width - PAD.right} y1={y(v)} y2={y(v)} className="stroke-surface-line" />
@@ -136,7 +147,7 @@ export function VolumeChart({ points, color }: { points: DailyPoint[]; color: st
       {h && (
         <Tooltip x={x(hover!)} y={y(h.quizzes)} width={width}>
           <div className="text-fg-3">{shortDate(h.day)}</div>
-          <div className="font-semibold">{h.quizzes} {h.quizzes === 1 ? "quiz" : "quizzes"}</div>
+          <div className="font-semibold">{t.trends.quizCount(h.quizzes)}</div>
         </Tooltip>
       )}
     </div>
@@ -145,13 +156,15 @@ export function VolumeChart({ points, color }: { points: DailyPoint[]; color: st
 
 /** The same series as a table, for screen readers and anyone who prefers numbers. */
 export function SeriesTable({ points }: { points: DailyPoint[] }) {
+  const { t } = useI18n();
+  const shortDate = useShortDate();
   const active = points.filter((p) => p.quizzes > 0);
   return (
     <details className="text-xs text-fg-2">
-      <summary className="cursor-pointer select-none font-semibold text-fg-3 hover:text-fg-2">Show as table</summary>
+      <summary className="cursor-pointer select-none font-semibold text-fg-3 hover:text-fg-2">{t.trends.showTable}</summary>
       <table className="mt-2 w-full tabular-nums">
         <thead className="text-left text-fg-3">
-          <tr><th className="py-1 font-semibold">Day</th><th className="font-semibold">Quizzes</th><th className="font-semibold">Accuracy</th></tr>
+          <tr><th className="py-1 font-semibold">{t.trends.day}</th><th className="font-semibold">{t.trends.quizzes}</th><th className="font-semibold">{t.trends.accuracy}</th></tr>
         </thead>
         <tbody>
           {active.map((p) => (

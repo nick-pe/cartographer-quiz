@@ -26,12 +26,26 @@ export function dailyQuiz(key: string): Question[] {
 
 export const emojiGrid = (grid: boolean[]) => grid.map((ok) => (ok ? "🟩" : "🟥")).join("");
 
+export interface ShareWords {
+  title: string;
+  streak: (n: number) => string;
+  invite: string;
+  iphone: string;
+}
+
+const ENGLISH: ShareWords = {
+  title: "Cartographer Daily",
+  streak: (n) => `🔥 ${n} day streak`,
+  invite: "Think you can beat that?",
+  iphone: "iPhone:",
+};
+
 /** The app's share format (note the two spaces before the score), with the site and the App Store. */
-export function shareText(key: string, grid: boolean[], streak: number, site = SITE_URL): string {
-  const lines = [`Cartographer Daily #${dailyNumber(key)}  ${grid.filter(Boolean).length}/${grid.length}`, emojiGrid(grid)];
-  if (streak > 1) lines.push(`🔥 ${streak} day streak`);
-  lines.push("", "Think you can beat that?");
+export function shareText(key: string, grid: boolean[], streak: number, site = SITE_URL, words = ENGLISH): string {
+  const lines = [`${words.title} #${dailyNumber(key)}  ${grid.filter(Boolean).length}/${grid.length}`, emojiGrid(grid)];
+  if (streak > 1) lines.push(words.streak(streak));
+  lines.push("", words.invite);
   if (site) lines.push(site);
-  lines.push(`iPhone: ${APP_STORE_URL}`);
+  lines.push(`${words.iphone} ${APP_STORE_URL}`);
   return lines.join("\n");
 }

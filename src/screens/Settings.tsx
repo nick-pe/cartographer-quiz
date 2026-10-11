@@ -1,37 +1,43 @@
 import { useState } from "react";
+import { LanguagePicker } from "../components/LanguagePicker";
 import { Button, Card, Segmented } from "../components/ui";
+import { useI18n } from "../i18n";
 import { deleteAllHistory, updateSettings, useStore, type Theme } from "../lib/store";
 import { useTitle } from "../lib/useTitle";
 
-const THEMES: { id: Theme; name: string }[] = [
-  { id: "system", name: "System" },
-  { id: "light", name: "Light" },
-  { id: "dark", name: "Dark" },
-];
+const THEMES: Theme[] = ["system", "light", "dark"];
 
 export function Settings() {
-  useTitle("Settings");
+  const { t } = useI18n();
+  useTitle(t.settings.title);
   const settings = useStore((s) => s.settings);
   const [confirming, setConfirming] = useState(false);
   const [deleted, setDeleted] = useState(false);
 
   return (
     <div className="mx-auto max-w-[620px] animate-rise space-y-6">
-      <h1 className="text-3xl font-bold">Settings</h1>
+      <h1 className="text-3xl font-bold">{t.settings.title}</h1>
 
       <Card className="divide-y divide-surface-line">
         <div className="flex items-center justify-between gap-6 p-5">
           <div>
-            <div className="font-semibold">Appearance</div>
+            <div className="font-semibold">{t.settings.appearance}</div>
           </div>
-          <Segmented label="Appearance" value={settings.theme} options={THEMES} onChange={(theme) => updateSettings({ theme })} />
+          <Segmented
+            label={t.settings.appearance}
+            value={settings.theme}
+            options={THEMES.map((id) => ({ id, name: t.settings.themes[id] }))}
+            onChange={(theme) => updateSettings({ theme })}
+          />
+        </div>
+        <div className="flex items-center justify-between gap-6 p-5">
+          <div className="font-semibold">{t.settings.language}</div>
+          <LanguagePicker />
         </div>
         <label className="flex cursor-pointer items-center justify-between gap-6 p-5">
           <div>
-            <div className="font-semibold">Record quiz history</div>
-            <div className="text-sm text-fg-2">
-              Turning this off stops new results and Speed Run bests being saved. Existing results stay until you delete them.
-            </div>
+            <div className="font-semibold">{t.settings.record}</div>
+            <div className="text-sm text-fg-2">{t.settings.recordHelp}</div>
           </div>
           <input
             type="checkbox"
@@ -45,10 +51,8 @@ export function Settings() {
       </Card>
 
       <Card className="p-5">
-        <div className="font-semibold">Delete All History</div>
-        <p className="mt-1 text-sm text-fg-2">
-          Permanently erases your results, Daily Challenge record, streak and Speed Run bests from this browser. This can’t be undone.
-        </p>
+        <div className="font-semibold">{t.settings.deleteAll}</div>
+        <p className="mt-1 text-sm text-fg-2">{t.settings.deleteHelp}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
           {confirming ? (
             <>
@@ -60,25 +64,24 @@ export function Settings() {
                   setDeleted(true);
                 }}
               >
-                Yes, delete everything
+                {t.settings.confirmDelete}
               </Button>
               <Button variant="ghost" onClick={() => setConfirming(false)}>
-                Cancel
+                {t.settings.cancel}
               </Button>
             </>
           ) : (
             <Button variant="ghost" className="text-wrong" onClick={() => { setConfirming(true); setDeleted(false); }}>
-              Delete All History
+              {t.settings.deleteAll}
             </Button>
           )}
-          <span role="status" className="text-sm text-correct">{deleted && "All history deleted."}</span>
+          <span role="status" className="text-sm text-correct">{deleted && t.settings.deleted}</span>
         </div>
       </Card>
 
       <Card className="p-5 text-sm text-fg-2">
-        <div className="mb-1 font-semibold text-fg">Your data stays here</div>
-        Everything is stored in this browser only. Cartographer has no accounts, no analytics and no ads, and sends nothing
-        to any server. Your history doesn’t sync with the iPhone app or between browsers.
+        <div className="mb-1 font-semibold text-fg">{t.settings.privacyTitle}</div>
+        {t.settings.privacyBody}
       </Card>
     </div>
   );

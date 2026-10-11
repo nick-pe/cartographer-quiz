@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useI18n } from "../i18n";
 import { Flag } from "./Flag";
 import type { Answer } from "./QuizRunner";
 
 /** Every question, with what you picked and the right answer. (Web only: the app has no review.) */
 export function Review({ answers }: { answers: Answer[] }) {
+  const i18n = useI18n();
   return (
     <ol className="divide-y divide-surface-line">
       {answers.map((a, i) => {
@@ -15,10 +17,14 @@ export function Review({ answers }: { answers: Answer[] }) {
             </span>
             {flag && <Flag code={flag} className="w-10 rounded shadow-none" />}
             <div className="min-w-0 flex-1">
-              <div className="text-sm text-fg-2">{a.question.text}</div>
+              <div className="text-sm text-fg-2">{i18n.prompt(a.question.prompt)}</div>
               <div className="font-semibold">
-                {a.question.answer}
-                {!a.correct && <span className="ml-2 font-normal text-wrong line-through decoration-1">{a.picked ?? "no answer"}</span>}
+                {i18n.option(a.question, a.question.answer)}
+                {!a.correct && (
+                  <span className="ml-2 font-normal text-wrong line-through decoration-1">
+                    {a.picked === null ? i18n.t.results.noAnswer : i18n.option(a.question, a.picked)}
+                  </span>
+                )}
               </div>
             </div>
           </li>
@@ -30,6 +36,7 @@ export function Review({ answers }: { answers: Answer[] }) {
 
 /** The app's results ring: green arc, "x/n" and the percentage. */
 export function ScoreRing({ score, total }: { score: number; total: number }) {
+  const { t, number } = useI18n();
   const r = 66;
   const c = 2 * Math.PI * r;
   const pct = total ? score / total : 0;
@@ -39,7 +46,7 @@ export function ScoreRing({ score, total }: { score: number; total: number }) {
     setShown(pct);
   }, [pct]);
   return (
-    <div className="relative size-[140px]" role="img" aria-label={`Scored ${score} out of ${total}, ${Math.round(pct * 100)} percent`}>
+    <div className="relative size-[140px]" role="img" aria-label={t.results.scored(score, total, Math.round(pct * 100))}>
       <svg viewBox="0 0 140 140" className="size-full -rotate-90">
         <circle cx="70" cy="70" r={r} fill="none" strokeWidth="8" className="stroke-answer-line" />
         <circle
@@ -59,16 +66,14 @@ export function ScoreRing({ score, total }: { score: number; total: number }) {
         <span className="text-[32px] font-bold tabular-nums">
           {score}/{total}
         </span>
-        <span className="font-medium text-fg-2">{Math.floor(pct * 100)}%</span>
+        <span className="font-medium text-fg-2">{number(Math.floor(pct * 100) / 100, { style: "percent" })}</span>
       </div>
     </div>
   );
 }
 
-/** QuizResult.stars / message from the app. */
+/** QuizResult.stars from the app; the messages are in each locale's `results.messages`. */
 export function stars(score: number, total: number): 1 | 2 | 3 {
   const pct = total ? (score / total) * 100 : 0;
   return pct >= 80 ? 3 : pct >= 50 ? 2 : 1;
 }
-
-export const MESSAGES = { 3: "Outstanding!", 2: "Well done!", 1: "Keep practicing!" } as const;

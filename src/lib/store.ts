@@ -2,6 +2,7 @@ import { useSyncExternalStore } from "react";
 import { dateKey } from "./engine/dates";
 import { isDifficulty, type Difficulty } from "./engine/difficulty";
 import { streaks, type Attempt } from "./engine/stats";
+import type { LocaleCode } from "../i18n/locales";
 
 export type Theme = "system" | "light" | "dark";
 
@@ -20,7 +21,13 @@ export interface SpeedBest {
 }
 
 export interface State {
-  settings: { recordHistory: boolean; theme: Theme; difficulty: Difficulty };
+  settings: {
+    recordHistory: boolean;
+    theme: Theme;
+    difficulty: Difficulty;
+    /** Chosen in the language picker; unset until then, when the browser's language decides. */
+    language?: LocaleCode;
+  };
   /** Newest first. */
   attempts: Attempt[];
   daily: Record<string, DailyResult>;

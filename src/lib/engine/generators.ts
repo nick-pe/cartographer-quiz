@@ -8,7 +8,7 @@ import { CATEGORY_LIST, type Category } from "./categories";
 import { TIERS, type Difficulty } from "./difficulty";
 import { pickDistractors, similarity } from "./distractors";
 import { fameSample } from "./fameSlicer";
-import { isPresent, make, orderedUnique, type Question, type QuestionSpec } from "./question";
+import { isPresent, make, orderedUnique, type Question, type QuestionSpec, type Term } from "./question";
 
 // ---------------------------------------------------------------------------
 // Capital-style questions
@@ -28,6 +28,8 @@ export function categoryQuestions(category: Category, difficulty: Difficulty, co
       make(
         {
           text: `${category.questionPrefix} ${pair.prompt}?`,
+          prompt: { key: category.promptKey, place: pair.place },
+          optionKind: category.optionKind,
           correct: pair.answer,
           distractorPool: pool,
           correctRank: pool.indexOf(pair.answer),
@@ -72,6 +74,8 @@ export function countQuestions(difficulty: Difficulty, count = 10, rng?: Rng): Q
       return make(
         {
           text: `How many ${info.unitPlural} does ${info.country} have?`,
+          prompt: { key: "howMany", category: c.id },
+          optionKind: "number",
           correct: String(correct),
           fixedOptions: numbers.map(String),
           kind: "regionCount",
@@ -127,7 +131,9 @@ export function pickRegionQuestions(difficulty: Difficulty, count = 10, rng?: Rn
       if (pool.length < 3) return null;
       return make(
         {
-          text: `Which of these is a ${info.unitSingular} of ${info.country}?`,
+          text: `Which of these is ${/^[aeiou]/i.test(info.unitSingular) ? "an" : "a"} ${info.unitSingular} of ${info.country}?`,
+          prompt: { key: "pickRegion", category: category.id },
+          optionKind: "local",
           correct,
           distractorPool: pool,
           // Fame rank means nothing across countries' datasets; similarity drives closeness.
@@ -176,6 +182,8 @@ export function flagQuestions(difficulty: Difficulty, count = 10, rng?: Rng): Qu
       make(
         {
           text: "Whose flag is this?",
+          prompt: { key: "flagWhose" },
+          optionKind: "country",
           correct: country.name,
           fixedOptions: [country.name, ...flagDistractors(country, index, needed, difficulty, rng)],
           kind: "flag",
@@ -199,6 +207,8 @@ export function findFlagQuestions(difficulty: Difficulty, count = 10, rng?: Rng)
       return make(
         {
           text: `Which is the flag of ${country.name}?`,
+          prompt: { key: "flagWhich", place: { kind: "country", id: country.name } },
+          optionKind: "country",
           correct: country.name,
           fixedOptions: options,
           kind: "flag",
@@ -255,7 +265,7 @@ function featureQuiz<T, K>(
   corpus: readonly T[],
   kinds: K[],
   comparative: K[],
-  build: (kind: K, item: T, rank: number) => Omit<QuestionSpec, "kind" | "quizId"> | null,
+  build: (kind: K, item: T, rank: number) => FeatureSpec | null,
   quizId: string,
   difficulty: Difficulty,
   count: number,
@@ -271,12 +281,23 @@ function featureQuiz<T, K>(
 }
 
 /** "Which of these is the longest/highest/largest?" — options all strictly smaller than the answer. */
-function comparative<T extends { name: string }>(item: T, corpus: readonly T[], size: (x: T) => number, text: string, difficulty: Difficulty, rng?: Rng) {
+function comparative<T extends { name: string }>(
+  item: T,
+  corpus: readonly T[],
+  size: (x: T) => number,
+  text: string,
+  key: "longestRiver" | "highestMountain" | "largestSea" | "largestIsland",
+  difficulty: Difficulty,
+  rng?: Rng,
+): FeatureSpec | null {
   const n = TIERS[difficulty].optionCount - 1;
   const others = corpus.filter((x) => x.name !== item.name && size(x) < size(item));
   if (others.length < n) return null;
-  return { text, correct: item.name, fixedOptions: [item, ...shuffle(others, rng).slice(0, n)].map((x) => x.name) };
+  return { text, prompt: { key }, optionKind: "feature", correct: item.name, fixedOptions: [item, ...shuffle(others, rng).slice(0, n)].map((x) => x.name) };
 }
+
+type FeatureSpec = Omit<QuestionSpec, "kind" | "quizId">;
+const feature = (id: string): Term => ({ kind: "feature", id });
 
 export function riverQuestions(difficulty: Difficulty, count = 10, rng?: Rng): Question[] {
   type K = "city" | "outflow" | "country" | "longest";
@@ -290,18 +311,18 @@ export function riverQuestions(difficulty: Difficulty, count = 10, rng?: Rng): Q
           const city = pick(river.cities, rng);
           if (!city) return null;
           // Don't offer a river that also has this city listed.
-          return { text: `Which river flows through ${city}?`, correct: river.name, distractorPool: RIVERS.filter((r) => !r.cities.includes(city)).map((r) => r.name), correctRank: rank };
+          return { text: `Which river flows through ${city}?`, prompt: { key: "riverThrough", place: feature(city) }, optionKind: "feature", correct: river.name, distractorPool: RIVERS.filter((r) => !r.cities.includes(city)).map((r) => r.name), correctRank: rank };
         }
         case "outflow":
-          return { text: `Which body of water does the ${river.name} flow into?`, correct: river.outflow, distractorPool: RIVERS.map((r) => r.outflow).filter((o) => o !== river.outflow) };
+          return { text: `Which body of water does the ${river.name} flow into?`, prompt: { key: "riverOutflow", place: feature(river.name) }, optionKind: "feature", correct: river.outflow, distractorPool: RIVERS.map((r) => r.outflow).filter((o) => o !== river.outflow) };
         case "country": {
           const correct = pick(river.countries, rng);
           if (!correct) return null;
           const pool = RIVERS.flatMap((r) => r.countries).filter((c) => !river.countries.includes(c));
-          return pool.length >= 3 ? { text: `Which of these countries does the ${river.name} flow through?`, correct, distractorPool: pool } : null;
+          return pool.length >= 3 ? { text: `Which of these countries does the ${river.name} flow through?`, prompt: { key: "riverCountry", place: feature(river.name) }, optionKind: "country", correct, distractorPool: pool } : null;
         }
         case "longest":
-          return comparative(river, RIVERS, (r) => r.lengthKm, "Which of these rivers is the longest?", difficulty, rng);
+          return comparative(river, RIVERS, (r) => r.lengthKm, "Which of these rivers is the longest?", "longestRiver", difficulty, rng);
       }
     },
     "rivers",
@@ -322,12 +343,12 @@ export function mountainQuestions(difficulty: Difficulty, count = 10, rng?: Rng)
         case "country":
           // Only peaks wholly inside one country (Everest straddles two).
           if (m.countries.length !== 1) return null;
-          return { text: `In which country is ${m.name}?`, correct: m.countries[0], distractorPool: MOUNTAINS.flatMap((x) => x.countries).filter((c) => c !== m.countries[0]) };
+          return { text: `In which country is ${m.name}?`, prompt: { key: "mountainCountry", place: feature(m.name) }, optionKind: "country", correct: m.countries[0], distractorPool: MOUNTAINS.flatMap((x) => x.countries).filter((c) => c !== m.countries[0]) };
         case "range":
           if (!m.range) return null;
-          return { text: `Which range is ${m.name} part of?`, correct: m.range, distractorPool: MOUNTAINS.map((x) => x.range).filter((r): r is string => !!r && r !== m.range) };
+          return { text: `Which range is ${m.name} part of?`, prompt: { key: "mountainRange", place: feature(m.name) }, optionKind: "feature", correct: m.range, distractorPool: MOUNTAINS.map((x) => x.range).filter((r): r is string => !!r && r !== m.range) };
         case "highest":
-          return comparative(m, MOUNTAINS, (x) => x.heightM, "Which of these mountains is the highest?", difficulty, rng);
+          return comparative(m, MOUNTAINS, (x) => x.heightM, "Which of these mountains is the highest?", "highestMountain", difficulty, rng);
       }
     },
     "mountains",
@@ -349,13 +370,13 @@ export function seaQuestions(difficulty: Difficulty, count = 10, rng?: Rng): Que
           const correct = pick(sea.borderingCountries, rng);
           if (!correct) return null;
           const pool = SEAS.flatMap((s) => s.borderingCountries).filter((c) => !sea.borderingCountries.includes(c));
-          return pool.length >= 3 ? { text: `Which of these countries borders the ${sea.name}?`, correct, distractorPool: pool } : null;
+          return pool.length >= 3 ? { text: `Which of these countries borders the ${sea.name}?`, prompt: { key: "seaBorder", place: feature(sea.name) }, optionKind: "country", correct, distractorPool: pool } : null;
         }
         case "connected":
           if (!sea.connectedTo) return null; // the Caspian
-          return { text: `The ${sea.name} opens into which larger body of water?`, correct: sea.connectedTo, distractorPool: SEAS.map((s) => s.connectedTo).filter((c): c is string => !!c && c !== sea.connectedTo) };
+          return { text: `The ${sea.name} opens into which larger body of water?`, prompt: { key: "seaOpensInto", place: feature(sea.name) }, optionKind: "feature", correct: sea.connectedTo, distractorPool: SEAS.map((s) => s.connectedTo).filter((c): c is string => !!c && c !== sea.connectedTo) };
         case "largest":
-          return comparative(sea, SEAS, (s) => s.areaKm2, "Which of these seas is the largest by area?", difficulty, rng);
+          return comparative(sea, SEAS, (s) => s.areaKm2, "Which of these seas is the largest by area?", "largestSea", difficulty, rng);
       }
     },
     "seas",
@@ -376,11 +397,11 @@ export function islandQuestions(difficulty: Difficulty, count = 10, rng?: Rng): 
         case "country":
           // Shared islands (Borneo, Hispaniola) have several right answers.
           if (island.countries.length !== 1) return null;
-          return { text: `Which country does ${island.name} belong to?`, correct: island.countries[0], distractorPool: ISLANDS.flatMap((i) => i.countries).filter((c) => c !== island.countries[0]) };
+          return { text: `Which country does ${island.name} belong to?`, prompt: { key: "islandCountry", place: feature(island.name) }, optionKind: "country", correct: island.countries[0], distractorPool: ISLANDS.flatMap((i) => i.countries).filter((c) => c !== island.countries[0]) };
         case "water":
-          return { text: `Which body of water surrounds ${island.name}?`, correct: island.water, distractorPool: ISLANDS.map((i) => i.water).filter((w) => w !== island.water) };
+          return { text: `Which body of water surrounds ${island.name}?`, prompt: { key: "islandWater", place: feature(island.name) }, optionKind: "feature", correct: island.water, distractorPool: ISLANDS.map((i) => i.water).filter((w) => w !== island.water) };
         case "largest":
-          return comparative(island, ISLANDS, (i) => i.areaKm2, "Which of these islands is the largest?", difficulty, rng);
+          return comparative(island, ISLANDS, (i) => i.areaKm2, "Which of these islands is the largest?", "largestIsland", difficulty, rng);
       }
     },
     "islands",

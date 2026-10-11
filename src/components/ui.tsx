@@ -1,5 +1,6 @@
 import type { ButtonHTMLAttributes, CSSProperties, ReactNode } from "react";
 import { Link } from "react-router";
+import { useI18n } from "../i18n";
 import { TIERS, type Difficulty } from "../lib/engine/difficulty";
 
 const base =
@@ -18,11 +19,17 @@ export function Button({ variant = "blue", className = "", ...props }: ButtonHTM
   return <button className={`${base} ${variants[variant]} ${className}`} {...props} />;
 }
 
+/** A link to a page in the current language: `to="/daily"` goes to /fr/daily on the French site. */
+export function LocalLink({ to, ...props }: Omit<Parameters<typeof Link>[0], "to"> & { to: string }) {
+  const { path } = useI18n();
+  return <Link to={path(to)} {...props} />;
+}
+
 export function LinkButton({ to, variant = "blue", className = "", style, children }: { to: string; variant?: Variant; className?: string; style?: CSSProperties; children: ReactNode }) {
   return (
-    <Link to={to} style={style} className={`${base} ${variants[variant]} ${className}`}>
+    <LocalLink to={to} style={style} className={`${base} ${variants[variant]} ${className}`}>
       {children}
-    </Link>
+    </LocalLink>
   );
 }
 
@@ -64,6 +71,7 @@ export function Segmented<T extends string>({
 
 /** Small tier badge, so the difficulty is never ambiguous mid-quiz. */
 export function DifficultyChip({ difficulty }: { difficulty: Difficulty }) {
+  const { t } = useI18n();
   const tier = TIERS[difficulty];
   return (
     <span
@@ -71,14 +79,15 @@ export function DifficultyChip({ difficulty }: { difficulty: Difficulty }) {
       style={{ color: tier.accent, background: `color-mix(in srgb, ${tier.accent} 15%, transparent)` }}
     >
       <span aria-hidden="true" className="text-[9px]">{tier.icon}</span>
-      {tier.title}
+      {t.tiers[difficulty].title}
     </span>
   );
 }
 
 export function Stars({ count }: { count: number }) {
+  const { t } = useI18n();
   return (
-    <div className="flex gap-3" role="img" aria-label={`${count} of 3 stars`}>
+    <div className="flex gap-3" role="img" aria-label={t.results.stars(count)}>
       {[1, 2, 3].map((n) => (
         <svg key={n} viewBox="0 0 24 24" className="size-10 animate-star" style={{ animationDelay: `${n * 200}ms` }}>
           <path

@@ -4,9 +4,10 @@ import { Backdrop } from "../components/Backdrop";
 import { QuizRunner, type RunResult } from "../components/QuizRunner";
 import { Results, SpeedRunBlock, type SpeedOutcome } from "../components/Results";
 import { dateKey } from "../lib/engine/dates";
-import { TIERS, type Difficulty } from "../lib/engine/difficulty";
+import { type Difficulty } from "../lib/engine/difficulty";
+import { useI18n, type I18n } from "../i18n";
 import { QUIZ_BY_SLUG, type QuizDef } from "../lib/engine/quizzes";
-import { PENALTY_PER_WRONG_MS } from "../lib/engine/speedRun";
+import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
 import { recordAttempt, recordSpeedRun, updateSettings, useStore } from "../lib/store";
 import { SITE_URL } from "../lib/site";
 import { useTitle } from "../lib/useTitle";
@@ -14,7 +15,8 @@ import { useTitle } from "../lib/useTitle";
 export function Quiz() {
   const { slug } = useParams();
   const quiz = slug ? QUIZ_BY_SLUG[slug] : undefined;
-  if (!quiz) return <Navigate to="/" replace />;
+  const { path } = useI18n();
+  if (!quiz) return <Navigate to={path("/")} replace />;
   return <Play key={quiz.slug} quiz={quiz} />;
 }
 
@@ -25,7 +27,9 @@ interface Finished {
 }
 
 function Play({ quiz }: { quiz: QuizDef }) {
-  useTitle(quiz.title);
+  const i18n = useI18n();
+  const title = i18n.quizTitle(quiz);
+  useTitle(title);
   const difficulty = useStore((s) => s.settings.difficulty);
   const [round, setRound] = useState(0);
   const [finished, setFinished] = useState<Finished | null>(null);
@@ -68,11 +72,11 @@ function Play({ quiz }: { quiz: QuizDef }) {
       <Backdrop id={quiz.backdrop} />
       {finished ? (
         <Results
-          title={quiz.title}
+          title={title}
           difficulty={finished.difficulty}
           answers={finished.run.answers}
           extra={finished.speed && <SpeedRunBlock outcome={finished.speed} />}
-          shareText={resultText(quiz, finished)}
+          shareText={resultText(i18n, quiz, finished)}
           onTryHarder={(tier) => {
             updateSettings({ difficulty: tier });
             restart();
@@ -81,7 +85,7 @@ function Play({ quiz }: { quiz: QuizDef }) {
         />
       ) : (
         <>
-          <h1 className="sr-only">{quiz.title}</h1>
+          <h1 className="sr-only">{title}</h1>
           <QuizRunner key={round} questions={questions} difficulty={difficulty} speedRun={quiz.isSpeedRun} onFinish={onFinish} />
         </>
       )}
@@ -89,10 +93,12 @@ function Play({ quiz }: { quiz: QuizDef }) {
   );
 }
 
-function resultText(quiz: QuizDef, { run, difficulty, speed }: Finished): string {
+function resultText(i18n: I18n, quiz: QuizDef, { run, difficulty, speed }: Finished): string {
+  const { t } = i18n;
+  const title = i18n.quizTitle(quiz);
   const correct = run.answers.filter((a) => a.correct).length;
   const score = speed
-    ? `⚡ ${quiz.title}: ${((speed.answeringMs + speed.wrong * PENALTY_PER_WRONG_MS) / 1000).toFixed(1)}s (${correct}/${run.answers.length})`
-    : `${quiz.emoji} ${quiz.title}: ${correct}/${run.answers.length}`;
-  return [`Cartographer · ${TIERS[difficulty].title}`, score, "", "Think you can beat that?", `${SITE_URL}/quiz/${quiz.slug}`].join("\n");
+    ? `⚡ ${title}: ${formatSpeed(speed.answeringMs + speed.wrong * PENALTY_PER_WRONG_MS)} (${correct}/${run.answers.length})`
+    : `${quiz.emoji} ${title}: ${correct}/${run.answers.length}`;
+  return [`Cartographer · ${t.tiers[difficulty].title}`, score, "", t.share.invite, SITE_URL + i18n.path(`/quiz/${quiz.slug}`)].join("\n");
 }

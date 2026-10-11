@@ -21,6 +21,23 @@ data and ports its game engine, then adds a few web-only extras.
 
 Everything is stored in the browser's `localStorage` under `cartographer:v2`. Data from the first version (`cartographer:v1`) is migrated automatically. There are no accounts, analytics, cookies or third-party requests.
 
+## Languages
+
+English, French, Spanish, Italian, Chinese (Simplified), Korean and Tagalog. English lives at the root
+(`/daily`); other languages have a prefix (`/fr/daily`, `/zh/quiz/rivers`). First-time visitors are sent to
+their browser's language; the header's language picker switches and remembers.
+
+- `src/i18n/en.ts` is the source; every other `src/i18n/<code>.ts` must match its shape (a type error otherwise).
+- Questions are stored language-neutral (`Question.prompt`, `optionKind`), so every language plays the
+  same puzzles, the Daily included, and history from one language reads fine in another.
+- Country names come from the browser (`Intl.DisplayNames`). Capitals, rivers, seas, mountains and islands
+  come from `src/i18n/places/<code>.ts`; anything missing falls back to English. French, Spanish and Italian
+  entries carry their article ("le Nil") for sentences; answer buttons strip it.
+- Regional names (states, provinces, prefectures…) stay as they are in the app's data for now.
+- `src/i18n/i18n.test.ts` renders every question in every language and fails on gaps or duplicate labels.
+
+The support and privacy pages are English only.
+
 ## Develop
 
 ```sh

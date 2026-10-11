@@ -101,7 +101,7 @@ export function standings(attempts: Attempt[], minimumAttempts = 2) {
   for (const a of attempts) grouped.set(a.quizTitle, [...(grouped.get(a.quizTitle) ?? []), a]);
   const ranked = [...grouped]
     .filter(([, rows]) => rows.length >= minimumAttempts)
-    .map(([title, rows]) => ({ title, attempts: rows.length, accuracy: accuracy(rows) }))
+    .map(([title, rows]) => ({ title, quizId: rows[0].quizId, attempts: rows.length, accuracy: accuracy(rows) }))
     .sort((a, b) => b.accuracy - a.accuracy);
   return { strongest: ranked.slice(0, 5), weakest: ranked.slice(-5).reverse() };
 }
