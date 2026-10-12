@@ -22,7 +22,7 @@ export const it: Messages = {
   },
 
   nav: { play: "Gioca", trends: "Statistiche", settings: "Impostazioni", language: "Lingua" },
-  footer: { support: "Assistenza", privacy: "Privacy", iphone: "App per iPhone", noTracking: "Senza account, senza tracciamento", study: "Elenchi da studiare" },
+  footer: { support: "Assistenza", privacy: "Informativa sulla privacy", iphone: "App per iPhone", noTracking: "Senza account, senza tracciamento", study: "Elenchi da studiare" },
 
   tiers: {
     explorer: { title: "Esploratore", blurb: "I luoghi più noti, senza tempo" },

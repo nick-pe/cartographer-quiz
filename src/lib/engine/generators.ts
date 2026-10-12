@@ -28,7 +28,7 @@ export function categoryQuestions(category: Category, difficulty: Difficulty, co
       make(
         {
           text: `${category.questionPrefix} ${pair.prompt}?`,
-          prompt: { key: category.promptKey, place: pair.place },
+          prompt: { key: category.promptKey, place: pair.place, category: category.id },
           optionKind: category.optionKind,
           correct: pair.answer,
           distractorPool: pool,
@@ -133,7 +133,7 @@ export function pickRegionQuestions(difficulty: Difficulty, count = 10, rng?: Rn
         {
           text: `Which of these is ${/^[aeiou]/i.test(info.unitSingular) ? "an" : "a"} ${info.unitSingular} of ${info.country}?`,
           prompt: { key: "pickRegion", category: category.id },
-          optionKind: "local",
+          optionKind: "division",
           correct,
           distractorPool: pool,
           // Fame rank means nothing across countries' datasets; similarity drives closeness.

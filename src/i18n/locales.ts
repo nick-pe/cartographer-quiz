@@ -9,6 +9,7 @@ export const LOCALES = [
   { code: "es", name: "Español", intl: "es" },
   { code: "it", name: "Italiano", intl: "it" },
   { code: "zh", name: "中文", intl: "zh-Hans" },
+  { code: "ja", name: "日本語", intl: "ja" },
   { code: "ko", name: "한국어", intl: "ko" },
   // Browsers know Tagalog's standard form as Filipino ("fil").
   { code: "tl", name: "Tagalog", intl: "fil" },

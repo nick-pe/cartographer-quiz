@@ -36,8 +36,10 @@ function pairsFor(def: CategoryDef): Pair[] {
   }
   const rows = PAIRS[def.source.dataset];
   if (!rows) throw new Error(`Unknown dataset ${def.source.dataset}`);
-  const local = (prompt: string, answer: string): Pair => ({ prompt, answer, place: { kind: "local", id: prompt } });
-  return def.source.reversed ? rows.map(([p, a]) => local(a, p)) : rows.map(([p, a]) => local(p, a));
+  // Most datasets ask about a division (Kanagawa → Yokohama); a few ask about a town.
+  const asksAboutTown = ["Which US state has this capital:", "In which region is this city located:", "In which country is this city:"].includes(def.questionPrefix);
+  const pair = (prompt: string, answer: string): Pair => ({ prompt, answer, place: { kind: asksAboutTown ? "local" : "division", id: prompt } });
+  return def.source.reversed ? rows.map(([p, a]) => pair(a, p)) : rows.map(([p, a]) => pair(p, a));
 }
 
 export const CATEGORY_LIST: Category[] = CATEGORIES.map((def) => {
@@ -47,8 +49,13 @@ export const CATEGORY_LIST: Category[] = CATEGORIES.map((def) => {
   const count = def.regionNameSource === "answer" ? new Set(pairs.map((p) => p.answer)).size : pairs.length;
   const promptKey = PREFIX_KEYS[def.questionPrefix as keyof typeof PREFIX_KEYS];
   if (!promptKey) throw new Error(`No prompt key for "${def.questionPrefix}"`);
-  // Capitals quizzes answer with capitals, the Maghreb quiz with countries, the rest with local names.
-  const optionKind: TermKind = "capitals" in def.source ? "capital" : promptKey === "countryOfCity" ? "country" : "local";
+  // Capitals quizzes answer with capitals, the Maghreb quiz with countries, Name the State and
+  // France with divisions (states, regions), the rest with towns.
+  const optionKind: TermKind =
+    "capitals" in def.source ? "capital"
+    : promptKey === "countryOfCity" ? "country"
+    : promptKey === "usStateWithCapital" || promptKey === "regionOfCity" ? "division"
+    : "local";
   return { ...def, pairs, regionNames, count, subtitle: `${count} ${def.countNoun}`, promptKey, optionKind };
 });
 

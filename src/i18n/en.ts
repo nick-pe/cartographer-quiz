@@ -338,7 +338,7 @@ export const en = {
 
   prompts: {
     /** `isCountry` lets languages that say "capital" differently for states pick the word. */
-    capitalOf: (p: string, _isCountry?: boolean) => `What is the capital of ${p}?`,
+    capitalOf: (p: string, _isCountry?: boolean, _category?: string) => `What is the capital of ${p}?`,
     usStateWithCapital: (p: string) => `Which US state has this capital: ${p}?`,
     regionOfCity: (p: string) => `In which region is this city located: ${p}?`,
     countyTownOf: (p: string) => `What is the county town of ${p}?`,

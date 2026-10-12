@@ -9,7 +9,7 @@ export const SITE = "https://cartographerquiz.com";
 
 /** Pages worth finding in search: home, the Daily, every quiz and every study list, in every language. */
 export function pages(): string[] {
-  return ["/", "/daily", "/learn", ...ALL_QUIZZES.map((q) => `/quiz/${q.slug}`), ...LEARNABLE.map((q) => `/learn/${q.slug}`)];
+  return ["/", "/daily", "/learn", "/support", "/privacy", ...ALL_QUIZZES.map((q) => `/quiz/${q.slug}`), ...LEARNABLE.map((q) => `/learn/${q.slug}`)];
 }
 
 const escape = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

@@ -9,9 +9,10 @@ export type QuestionKind = "capital" | "regionCount" | "pickRegion" | "geoFeatur
 /**
  * What a name refers to, so each language can render it: countries via the
  * browser's built-in names, capitals and natural features via the place
- * dictionaries, regional (local) names as they are, numbers via Intl.
+ * dictionaries, a country's divisions (Kanagawa) and their towns (Yokohama)
+ * via optional per-language lists, numbers via Intl.
  */
-export type TermKind = "country" | "capital" | "feature" | "local" | "number";
+export type TermKind = "country" | "capital" | "feature" | "division" | "local" | "number";
 
 export interface Term {
   kind: TermKind;
@@ -38,7 +39,8 @@ export type PrefixKey = (typeof PREFIX_KEYS)[keyof typeof PREFIX_KEYS];
 
 /** Language-neutral description of a question's wording; each locale renders it. */
 export type Prompt =
-  | { key: PrefixKey; place: Term }
+  /** `category` lets a language pick its word for "capital" (県庁所在地, 省会…). */
+  | { key: PrefixKey; place: Term; category?: string }
   | { key: "howMany" | "pickRegion"; category: string }
   | { key: "riverThrough" | "riverOutflow" | "riverCountry" | "mountainCountry" | "mountainRange"; place: Term }
   | { key: "seaBorder" | "seaOpensInto" | "islandCountry" | "islandWater" | "flagWhich"; place: Term }

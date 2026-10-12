@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 import { NavLink } from "react-router";
 import { useI18n } from "../i18n";
-import { asset } from "../lib/site";
 import { LanguagePicker } from "./LanguagePicker";
 import { Logo } from "./Logo";
 import { LocalLink } from "./ui";
@@ -63,9 +62,9 @@ export function Layout({ children }: { children: ReactNode }) {
       <footer className="border-t border-surface-line px-4 py-6 text-center text-sm text-fg-2">
         <LocalLink className="hover:text-fg" to="/learn">{t.footer.study}</LocalLink>
         <span className="mx-2">·</span>
-        <a className="hover:text-fg" href={asset("support.html")}>{t.footer.support}</a>
+        <LocalLink className="hover:text-fg" to="/support">{t.footer.support}</LocalLink>
         <span className="mx-2">·</span>
-        <a className="hover:text-fg" href={asset("privacy.html")}>{t.footer.privacy}</a>
+        <LocalLink className="hover:text-fg" to="/privacy">{t.footer.privacy}</LocalLink>
         <span className="mx-2">·</span>
         <a className="hover:text-fg" href="https://apps.apple.com/app/id6811782173">{t.footer.iphone}</a>
         <span className="mx-2">·</span>

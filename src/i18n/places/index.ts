@@ -12,12 +12,17 @@ import { de } from "./de";
 import { es } from "./es";
 import { fr } from "./fr";
 import { it } from "./it";
+import { ja } from "./ja";
 import { ko } from "./ko";
 import { zh } from "./zh";
 
 export interface Places {
   names: Record<string, string>;
   countries?: Record<string, string>;
+  /** A country's own divisions in its own language (Kanagawa → 神奈川県). */
+  divisions?: Record<string, string>;
+  /** Their capitals and towns (Yokohama → 横浜市). */
+  towns?: Record<string, string>;
 }
 
 export const PLACES: Record<LocaleCode, Places> = {
@@ -27,6 +32,7 @@ export const PLACES: Record<LocaleCode, Places> = {
   es,
   it,
   zh,
+  ja,
   ko,
   // Filipino usage keeps the English names of foreign places.
   tl: { names: {} },

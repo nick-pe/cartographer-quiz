@@ -6,6 +6,7 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import { App } from "./App";
 import { i18nFor } from "./i18n/core";
+import { LEGAL } from "./i18n/legal";
 import { LOCALES, localeFromPath, localizePath, stripLocale } from "./i18n/locales";
 import { ALL_QUIZZES, QUIZ_BY_SLUG } from "./lib/engine/quizzes";
 import { LEARNABLE } from "./lib/learn";
@@ -21,6 +22,8 @@ export function routes(): string[] {
     "/trends",
     "/settings",
     "/learn",
+    "/support",
+    "/privacy",
     ...ALL_QUIZZES.map((q) => `/quiz/${q.slug}`),
     ...LEARNABLE.map((q) => `/learn/${q.slug}`),
   ];
@@ -36,7 +39,13 @@ export function render(url: string): string {
 }
 
 /** Open Graph wants underscores and a region: fr_FR. */
-const OG_LOCALE: Record<string, string> = { en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", it: "it_IT", zh: "zh_CN", ko: "ko_KR", tl: "tl_PH" };
+const OG_LOCALE: Record<string, string> = { en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", it: "it_IT", zh: "zh_CN", ja: "ja_JP", ko: "ko_KR", tl: "tl_PH" };
+
+/** Legal text without its **bold** and [link](url) markup, cut to a search-result length. */
+const plain = (s: string) => {
+  const text = s.replace(/\*\*/g, "").replace(/\[([^\]]+)\]\([^)]+\)/g, "$1");
+  return text.length > 200 ? text.slice(0, 197).replace(/\s+\S*$/, "") + "…" : text;
+};
 
 const attr = (s: string) => s.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 
@@ -57,6 +66,8 @@ export function head(url: string): { lang: string; html: string } {
   else if (page === "/trends") [title, index] = [t.site.pageTitle(t.trends.title), false];
   else if (page === "/settings") [title, index] = [t.site.pageTitle(t.settings.title), false];
   else if (page === "/learn") [title, description] = [t.site.pageTitle(t.learn.index), t.seo.learnIndex];
+  else if (page === "/support") [title, description] = [t.site.pageTitle(LEGAL[code].support.title), plain(LEGAL[code].support.dataBody)];
+  else if (page === "/privacy") [title, description] = [t.site.pageTitle(LEGAL[code].privacy.title), plain(String(LEGAL[code].privacy.sections[0].blocks[0]))];
   else if (quiz && section === "quiz") {
     const name = i18n.quizTitle(quiz);
     [title, description] = [t.site.pageTitle(name), t.seo.quiz(name, i18n.quizSubtitle(quiz))];

@@ -10,6 +10,8 @@ import { REGION_COUNTRY_CODES, i18nFor } from ".";
 import { en } from "./en";
 import { LOCALES, localeFromPath, localizePath, preferredLocale, stripLocale } from "./locales";
 import { PLACES } from "./places";
+import { LEGAL } from "./legal";
+import { sectionsFor } from "../lib/sections";
 
 /** Every capital and natural-feature name in the data, except those that are also country names. */
 const TRANSLATABLE = (() => {
@@ -78,7 +80,7 @@ describe.each(LOCALES.filter((l) => l.code !== "en").map((l) => l.code))("%s", (
 });
 
 describe("Place coverage", () => {
-  it.each(["zh", "ko"] as const)("%s translates every capital and natural feature", (code) => {
+  it.each(["zh", "ja", "ko"] as const)("%s translates every capital and natural feature", (code) => {
     const missing = [...TRANSLATABLE].filter((n) => !PLACES[code].names[n]);
     expect(missing).toEqual([]);
   });
@@ -146,5 +148,50 @@ describe("Spot checks", () => {
     expect(opt("it", "Alps")).toBe("Alpi");
     expect(i18nFor("fr").option({ optionKind: "capital" } as Question, "Cairo")).toBe("Le Caire");
     expect(i18nFor("es").option({ optionKind: "capital" } as Question, "Cairo")).toBe("El Cairo");
+  });
+});
+
+describe("Support and Privacy pages", () => {
+  it.each(LOCALES.map((l) => l.code))("%s has every question and section the English has", (code) => {
+    const en = LEGAL.en;
+    const page = LEGAL[code];
+    expect(page.support.faq).toHaveLength(en.support.faq.length);
+    expect(page.privacy.sections).toHaveLength(en.privacy.sections.length);
+    page.privacy.sections.forEach((s, i) => expect(s.blocks.length, `section ${i}`).toBe(en.privacy.sections[i].blocks.length));
+    if (code !== "en") expect(page.privacy.note).toContain("](en:/privacy)");
+    const text = JSON.stringify(page);
+    expect(text).toContain("cartographer.quiz@gmail.com");
+    // Links are well-formed: [label](url) with no stray brackets.
+    expect(text.match(/\]\(/g)?.length).toBe(text.match(/\]\((?:https?:|mailto:|en:\/|\/)[^)]*\)/g)?.length);
+  });
+});
+
+describe("Section order", () => {
+  const ids = (code: Parameters<typeof sectionsFor>[0]) => sectionsFor(code).map((s) => s.id);
+  it("puts Asia right after World for Asian languages, Europe one place down", () => {
+    for (const code of ["zh", "ja", "ko", "tl"] as const) {
+      expect(ids(code).slice(0, 4)).toEqual(["mixed", "world", "asia", "europe"]);
+      const world = sectionsFor(code).find((s) => s.id === "world")!.quizzes.map((q) => q.id);
+      expect(world.indexOf("category.asianCapitals")).toBeLessThan(world.indexOf("category.europeanCapitals"));
+    }
+  });
+  it("keeps the app's order elsewhere, with every tile still present", () => {
+    for (const code of ["en", "de", "fr", "es", "it"] as const) expect(ids(code).slice(0, 4)).toEqual(["mixed", "world", "europe", "americas"]);
+    const count = (code: Parameters<typeof sectionsFor>[0]) => sectionsFor(code).reduce((n, s) => n + s.quizzes.length, 0);
+    expect(count("ja")).toBe(count("en"));
+  });
+});
+
+describe("Home-country divisions", () => {
+  it.each([
+    ["ja", "japanesePrefectures"],
+    ["zh", "chineseProvinces"],
+    ["ko", "koreanProvinces"],
+  ] as const)("%s names every division of %s and its capital", (code, id) => {
+    const c = CATEGORY_LIST.find((x) => x.id === id)!;
+    const { divisions = {}, towns = {} } = PLACES[code];
+    expect(c.pairs.filter((p) => !divisions[p.prompt]).map((p) => p.prompt)).toEqual([]);
+    expect(c.pairs.filter((p) => !towns[p.answer]).map((p) => p.answer)).toEqual([]);
+    expect(Object.keys(divisions).length).toBe(c.pairs.length);
   });
 });

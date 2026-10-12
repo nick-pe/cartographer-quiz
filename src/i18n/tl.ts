@@ -10,17 +10,17 @@ export const tl: Messages = {
   site: {
     title: "Cartographer — Araw-araw na Quiz sa Heograpiya ng Mundo",
     description:
-      "Araw-araw na quiz sa heograpiya: mga kabisera, rehiyon, watawat, ilog, bundok, dagat at isla sa tatlong antas ng hirap. Iisang Daily Challenge para sa lahat, Speed Run at mga istatistika. Walang account, walang tracking.",
+      "Araw-araw na quiz sa heograpiya: mga kabisera, rehiyon, watawat, ilog, bundok, dagat at isla sa tatlong antas ng hirap. Iisang Hamon Ngayong Araw para sa lahat, Karera sa Oras at mga istatistika. Walang account, walang pagsubaybay.",
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "Maglaro", trends: "Istatistika", settings: "Settings", language: "Wika" },
-  footer: { support: "Tulong", privacy: "Privacy", iphone: "iPhone app", noTracking: "Walang account, walang tracking", study: "Mga listahan" },
+  nav: { play: "Maglaro", trends: "Istatistika", settings: "Mga Setting", language: "Wika" },
+  footer: { support: "Tulong", privacy: "Patakaran sa Pagkapribado", iphone: "App para sa iPhone", noTracking: "Walang account, walang pagsubaybay", study: "Mga listahan" },
 
   tiers: {
-    explorer: { title: "Explorer", blurb: "Mga pinakakilalang lugar, walang orasan" },
-    navigator: { title: "Navigator", blurb: "Mas malawak, 20 segundo bawat tanong" },
-    cartographer: { title: "Cartographer", blurb: "Ang pinakamahirap, 12 segundo bawat tanong" },
+    explorer: { title: "Manlalakbay", blurb: "Mga pinakakilalang lugar, walang orasan" },
+    navigator: { title: "Nabigador", blurb: "Mas malawak, 20 segundo bawat tanong" },
+    cartographer: { title: "Kartograpo", blurb: "Ang pinakamahirap, 12 segundo bawat tanong" },
   },
 
   home: {
@@ -41,9 +41,9 @@ export const tl: Messages = {
   },
 
   daily: {
-    title: "Daily Challenge",
-    banner: "DAILY CHALLENGE",
-    numbered: (n) => `Daily Challenge #${n}`,
+    title: "Hamon Ngayong Araw",
+    banner: "HAMON NGAYONG ARAW",
+    numbered: (n) => `Hamon Ngayong Araw #${n}`,
     sameForEveryone: (n) => `#${n} · iisang quiz para sa lahat`,
     play: (n) => `Laruin ang ${n} tanong ngayong araw`,
     today: "ngayong araw",
@@ -59,7 +59,7 @@ export const tl: Messages = {
   },
 
   quiz: {
-    score: (n) => `Score: ${n}`,
+    score: (n) => `Puntos: ${n}`,
     secondsLeft: (n) => `${n} segundo na lang`,
     outOfTime: (answer) => `Ubos na ang oras — ${answer} ang sagot.`,
     flagAlt: "Isang pambansang watawat",
@@ -101,8 +101,8 @@ export const tl: Messages = {
     title: "Istatistika",
     emptyTitle: "Wala pang quiz",
     emptyBody: "Maglaro ng quiz at makikita mo rito ang iyong progreso.",
-    recordingOffShort: "Naka-off ang pag-record ng history sa Settings.",
-    recordingOff: "Naka-off ang pag-record ng history — hindi nase-save ang mga bagong quiz.",
+    recordingOffShort: "Naka-off ang pagtatala ng kasaysayan sa Mga Setting.",
+    recordingOff: "Naka-off ang pagtatala ng kasaysayan — hindi nase-save ang mga bagong quiz.",
     playQuiz: "Maglaro ng quiz",
     range: "Panahon",
     ranges: { W: "L", M: "B", "6M": "6B", Y: "T" },
@@ -115,13 +115,13 @@ export const tl: Messages = {
     days: () => "Araw",
     longest: "Pinakamahaba",
     activeDays: "Mga araw na naglaro ka sa nakaraang dalawang linggo",
-    shareStreak: "I-share ang streak",
-    speedBests: "Pinakamabilis sa Speed Run",
-    speedEmpty: "Maglaro ng Speed Run para maitala ang una mong oras.",
+    shareStreak: "I-share ang sunod-sunod na araw",
+    speedBests: "Pinakamabilis sa Karera sa Oras",
+    speedEmpty: "Maglaro ng Karera sa Oras para maitala ang una mong oras.",
     perDay: "Quiz bawat araw",
     byDifficulty: (range) => `Ayon sa hirap · ${range}`,
     rounds: (n) => `${n} round`,
-    highlights: "Highlights",
+    highlights: "Mga Tampok",
     highlightsEmpty: "Laruin ang isang quiz nang dalawang beses para makita kung saan ka magaling.",
     strongest: "Pinakamagaling",
     needsWork: "Kailangang pagbutihin",
@@ -135,27 +135,27 @@ export const tl: Messages = {
   },
 
   settings: {
-    title: "Settings",
+    title: "Mga Setting",
     appearance: "Itsura",
     themes: { system: "System", light: "Maliwanag", dark: "Madilim" },
     language: "Wika",
-    record: "I-record ang quiz history",
+    record: "Itala ang kasaysayan ng quiz",
     recordHelp:
-      "Kapag naka-off, hindi na mase-save ang mga bagong resulta at Speed Run best. Mananatili ang mga dating resulta hangga’t hindi mo binubura.",
-    deleteAll: "Burahin ang Lahat ng History",
+      "Kapag naka-off, hindi na mase-save ang mga bagong resulta at pinakamabilis na oras. Mananatili ang mga dating resulta hangga’t hindi mo binubura.",
+    deleteAll: "Burahin ang Buong Kasaysayan",
     deleteHelp:
-      "Permanenteng buburahin sa browser na ito ang iyong mga resulta, Daily Challenge, streak at Speed Run best. Hindi na ito maibabalik.",
+      "Permanenteng buburahin sa browser na ito ang iyong mga resulta, mga Hamon Ngayong Araw, sunod-sunod na araw at pinakamabilis na oras. Hindi na ito maibabalik.",
     confirmDelete: "Oo, burahin lahat",
     cancel: "Kanselahin",
-    deleted: "Nabura na ang lahat ng history.",
+    deleted: "Nabura na ang buong kasaysayan.",
     privacyTitle: "Dito lang ang iyong datos",
     privacyBody:
-      "Sa browser na ito lang naka-save ang iyong quiz history, streak at settings, at hindi ito ipinapadala kahit saan. Walang account, cookie o ads ang Cartographer. Para mabilang ang mga bisita at masukat ang bilis ng mga pahina, gumagamit ang site ng Cloudflare Web Analytics, na hindi ka makikilala. Hindi naka-sync ang iyong history sa iPhone app o sa ibang browser.",
+      "Sa browser na ito lang naka-save ang iyong kasaysayan ng quiz, sunod-sunod na araw at mga setting, at hindi ito ipinapadala kahit saan. Walang account, cookie o ads ang Cartographer. Para mabilang ang mga bisita at masukat ang bilis ng mga pahina, gumagamit ang site ng Cloudflare Web Analytics, na hindi ka makikilala. Hindi naka-sync ang iyong kasaysayan sa iPhone app o sa ibang browser.",
   },
 
   seo: {
     quiz: (title, subtitle) => `Laruin ang quiz na ${title}: ${subtitle}, sa tatlong antas ng hirap. Libre, walang account, walang ads.`,
-    daily: "Sampung tanong sa heograpiya araw-araw, pareho para sa lahat. Isang subok lang, may streak, at may grid na puwedeng i-share nang walang spoiler.",
+    daily: "Sampung tanong sa heograpiya araw-araw, pareho para sa lahat. Isang subok lang, may bilang ng sunod-sunod na araw, at may grid na puwedeng i-share nang walang spoiler.",
     learn: (title, subtitle) => `${title}: ang buong listahan (${subtitle}), may libreng quiz para subukan ang sarili.`,
     learnIndex: "Mga listahang pag-aaralan para sa bawat quiz: mga kabisera ng mundo, mga rehiyon ng mahigit 40 bansa, mga watawat, ilog, bundok, dagat at isla.",
   },
@@ -193,8 +193,8 @@ export const tl: Messages = {
 
   quizzes: {
     titles: {
-      randomMix: "Random Mix",
-      speedRun: "Speed Run",
+      randomMix: "Halo-halong Tanong",
+      speedRun: "Karera sa Oras",
       howManyRegions: "Ilan ang Rehiyon?",
       spotTheRegion: "Hanapin ang Rehiyon",
       flags: "Mga Watawat ng Mundo",
@@ -203,7 +203,7 @@ export const tl: Messages = {
       mountains: "Mga Bundok",
       seas: "Mga Dagat at Karagatan",
       islands: "Mga Isla",
-      dailyChallenge: "Daily Challenge",
+      dailyChallenge: "Hamon Ngayong Araw",
       worldCapitals: "Mga Kabisera ng Mundo",
       europeanCapitals: "Mga Kabisera sa Europa",
       asianCapitals: "Mga Kabisera sa Asya",

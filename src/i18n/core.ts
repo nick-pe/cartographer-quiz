@@ -9,6 +9,7 @@ import { en, type Messages, type Unit } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";
 import { it } from "./it";
+import { ja } from "./ja";
 import { ko } from "./ko";
 import { SITE_URL } from "../lib/site";
 import { shareText } from "../lib/engine/daily";
@@ -17,7 +18,7 @@ import { PLACES, type Places } from "./places";
 import { tl } from "./tl";
 import { zh } from "./zh";
 
-export const MESSAGES: Record<LocaleCode, Messages> = { en, de, fr, es, it, zh, ko, tl };
+export const MESSAGES: Record<LocaleCode, Messages> = { en, de, fr, es, it, zh, ja, ko, tl };
 
 const CODE_BY_COUNTRY: Record<string, string> = Object.fromEntries(COUNTRIES.map((c) => [c.name, c.code]));
 
@@ -82,8 +83,10 @@ export function createI18n(code: LocaleCode): I18n {
       }
       case "number":
         return numbers.format(Number(term.id));
+      case "division":
+        return places.divisions?.[term.id] ?? term.id;
       case "local":
-        return term.id;
+        return places.towns?.[term.id] ?? term.id;
     }
   };
 
@@ -113,7 +116,7 @@ export function createI18n(code: LocaleCode): I18n {
       case "flagWhose":
         return t.prompts[p.key]();
       case "capitalOf":
-        return t.prompts.capitalOf(name(p.place), p.place.kind === "country");
+        return t.prompts.capitalOf(name(p.place), p.place.kind === "country", p.category);
       default:
         return t.prompts[p.key](name(p.place));
     }

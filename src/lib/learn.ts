@@ -44,7 +44,7 @@ function categoryTable(id: string): LearnTable | null {
   const second: Column = c.promptKey === "countryOfCity" ? "country" : c.promptKey === "regionOfCity" ? "region" : "capital";
   return {
     columns: [city ? "city" : "region", second],
-    rows: c.pairs.map((p) => [{ term: p.place }, second === "country" ? country(p.answer) : { term: { kind: "local", id: p.answer } }]),
+    rows: c.pairs.map((p) => [{ term: p.place }, second === "country" ? country(p.answer) : { term: { kind: c.optionKind, id: p.answer } }]),
   };
 }
 

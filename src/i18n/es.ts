@@ -20,7 +20,7 @@ export const es: Messages = {
   },
 
   nav: { play: "Jugar", trends: "Estadísticas", settings: "Ajustes", language: "Idioma" },
-  footer: { support: "Soporte", privacy: "Privacidad", iphone: "App para iPhone", noTracking: "Sin cuenta, sin rastreo", study: "Listas de estudio" },
+  footer: { support: "Ayuda", privacy: "Privacidad", iphone: "App para iPhone", noTracking: "Sin cuenta, sin rastreo", study: "Listas de estudio" },
 
   tiers: {
     explorer: { title: "Explorador", blurb: "Los lugares más conocidos, sin reloj" },

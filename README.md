@@ -23,7 +23,7 @@ Everything is stored in the browser's `localStorage` under `cartographer:v2`. Da
 
 ## Languages
 
-English, German, French, Spanish, Italian, Chinese (Simplified), Korean and Tagalog. English lives at the root
+English, German, French, Spanish, Italian, Chinese (Simplified), Japanese, Korean and Tagalog. English lives at the root
 (`/daily`); other languages have a prefix (`/fr/daily`, `/zh/quiz/rivers`). First-time visitors are sent to
 their browser's language; the header's language picker switches and remembers.
 
@@ -33,10 +33,11 @@ their browser's language; the header's language picker switches and remembers.
 - Country names come from the browser (`Intl.DisplayNames`). Capitals, rivers, seas, mountains and islands
   come from `src/i18n/places/<code>.ts`; anything missing falls back to English. French, Spanish and Italian
   entries carry their article ("le Nil") for sentences; answer buttons strip it.
-- Regional names (states, provinces, prefectures…) stay as they are in the app's data for now.
+- Regional names (states, provinces…) stay as they are in the app's data, except a country's own divisions in its own language (Japanese prefectures, Chinese and Korean provinces): `divisions` and `towns` in the place files.
+- Chinese, Japanese, Korean and Tagalog list Asia right after World (`src/lib/sections.ts`).
 - `src/i18n/i18n.test.ts` renders every question in every language and fails on gaps or duplicate labels.
 
-The support and privacy pages are English only.
+Support and Privacy are app pages too (`/support`, `/privacy`), with their text per language in `src/i18n/legal/`; English is the authoritative privacy policy. The GitHub Pages copy the App Store links to is built from them by `scripts/github-pages.mjs`.
 
 ## Develop
 

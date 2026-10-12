@@ -27,7 +27,7 @@ export const ko: Messages = {
   },
 
   nav: { play: "플레이", trends: "통계", settings: "설정", language: "언어" },
-  footer: { support: "지원", privacy: "개인정보", iphone: "iPhone 앱", noTracking: "계정도 추적도 없음", study: "학습 목록" },
+  footer: { support: "도움말", privacy: "개인정보 처리방침", iphone: "iPhone 앱", noTracking: "계정 없음 · 추적 없음", study: "학습 목록" },
 
   tiers: {
     explorer: { title: "탐험가", blurb: "가장 잘 알려진 곳, 시간 제한 없음" },
@@ -333,7 +333,7 @@ export const ko: Messages = {
   extraCountries: { England: "잉글랜드" },
 
   prompts: {
-    capitalOf: (p, isCountry) => `${p}의 ${isCountry ? "수도" : "주도"}는 어디인가요?`,
+    capitalOf: (p, isCountry, category) => `${p}의 ${isCountry ? "수도" : category === "koreanProvinces" ? "도청 소재지" : "주도"}는 어디인가요?`,
     usStateWithCapital: (p) => `${eun(p)} 미국 어느 주의 주도인가요?`,
     regionOfCity: (p) => `${eun(p)} 어느 지역에 있나요?`,
     countyTownOf: (p) => `${p}의 중심 도시는 어디인가요?`,

@@ -9,7 +9,7 @@ describe("sitemap", () => {
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
   it("lists every page in every language, once", () => {
-    expect(pages()).toHaveLength(ALL_QUIZZES.length + LEARNABLE.length + 3);
+    expect(pages()).toHaveLength(ALL_QUIZZES.length + LEARNABLE.length + 5);
     expect(locs).toHaveLength(pages().length * LOCALES.length);
     expect(new Set(locs).size).toBe(locs.length);
     expect(locs).toContain("https://cartographerquiz.com/");

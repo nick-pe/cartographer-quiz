@@ -412,4 +412,27 @@ export const ko: Places = {
     Tenerife: "테네리페섬",
     Zealand: "셸란섬",
   },
+  // South Korea's provinces and their capitals, in the reader's own script.
+  divisions: {
+    "Gyeonggi": "경기도",
+    "Gangwon": "강원특별자치도",
+    "North Chungcheong": "충청북도",
+    "South Chungcheong": "충청남도",
+    "North Jeolla": "전북특별자치도",
+    "South Jeolla": "전라남도",
+    "North Gyeongsang": "경상북도",
+    "South Gyeongsang": "경상남도",
+    "Jeju": "제주특별자치도",
+  },
+  towns: {
+    "Suwon": "수원시",
+    "Chuncheon": "춘천시",
+    "Cheongju": "청주시",
+    "Hongseong": "홍성군",
+    "Jeonju": "전주시",
+    "Muan": "무안군",
+    "Andong": "안동시",
+    "Changwon": "창원시",
+    "Jeju City": "제주시",
+  },
 };

@@ -13,7 +13,7 @@ export const zh: Messages = {
   },
 
   nav: { play: "开始", trends: "统计", settings: "设置", language: "语言" },
-  footer: { support: "帮助", privacy: "隐私", iphone: "iPhone 应用", noTracking: "无需注册，不做追踪", study: "学习列表" },
+  footer: { support: "帮助", privacy: "隐私政策", iphone: "iPhone 应用", noTracking: "无需注册，不做追踪", study: "学习列表" },
 
   tiers: {
     explorer: { title: "探险家", blurb: "最知名的地方，不限时" },
@@ -317,7 +317,7 @@ export const zh: Messages = {
   extraCountries: { England: "英格兰" },
 
   prompts: {
-    capitalOf: (p, isCountry) => `${p}的${isCountry ? "首都" : "首府"}是哪里？`,
+    capitalOf: (p, isCountry, category) => `${p}的${isCountry ? "首都" : category === "chineseProvinces" ? "省会" : "首府"}是哪里？`,
     usStateWithCapital: (p) => `首府是${p}的是美国哪个州？`,
     regionOfCity: (p) => `${p}位于哪个大区？`,
     countyTownOf: (p) => `${p}的郡治是哪里？`,

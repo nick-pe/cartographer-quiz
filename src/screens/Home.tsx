@@ -6,14 +6,15 @@ import { useI18n } from "../i18n";
 import { DAILY_LENGTH, dailyNumber, emojiGrid } from "../lib/engine/daily";
 import { dateKey } from "../lib/engine/dates";
 import { DIFFICULTIES, TIERS } from "../lib/engine/difficulty";
-import { DAILY_QUIZ, HOME_SECTIONS, gradientCss, type QuizDef, type QuizSection } from "../lib/engine/quizzes";
+import { DAILY_QUIZ, gradientCss, type QuizDef, type QuizSection } from "../lib/engine/quizzes";
+import { sectionsFor } from "../lib/sections";
 import { formatSpeed } from "../lib/engine/speedRun";
 import { updateSettings, useStore, useStreaks } from "../lib/store";
 import { useTitle } from "../lib/useTitle";
 import { useHydrated } from "../lib/useHydrated";
 
 export function Home() {
-  const { t } = useI18n();
+  const { t, code } = useI18n();
   useTitle();
   const difficulty = useStore((s) => s.settings.difficulty);
   const { current } = useStreaks();
@@ -43,7 +44,7 @@ export function Home() {
 
       <DailyBanner streak={current} />
 
-      {HOME_SECTIONS.map((s) => (
+      {sectionsFor(code).map((s) => (
         <Section key={s.id} section={s} />
       ))}
     </div>

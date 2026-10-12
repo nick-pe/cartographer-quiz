@@ -7,6 +7,7 @@ import { Card, LinkButton, LocalLink } from "../components/ui";
 import { useI18n, type I18n } from "../i18n";
 import { HOME_SECTIONS, QUIZ_BY_SLUG, gradientCss, type QuizDef } from "../lib/engine/quizzes";
 import { LEARNABLE, learnTable, type Cell } from "../lib/learn";
+import { sectionsFor } from "../lib/sections";
 import { useTitle } from "../lib/useTitle";
 
 export function Learn() {
@@ -123,6 +124,7 @@ function LearnPage({ quiz }: { quiz: QuizDef }) {
 function LearnIndex() {
   const i18n = useI18n();
   const { t } = i18n;
+  const sections = sectionsFor(i18n.code);
   useTitle(t.learn.index);
   return (
     <div className="mx-auto max-w-[860px] space-y-7">
@@ -130,7 +132,7 @@ function LearnIndex() {
         <h1 className="text-3xl font-bold">{t.learn.index}</h1>
         <p className="text-fg-2">{t.learn.indexIntro}</p>
       </header>
-      {HOME_SECTIONS.map((section) => {
+      {sections.map((section) => {
         const quizzes = section.quizzes.filter((q) => LEARNABLE.includes(q));
         if (!quizzes.length) return null;
         return (

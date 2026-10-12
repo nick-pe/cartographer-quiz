@@ -7,6 +7,7 @@ import { getState, useStore } from "./lib/store";
 import { Daily } from "./screens/Daily";
 import { Home } from "./screens/Home";
 import { Learn } from "./screens/Learn";
+import { Privacy, Support } from "./screens/Legal";
 import { Quiz } from "./screens/Quiz";
 import { Settings } from "./screens/Settings";
 import { Trends } from "./screens/Trends";
@@ -20,6 +21,8 @@ const PAGES: [string, ReactElement][] = [
   ["/settings", <Settings />],
   ["/learn", <Learn />],
   ["/learn/:slug", <Learn />],
+  ["/support", <Support />],
+  ["/privacy", <Privacy />],
 ];
 
 function useTheme() {

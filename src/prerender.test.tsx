@@ -32,7 +32,7 @@ describe("study lists", () => {
 describe("pre-rendered pages", () => {
   it("cover every page in every language", () => {
     const all = routes();
-    expect(all).toHaveLength((5 + ALL_QUIZZES.length + LEARNABLE.length) * LOCALES.length);
+    expect(all).toHaveLength((7 + ALL_QUIZZES.length + LEARNABLE.length) * LOCALES.length);
     expect(all).toContain("/");
     expect(all).toContain("/ko/learn/world-capitals");
     expect(new Set(all).size).toBe(all.length);
