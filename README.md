@@ -77,6 +77,10 @@ loudly if the Swift files change shape.
 It also lists the custom domains **cartographerquiz.com** and **www.cartographerquiz.com**, so a deploy never removes
 them. Change domains there, not only in the dashboard.
 
+**Search engines.** The build writes `sitemap.xml` (every page in every language, with hreflang
+alternates) and `robots.txt` from `build/seo.ts`. In Google Search Console the site is a Domain property for
+cartographerquiz.com; submit `https://cartographerquiz.com/sitemap.xml` under Sitemaps.
+
 **GitHub Pages copy.** `.github/workflows/deploy.yml` tests the code on every push and PR.
 On `main` it also publishes a copy to `nick-pe.github.io/cartographer-quiz/`. The App Store
 listing's **Support URL** and **Privacy Policy URL** point there. Once the custom domain is live:
