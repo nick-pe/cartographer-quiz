@@ -159,7 +159,7 @@ export const en = {
     deleted: "All history deleted.",
     privacyTitle: "Your data stays here",
     privacyBody:
-      "Everything is stored in this browser only. Cartographer has no accounts, no analytics and no ads, and sends nothing to any server. Your history doesn’t sync with the iPhone app or between browsers.",
+      "Your quiz history, streaks and settings are stored in this browser only and are never sent anywhere. Cartographer has no accounts, no cookies and no ads. To count visits and measure page speed, the site uses Cloudflare Web Analytics, which can’t identify you. Your history doesn’t sync with the iPhone app or between browsers.",
   },
 
   seo: {

@@ -155,7 +155,7 @@ export const es: Messages = {
     deleted: "Historial borrado.",
     privacyTitle: "Tus datos se quedan aquí",
     privacyBody:
-      "Todo se guarda solo en este navegador. Cartographer no tiene cuentas, analíticas ni anuncios, y no envía nada a ningún servidor. Tu historial no se sincroniza con la app de iPhone ni entre navegadores.",
+      "Tu historial, tus rachas y tus ajustes se guardan solo en este navegador y nunca se envían a ningún sitio. Cartographer no tiene cuentas, cookies ni anuncios. Para contar visitas y medir la velocidad de las páginas, el sitio usa Cloudflare Web Analytics, que no puede identificarte. Tu historial no se sincroniza con la app de iPhone ni entre navegadores.",
   },
 
   seo: {

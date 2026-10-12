@@ -160,7 +160,7 @@ export const ko: Messages = {
     deleted: "모든 기록을 삭제했습니다.",
     privacyTitle: "데이터는 이 기기에만 저장됩니다",
     privacyBody:
-      "모든 데이터는 이 브라우저에만 저장됩니다. Cartographer에는 계정, 분석 도구, 광고가 없으며 어떤 서버로도 데이터를 보내지 않습니다. 기록은 iPhone 앱이나 다른 브라우저와 동기화되지 않습니다.",
+      "퀴즈 기록, 연속 기록, 설정은 이 브라우저에만 저장되며 어디로도 전송되지 않습니다. Cartographer에는 계정, 쿠키, 광고가 없습니다. 방문 수를 세고 페이지 속도를 측정하기 위해 Cloudflare Web Analytics를 사용하며, 이를 통해 개인을 식별할 수 없습니다. 기록은 iPhone 앱이나 다른 브라우저와 동기화되지 않습니다.",
   },
 
   seo: {

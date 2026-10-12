@@ -146,7 +146,7 @@ export const zh: Messages = {
     deleted: "历史记录已全部删除。",
     privacyTitle: "你的数据只保存在这里",
     privacyBody:
-      "所有数据只保存在此浏览器中。Cartographer 没有账户、没有统计分析、没有广告，也不会向任何服务器发送数据。你的历史记录不会与 iPhone 应用或其他浏览器同步。",
+      "你的测验历史、连续天数和设置只保存在此浏览器中，从不发送到任何地方。Cartographer 没有账户、没有 Cookie、没有广告。为了统计访问量和测量页面速度，本站使用 Cloudflare Web Analytics，它无法识别你的身份。你的历史记录不会与 iPhone 应用或其他浏览器同步。",
   },
 
   seo: {

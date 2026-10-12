@@ -157,7 +157,7 @@ export const it: Messages = {
     deleted: "Cronologia eliminata.",
     privacyTitle: "I tuoi dati restano qui",
     privacyBody:
-      "Tutto viene salvato solo in questo browser. Cartographer non ha account, statistiche o pubblicità e non invia nulla a nessun server. La cronologia non si sincronizza con l’app per iPhone né tra browser diversi.",
+      "La cronologia, le serie e le impostazioni sono salvate solo in questo browser e non vengono mai inviate. Cartographer non ha account, cookie o pubblicità. Per contare le visite e misurare la velocità delle pagine, il sito usa Cloudflare Web Analytics, che non può identificarti. La cronologia non si sincronizza con l’app per iPhone né tra browser diversi.",
   },
 
   seo: {

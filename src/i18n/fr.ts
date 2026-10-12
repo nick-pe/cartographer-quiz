@@ -156,7 +156,7 @@ export const fr: Messages = {
     deleted: "Historique effacé.",
     privacyTitle: "Vos données restent ici",
     privacyBody:
-      "Tout est stocké uniquement dans ce navigateur. Cartographer n’a ni compte, ni statistiques d’audience, ni publicité, et n’envoie rien à aucun serveur. Votre historique n’est pas synchronisé avec l’app iPhone ni entre navigateurs.",
+      "Votre historique, vos séries et vos réglages sont stockés uniquement dans ce navigateur et ne sont jamais envoyés. Cartographer n’a ni compte, ni cookie, ni publicité. Pour compter les visites et mesurer la vitesse des pages, le site utilise Cloudflare Web Analytics, qui ne peut pas vous identifier. Votre historique n’est pas synchronisé avec l’app iPhone ni entre navigateurs.",
   },
 
   seo: {

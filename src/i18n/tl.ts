@@ -150,7 +150,7 @@ export const tl: Messages = {
     deleted: "Nabura na ang lahat ng history.",
     privacyTitle: "Dito lang ang iyong datos",
     privacyBody:
-      "Sa browser na ito lang naka-save ang lahat. Walang account, analytics o ads ang Cartographer, at wala itong ipinapadala sa anumang server. Hindi naka-sync ang iyong history sa iPhone app o sa ibang browser.",
+      "Sa browser na ito lang naka-save ang iyong quiz history, streak at settings, at hindi ito ipinapadala kahit saan. Walang account, cookie o ads ang Cartographer. Para mabilang ang mga bisita at masukat ang bilis ng mga pahina, gumagamit ang site ng Cloudflare Web Analytics, na hindi ka makikilala. Hindi naka-sync ang iyong history sa iPhone app o sa ibang browser.",
   },
 
   seo: {

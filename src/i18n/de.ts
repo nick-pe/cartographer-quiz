@@ -150,7 +150,7 @@ export const de: Messages = {
     deleted: "Der gesamte Verlauf wurde gelöscht.",
     privacyTitle: "Deine Daten bleiben hier",
     privacyBody:
-      "Alles wird nur in diesem Browser gespeichert. Cartographer hat keine Konten, keine Analyse-Tools und keine Werbung und sendet nichts an einen Server. Dein Verlauf wird nicht mit der iPhone-App oder anderen Browsern synchronisiert.",
+      "Dein Quiz-Verlauf, deine Serien und Einstellungen werden nur in diesem Browser gespeichert und nirgendwohin gesendet. Cartographer hat keine Konten, keine Cookies und keine Werbung. Um Besuche zu zählen und die Ladezeit zu messen, nutzt die Website Cloudflare Web Analytics, das dich nicht identifizieren kann. Dein Verlauf wird nicht mit der iPhone-App oder anderen Browsern synchronisiert.",
   },
 
   seo: {

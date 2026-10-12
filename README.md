@@ -19,7 +19,7 @@ data and ports its game engine, then adds a few web-only extras.
   - flag questions in the mixes
   - a light theme
 
-Everything is stored in the browser's `localStorage` under `cartographer:v2`. Data from the first version (`cartographer:v1`) is migrated automatically. There are no accounts, analytics, cookies or third-party requests.
+Everything is stored in the browser's `localStorage` under `cartographer:v2`. Data from the first version (`cartographer:v1`) is migrated automatically. There are no accounts, cookies or ads; the only third-party script is Cloudflare Web Analytics (cookie-free visit counts and page speed, switched on in the Cloudflare dashboard, described in the privacy policy).
 
 ## Languages
 
