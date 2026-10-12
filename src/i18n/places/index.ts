@@ -8,6 +8,7 @@
 // locale's `bare()` strips it for answer buttons. A capitalised article
 // ("Le Caire", "El Cairo") is part of the name and is kept.
 import type { LocaleCode } from "../locales";
+import { de } from "./de";
 import { es } from "./es";
 import { fr } from "./fr";
 import { it } from "./it";
@@ -21,6 +22,7 @@ export interface Places {
 
 export const PLACES: Record<LocaleCode, Places> = {
   en: { names: {} },
+  de,
   fr,
   es,
   it,

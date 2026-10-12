@@ -23,7 +23,7 @@ Everything is stored in the browser's `localStorage` under `cartographer:v2`. Da
 
 ## Languages
 
-English, French, Spanish, Italian, Chinese (Simplified), Korean and Tagalog. English lives at the root
+English, German, French, Spanish, Italian, Chinese (Simplified), Korean and Tagalog. English lives at the root
 (`/daily`); other languages have a prefix (`/fr/daily`, `/zh/quiz/rivers`). First-time visitors are sent to
 their browser's language; the header's language picker switches and remembers.
 

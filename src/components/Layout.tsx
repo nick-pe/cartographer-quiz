@@ -8,10 +8,20 @@ import { LocalLink } from "./ui";
 
 export function Layout({ children }: { children: ReactNode }) {
   const { t, path } = useI18n();
+  // Phones show icons (like the app's toolbar); wider screens show the labels.
   const nav = [
-    { to: "/", label: t.nav.play },
-    { to: "/trends", label: t.nav.trends },
-    { to: "/settings", label: t.nav.settings },
+    { to: "/", label: t.nav.play, icon: <path d="M8 5.5v13l10-6.5z" fill="currentColor" stroke="none" /> },
+    { to: "/trends", label: t.nav.trends, icon: <path d="M4 4v16h16M8 15l3.5-4.5 3 3L19 8" /> },
+    {
+      to: "/settings",
+      label: t.nav.settings,
+      icon: (
+        <>
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 0 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 0 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 0 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 0 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+        </>
+      ),
+    },
   ];
 
   return (
@@ -20,7 +30,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-[860px] items-center justify-between gap-2 px-4 py-2.5 sm:gap-4">
           <LocalLink to="/" className="flex shrink-0 items-center gap-2.5 font-bold">
             <Logo className="size-8" />
-            <span className="text-lg max-sm:hidden">Cartographer</span>
+            <span className="text-lg max-[380px]:hidden">Cartographer</span>
           </LocalLink>
           <nav className="flex min-w-0 items-center gap-0.5 text-sm font-semibold sm:gap-1">
             {nav.map((n) => (
@@ -28,11 +38,16 @@ export function Layout({ children }: { children: ReactNode }) {
                 key={n.to}
                 to={path(n.to)}
                 end
+                aria-label={n.label}
+                title={n.label}
                 className={({ isActive }) =>
-                  `truncate rounded-lg px-2 py-1.5 transition sm:px-3 ${isActive ? "bg-fg/10 text-fg" : "text-fg-2 hover:text-fg"}`
+                  `flex items-center rounded-lg px-2.5 py-1.5 transition sm:px-3 ${isActive ? "bg-fg/10 text-fg" : "text-fg-2 hover:text-fg"}`
                 }
               >
-                {n.label}
+                <svg viewBox="0 0 24 24" className="size-5 sm:hidden" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  {n.icon}
+                </svg>
+                <span className="max-sm:hidden">{n.label}</span>
               </NavLink>
             ))}
             <span className="sm:hidden">

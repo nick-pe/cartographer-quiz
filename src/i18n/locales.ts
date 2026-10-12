@@ -4,6 +4,7 @@
 
 export const LOCALES = [
   { code: "en", name: "English", intl: "en" },
+  { code: "de", name: "Deutsch", intl: "de" },
   { code: "fr", name: "Français", intl: "fr" },
   { code: "es", name: "Español", intl: "es" },
   { code: "it", name: "Italiano", intl: "it" },

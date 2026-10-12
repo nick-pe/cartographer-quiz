@@ -108,10 +108,11 @@ describe("Locale paths", () => {
 
   it("picks the visitor's language from the browser", () => {
     expect(preferredLocale(["fr-CA", "en"])).toBe("fr");
-    expect(preferredLocale(["de-DE", "es-MX"])).toBe("es");
+    expect(preferredLocale(["ru-RU", "es-MX"])).toBe("es");
     expect(preferredLocale(["zh-TW"])).toBe("zh");
     expect(preferredLocale(["fil-PH"])).toBe("tl");
-    expect(preferredLocale(["de-DE"])).toBe("en");
+    expect(preferredLocale(["de-DE"])).toBe("de");
+    expect(preferredLocale(["ru-RU"])).toBe("en");
   });
 });
 
@@ -124,6 +125,9 @@ describe("Spot checks", () => {
     expect(i18nFor("es").prompt(france)).toBe("¿Cuál es la capital de Francia?");
     expect(i18nFor("zh").prompt(france)).toBe("法国的首都是哪里？");
     expect(i18nFor("ko").prompt(france)).toBe("프랑스의 수도는 어디인가요?");
+    expect(i18nFor("de").prompt(france)).toBe("Frankreich: Wie heißt die Hauptstadt?");
+    expect(i18nFor("de").prompt({ key: "howMany", category: "germanStates" })).toBe("Wie viele Bundesländer hat dieses Land: Deutschland?");
+    expect(i18nFor("ko").prompt({ key: "howMany", category: "koreanProvinces" })).toBe("대한민국의 도는 모두 몇 개인가요?");
     const nile = { key: "riverOutflow" as const, place: { kind: "feature" as const, id: "Nile" } };
     expect(i18nFor("fr").prompt(nile)).toBe("Où se jette le Nil\u202f?");
     expect(i18nFor("es").prompt(nile)).toBe("¿Dónde desemboca el Nilo?");

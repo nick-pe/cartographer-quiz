@@ -6,6 +6,7 @@ import { COUNTRIES } from "../data/ios/countries";
 import { CATEGORY_BY_ID } from "../lib/engine/categories";
 import type { Prompt, Question, Term } from "../lib/engine/question";
 import type { QuizDef } from "../lib/engine/quizzes";
+import { de } from "./de";
 import { en, type Messages, type Unit } from "./en";
 import { es } from "./es";
 import { fr } from "./fr";
@@ -18,7 +19,7 @@ import { PLACES, type Places } from "./places";
 import { tl } from "./tl";
 import { zh } from "./zh";
 
-export const MESSAGES: Record<LocaleCode, Messages> = { en, fr, es, it, zh, ko, tl };
+export const MESSAGES: Record<LocaleCode, Messages> = { en, de, fr, es, it, zh, ko, tl };
 
 const CODE_BY_COUNTRY: Record<string, string> = Object.fromEntries(COUNTRIES.map((c) => [c.name, c.code]));
 
@@ -95,7 +96,8 @@ export function createI18n(code: LocaleCode): I18n {
       case "howMany":
       case "pickRegion": {
         const info = CATEGORY_BY_ID[p.category].regionInfo!;
-        const unit: Unit = t.units[info.unitSingular] ?? en.units[info.unitSingular];
+        // A locale may name one country's divisions specially (German Bundesländer, Korean 도).
+        const unit: Unit = t.units[p.category] ?? t.units[info.unitSingular] ?? en.units[info.unitSingular];
         return t.prompts[p.key](unit, regionCountry(info.country));
       }
       case "longestRiver":

@@ -261,6 +261,8 @@ export const ko: Messages = {
   },
 
   units: {
+    // South Korea's provinces are 도, not the generic 주.
+    koreanProvinces: { one: "도", many: "도" },
     state: { one: "주", many: "주" },
     region: { one: "지역", many: "지역" },
     "autonomous community": { one: "자치 지방", many: "자치 지방" },

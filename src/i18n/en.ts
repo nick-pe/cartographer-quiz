@@ -260,7 +260,10 @@ export const en = {
     count: (n: number, noun: string) => `${n} ${noun}`,
   },
 
-  /** First-level divisions, keyed by the app's English singular. */
+  /**
+   * First-level divisions, keyed by the app's English singular. A key may
+   * also be a category id, to name one country's divisions specially.
+   */
   units: {
     state: { one: "a state", many: "states" },
     region: { one: "a region", many: "regions" },
