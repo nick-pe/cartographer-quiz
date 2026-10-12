@@ -15,7 +15,7 @@ export const de: Messages = {
   },
 
   nav: { play: "Spielen", trends: "Statistik", settings: "Einstellungen", language: "Sprache" },
-  footer: { support: "Hilfe", privacy: "Datenschutz", iphone: "iPhone-App", noTracking: "Ohne Konto, ohne Tracking" },
+  footer: { support: "Hilfe", privacy: "Datenschutz", iphone: "iPhone-App", noTracking: "Ohne Konto, ohne Tracking", study: "Lernlisten" },
 
   tiers: {
     explorer: { title: "Entdecker", blurb: "Die bekanntesten Orte, ohne Zeitlimit" },
@@ -76,8 +76,11 @@ export const de: Messages = {
     yourAnswers: "Deine Antworten",
     noAnswer: "keine Antwort",
     share: "Ergebnis teilen",
-    copied: "In die Zwischenablage kopiert",
+    copied: "Kopiert – füg es überall ein",
     shareFailed: "Teilen nicht möglich",
+    copyPrompt: "Ergebnis kopieren",
+    copy: "Kopieren",
+    close: "Schließen",
     newBest: "⚡ NEUE BESTZEIT",
     noPenalty: "Keine Fehler – keine Strafzeit",
     penalty: (answering, seconds) => `${answering} Antwortzeit  +  ${seconds} s Strafzeit`,
@@ -148,6 +151,44 @@ export const de: Messages = {
     privacyTitle: "Deine Daten bleiben hier",
     privacyBody:
       "Alles wird nur in diesem Browser gespeichert. Cartographer hat keine Konten, keine Analyse-Tools und keine Werbung und sendet nichts an einen Server. Dein Verlauf wird nicht mit der iPhone-App oder anderen Browsern synchronisiert.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `Spiel das Quiz „${title}“: ${subtitle}, in drei Schwierigkeitsstufen. Kostenlos, ohne Konto, ohne Werbung.`,
+    daily: "Jeden Tag zehn Geografiefragen, für alle dieselben. Ein Versuch, eine Serie und ein Ergebnisraster zum Teilen ohne Spoiler.",
+    learn: (title, subtitle) => `${title}: die vollständige Liste (${subtitle}), mit einem kostenlosen Quiz zum Testen.`,
+    learnIndex: "Lernlisten zu jedem Quiz: Hauptstädte der Welt, Regionen von über 40 Ländern, Flaggen, Flüsse, Berge, Meere und Inseln.",
+  },
+
+  learn: {
+    index: "Lernlisten",
+    indexIntro: "Zu jedem Quiz gibt es die vollständige Liste. Lern sie und teste dich dann.",
+    title: (title) => `${title}: die vollständige Liste`,
+    intro: (subtitle) => `${subtitle}. Lern die Liste und teste dich dann in drei Schwierigkeitsstufen.`,
+    takeQuiz: "Zum Quiz",
+    studyList: "Liste lernen",
+    more: "Weitere Listen",
+    columns: {
+      country: "Land",
+      capital: "Hauptstadt",
+      city: "Stadt",
+      region: "Region",
+      river: "Fluss",
+      length: "Länge",
+      countries: "Länder",
+      flowsInto: "Mündet in",
+      mountain: "Berg",
+      height: "Höhe",
+      range: "Gebirge",
+      sea: "Meer",
+      area: "Fläche",
+      opensInto: "Öffnet sich zu",
+      borders: "Anrainerstaaten",
+      island: "Insel",
+      water: "Umgebendes Gewässer",
+      divisions: "Verwaltungseinheiten",
+      count: "Anzahl",
+    },
   },
 
   quizzes: {

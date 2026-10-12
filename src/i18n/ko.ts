@@ -27,7 +27,7 @@ export const ko: Messages = {
   },
 
   nav: { play: "플레이", trends: "통계", settings: "설정", language: "언어" },
-  footer: { support: "지원", privacy: "개인정보", iphone: "iPhone 앱", noTracking: "계정도 추적도 없음" },
+  footer: { support: "지원", privacy: "개인정보", iphone: "iPhone 앱", noTracking: "계정도 추적도 없음", study: "학습 목록" },
 
   tiers: {
     explorer: { title: "탐험가", blurb: "가장 잘 알려진 곳, 시간 제한 없음" },
@@ -88,8 +88,11 @@ export const ko: Messages = {
     yourAnswers: "내 답안",
     noAnswer: "응답 없음",
     share: "결과 공유",
-    copied: "클립보드에 복사했습니다",
+    copied: "복사했습니다. 어디든 붙여 넣으세요",
     shareFailed: "공유할 수 없습니다",
+    copyPrompt: "결과 복사",
+    copy: "복사",
+    close: "닫기",
     newBest: "⚡ 개인 최고 기록 경신",
     noPenalty: "오답 없음 — 페널티 없음",
     penalty: (answering, seconds) => `답변 ${answering}  +  페널티 ${seconds}초`,
@@ -158,6 +161,44 @@ export const ko: Messages = {
     privacyTitle: "데이터는 이 기기에만 저장됩니다",
     privacyBody:
       "모든 데이터는 이 브라우저에만 저장됩니다. Cartographer에는 계정, 분석 도구, 광고가 없으며 어떤 서버로도 데이터를 보내지 않습니다. 기록은 iPhone 앱이나 다른 브라우저와 동기화되지 않습니다.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `${title} 퀴즈: ${subtitle}, 세 가지 난이도. 무료, 계정 없음, 광고 없음.`,
+    daily: "매일 모두에게 같은 지리 문제 10개. 기회는 한 번, 연속 기록, 스포일러 없는 결과 공유.",
+    learn: (title, subtitle) => `${title}: 전체 목록(${subtitle})과 실력을 확인할 무료 퀴즈.`,
+    learnIndex: "모든 퀴즈의 학습 목록: 세계의 수도, 40여 개국의 행정구역, 국기, 강, 산, 바다와 섬.",
+  },
+
+  learn: {
+    index: "학습 목록",
+    indexIntro: "모든 퀴즈에는 전체 목록이 있습니다. 먼저 공부하고 퀴즈로 확인해 보세요.",
+    title: (title) => `${title}: 전체 목록`,
+    intro: (subtitle) => `${subtitle}. 목록을 공부한 뒤 세 가지 난이도로 실력을 확인해 보세요.`,
+    takeQuiz: "퀴즈 풀기",
+    studyList: "목록 공부하기",
+    more: "다른 목록",
+    columns: {
+      country: "나라",
+      capital: "수도",
+      city: "도시",
+      region: "지역",
+      river: "강",
+      length: "길이",
+      countries: "흐르는 나라",
+      flowsInto: "흘러드는 곳",
+      mountain: "산",
+      height: "높이",
+      range: "산맥",
+      sea: "바다",
+      area: "면적",
+      opensInto: "이어지는 바다",
+      borders: "접한 나라",
+      island: "섬",
+      water: "둘러싼 바다",
+      divisions: "행정구역",
+      count: "개수",
+    },
   },
 
   quizzes: {

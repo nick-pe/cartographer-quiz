@@ -1,12 +1,13 @@
 // Port of Views/ResultsView.swift, plus the web's answer review.
-import { useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { TIERS, type Difficulty } from "../lib/engine/difficulty";
 import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
-import { share } from "../lib/share";
+import { copy, share } from "../lib/share";
 import type { Answer } from "./QuizRunner";
 import { useI18n } from "../i18n";
 import { Review, ScoreRing, stars } from "./Review";
-import { Button, Card, DifficultyChip, LinkButton, Stars } from "./ui";
+import { Button, Card, DifficultyChip, LinkButton, LocalLink, Stars } from "./ui";
 
 export interface SpeedOutcome {
   answeringMs: number;
@@ -25,9 +26,11 @@ interface Props {
   shareText?: string;
   onTryHarder?: (tier: Difficulty) => void;
   onPlayAgain?: () => void;
+  /** Slug of the quiz's study list, linked under the title. */
+  studySlug?: string | null;
 }
 
-export function Results({ title, difficulty, answers, extra, shareText, onTryHarder, onPlayAgain }: Props) {
+export function Results({ title, difficulty, answers, extra, shareText, onTryHarder, onPlayAgain, studySlug }: Props) {
   const { t } = useI18n();
   const score = answers.filter((a) => a.correct).length;
   const total = answers.length;
@@ -43,6 +46,11 @@ export function Results({ title, difficulty, answers, extra, shareText, onTryHar
       <div className="flex flex-col items-center gap-2.5">
         <div className="text-[15px] font-medium text-fg-2">{title}</div>
         <DifficultyChip difficulty={difficulty} />
+        {studySlug && (
+          <LocalLink to={`/learn/${studySlug}`} className="text-sm font-semibold text-blue underline-offset-2 hover:underline">
+            📖 {t.learn.studyList}
+          </LocalLink>
+        )}
         {shareText && <ShareButton text={shareText} />}
       </div>
 
@@ -94,13 +102,25 @@ export function SpeedRunBlock({ outcome }: { outcome: SpeedOutcome }) {
 
 export function ShareButton({ text, label, className = "" }: { text: string; label?: string; className?: string }) {
   const { t } = useI18n();
-  const [status, setStatus] = useState<string | null>(null);
+  const [toast, setToast] = useState<string | null>(null);
+  const [manual, setManual] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
+
+  const flash = (message: string) => {
+    setToast(message);
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setToast(null), 2500);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+
   return (
-    <div className="relative inline-flex flex-col items-center">
+    <>
       <button
         onClick={async () => {
           const r = await share(text);
-          setStatus(r === "copied" ? t.results.copied : r === "failed" ? t.results.shareFailed : null);
+          if (r === "copied") flash(t.results.copied);
+          // Neither the share sheet nor the clipboard worked: show the text to copy by hand.
+          if (r === "failed") setManual(true);
         }}
         className={`inline-flex items-center gap-1.5 rounded-full bg-fg/12 px-4 py-2.5 text-[15px] font-semibold transition hover:bg-fg/18 active:scale-[.97] ${className}`}
       >
@@ -109,9 +129,51 @@ export function ShareButton({ text, label, className = "" }: { text: string; lab
         </svg>
         {label ?? t.results.share}
       </button>
-      <span role="status" className="absolute top-full mt-1 whitespace-nowrap text-xs font-medium text-correct">
-        {status}
-      </span>
-    </div>
+      {typeof document !== "undefined" && createPortal(
+        <div aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
+          {toast && (
+            <div className="animate-rise rounded-full bg-[#1c2540] px-5 py-3 text-sm font-semibold text-white shadow-2xl ring-1 ring-white/15">
+              ✓ {toast}
+            </div>
+          )}
+        </div>,
+        document.body,
+      )}
+      {manual && <ManualCopy text={text} onClose={() => setManual(false)} onCopied={() => flash(t.results.copied)} />}
+    </>
+  );
+}
+
+/** Last resort when the browser allows neither sharing nor clipboard access. */
+function ManualCopy({ text, onClose, onCopied }: { text: string; onClose: () => void; onCopied: () => void }) {
+  const { t } = useI18n();
+  const area = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    area.current?.select();
+  }, []);
+  return createPortal(
+    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/50 p-4 sm:items-center" onClick={onClose}>
+      <div role="dialog" aria-modal="true" aria-label={t.results.copyPrompt} className="w-full max-w-md rounded-card bg-[var(--bg-bottom)] p-5 text-fg shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <h2 className="mb-3 font-bold">{t.results.copyPrompt}</h2>
+        <textarea ref={area} readOnly value={text} rows={7} className="w-full resize-none rounded-button border border-answer-line bg-answer p-3 text-sm" onFocus={(e) => e.target.select()} />
+        <div className="mt-4 flex justify-end gap-2">
+          <Button variant="ghost" onClick={onClose}>
+            {t.results.close}
+          </Button>
+          <Button
+            onClick={async () => {
+              area.current?.select();
+              if (await copy(text)) {
+                onCopied();
+                onClose();
+              }
+            }}
+          >
+            {t.results.copy}
+          </Button>
+        </div>
+      </div>
+    </div>,
+    document.body,
   );
 }

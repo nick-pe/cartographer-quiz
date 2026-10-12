@@ -13,7 +13,7 @@ export const zh: Messages = {
   },
 
   nav: { play: "开始", trends: "统计", settings: "设置", language: "语言" },
-  footer: { support: "帮助", privacy: "隐私", iphone: "iPhone 应用", noTracking: "无需注册，不做追踪" },
+  footer: { support: "帮助", privacy: "隐私", iphone: "iPhone 应用", noTracking: "无需注册，不做追踪", study: "学习列表" },
 
   tiers: {
     explorer: { title: "探险家", blurb: "最知名的地方，不限时" },
@@ -74,8 +74,11 @@ export const zh: Messages = {
     yourAnswers: "你的答案",
     noAnswer: "未作答",
     share: "分享成绩",
-    copied: "已复制到剪贴板",
+    copied: "已复制，可粘贴到任何地方",
     shareFailed: "无法分享",
+    copyPrompt: "复制你的成绩",
+    copy: "复制",
+    close: "关闭",
     newBest: "⚡ 个人新纪录",
     noPenalty: "全部答对，没有罚时",
     penalty: (answering, seconds) => `答题 ${answering}  +  罚时 ${seconds} 秒`,
@@ -144,6 +147,44 @@ export const zh: Messages = {
     privacyTitle: "你的数据只保存在这里",
     privacyBody:
       "所有数据只保存在此浏览器中。Cartographer 没有账户、没有统计分析、没有广告，也不会向任何服务器发送数据。你的历史记录不会与 iPhone 应用或其他浏览器同步。",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `玩「${title}」测验：${subtitle}，三个难度等级。免费，无需注册，没有广告。`,
+    daily: "每天十道地理题，人人题目相同。只有一次机会，记录连续天数，还能分享不剧透的成绩格子。",
+    learn: (title, subtitle) => `${title}：完整列表（${subtitle}），并附免费测验检验你的掌握程度。`,
+    learnIndex: "每个测验都有可供学习的列表：世界首都、40 多个国家的行政区、国旗、河流、山峰、海洋和岛屿。",
+  },
+
+  learn: {
+    index: "学习列表",
+    indexIntro: "每个测验都有完整列表。先学习，再测验自己。",
+    title: (title) => `${title}：完整列表`,
+    intro: (subtitle) => `${subtitle}。先学习列表，再在三个难度等级中测验自己。`,
+    takeQuiz: "开始测验",
+    studyList: "学习列表",
+    more: "更多列表",
+    columns: {
+      country: "国家",
+      capital: "首都",
+      city: "城市",
+      region: "地区",
+      river: "河流",
+      length: "长度",
+      countries: "流经国家",
+      flowsInto: "注入",
+      mountain: "山峰",
+      height: "海拔",
+      range: "山脉",
+      sea: "海",
+      area: "面积",
+      opensInto: "连通",
+      borders: "沿岸国家",
+      island: "岛屿",
+      water: "周边水域",
+      divisions: "行政区",
+      count: "数量",
+    },
   },
 
   quizzes: {

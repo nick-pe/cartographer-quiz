@@ -30,7 +30,8 @@ jobs:
       # The main site is on Cloudflare Pages (built there from this repo). This
       # GitHub Pages copy keeps the App Store's Support and Privacy Policy URLs
       # (nick-pe.github.io/cartographer-quiz/...) working.
-      - run: npm run build -- --base=/cartographer-quiz/
+      # Client build only: this copy exists for the support and privacy pages.
+      - run: npm run flags && npx vite build --base=/cartographer-quiz/
       # GitHub Pages has no SPA rewrites: serve the app for every unknown path.
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3

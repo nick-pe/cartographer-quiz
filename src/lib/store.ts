@@ -119,7 +119,8 @@ function subscribe(listener: () => void) {
 }
 
 export function useStore<T>(select: (s: State) => T): T {
-  return useSyncExternalStore(subscribe, () => select(state));
+  // The third argument serves pre-rendering at build time, where the defaults stand.
+  return useSyncExternalStore(subscribe, () => select(state), () => select(state));
 }
 
 export function getState(): State {

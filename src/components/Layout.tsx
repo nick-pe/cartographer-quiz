@@ -61,6 +61,8 @@ export function Layout({ children }: { children: ReactNode }) {
       </header>
       <main className="mx-auto w-full max-w-[860px] flex-1 px-4 pb-16 pt-5 sm:pt-8">{children}</main>
       <footer className="border-t border-surface-line px-4 py-6 text-center text-sm text-fg-2">
+        <LocalLink className="hover:text-fg" to="/learn">{t.footer.study}</LocalLink>
+        <span className="mx-2">·</span>
         <a className="hover:text-fg" href={asset("support.html")}>{t.footer.support}</a>
         <span className="mx-2">·</span>
         <a className="hover:text-fg" href={asset("privacy.html")}>{t.footer.privacy}</a>

@@ -21,7 +21,7 @@ export const fr: Messages = {
   },
 
   nav: { play: "Jouer", trends: "Statistiques", settings: "Réglages", language: "Langue" },
-  footer: { support: "Assistance", privacy: "Confidentialité", iphone: "App iPhone", noTracking: "Sans compte, sans pistage" },
+  footer: { support: "Assistance", privacy: "Confidentialité", iphone: "App iPhone", noTracking: "Sans compte, sans pistage", study: "Listes à étudier" },
 
   tiers: {
     explorer: { title: "Explorateur", blurb: "Les lieux les plus connus, sans chrono" },
@@ -82,8 +82,11 @@ export const fr: Messages = {
     yourAnswers: "Vos réponses",
     noAnswer: "pas de réponse",
     share: "Partager le résultat",
-    copied: "Copié dans le presse-papiers",
+    copied: "Copié — collez-le où vous voulez",
     shareFailed: "Partage impossible",
+    copyPrompt: "Copiez votre résultat",
+    copy: "Copier",
+    close: "Fermer",
     newBest: "⚡ NOUVEAU RECORD PERSONNEL",
     noPenalty: "Aucune erreur — aucune pénalité",
     penalty: (answering, seconds) => `${answering} de réponse  +  ${seconds} s de pénalité`,
@@ -154,6 +157,44 @@ export const fr: Messages = {
     privacyTitle: "Vos données restent ici",
     privacyBody:
       "Tout est stocké uniquement dans ce navigateur. Cartographer n’a ni compte, ni statistiques d’audience, ni publicité, et n’envoie rien à aucun serveur. Votre historique n’est pas synchronisé avec l’app iPhone ni entre navigateurs.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `Jouez au quiz « ${title} » : ${subtitle}, sur trois niveaux de difficulté. Gratuit, sans compte, sans publicité.`,
+    daily: "Dix questions de géographie chaque jour, les mêmes pour tout le monde. Une seule tentative, une série et une grille à partager sans rien dévoiler.",
+    learn: (title, subtitle) => `${title} : la liste complète (${subtitle}), avec un quiz gratuit pour vous tester.`,
+    learnIndex: "Des listes à étudier pour chaque quiz : capitales du monde, régions de plus de 40 pays, drapeaux, fleuves, montagnes, mers et îles.",
+  },
+
+  learn: {
+    index: "Listes à étudier",
+    indexIntro: "Chaque quiz a sa liste complète. Apprenez-la, puis testez-vous.",
+    title: (title) => `${title} : la liste complète`,
+    intro: (subtitle) => `${subtitle}. Étudiez la liste, puis testez-vous sur trois niveaux de difficulté.`,
+    takeQuiz: "Faire le quiz",
+    studyList: "Étudier la liste",
+    more: "Autres listes",
+    columns: {
+      country: "Pays",
+      capital: "Capitale",
+      city: "Ville",
+      region: "Région",
+      river: "Fleuve",
+      length: "Longueur",
+      countries: "Pays traversés",
+      flowsInto: "Se jette dans",
+      mountain: "Sommet",
+      height: "Altitude",
+      range: "Massif",
+      sea: "Mer",
+      area: "Superficie",
+      opensInto: "S’ouvre sur",
+      borders: "Pays riverains",
+      island: "Île",
+      water: "Eaux environnantes",
+      divisions: "Subdivisions",
+      count: "Nombre",
+    },
   },
 
   quizzes: {

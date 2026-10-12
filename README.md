@@ -78,7 +78,7 @@ It also lists the custom domains **cartographerquiz.com** and **www.cartographer
 them. Change domains there, not only in the dashboard.
 
 **Search engines.** The build writes `sitemap.xml` (every page in every language, with hreflang
-alternates) and `robots.txt` from `build/seo.ts`. In Google Search Console the site is a Domain property for
+alternates) and `robots.txt` from `src/seo.ts`, and `scripts/prerender.mjs` writes a finished HTML page for every page in every language (title, description, preview tags, content). In Google Search Console the site is a Domain property for
 cartographerquiz.com; submit `https://cartographerquiz.com/sitemap.xml` under Sitemaps.
 
 **GitHub Pages copy.** `.github/workflows/deploy.yml` tests the code on every push and PR.

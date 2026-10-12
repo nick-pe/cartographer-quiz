@@ -3,16 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!--seo: replaced per page and language by scripts/prerender.mjs-->
     <title>Cartographer — Daily World Geography Quiz</title>
     <meta name="description" content="A daily world geography quiz: 60 quizzes on capitals, regions, flags, rivers, mountains, seas and islands at three difficulty levels. A shared Daily Challenge, Speed Runs and trends. No account, no tracking." />
-    <meta name="theme-color" content="#0f1629" />
     <link rel="canonical" href="https://cartographerquiz.com/" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://cartographerquiz.com/" />
     <meta property="og:title" content="Cartographer — Daily World Geography Quiz" />
     <meta property="og:description" content="Capitals, regions, flags, rivers and more. One shared Daily Challenge a day." />
-    <meta property="og:image" content="https://cartographerquiz.com/icon-512.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://cartographerquiz.com/og/en.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <!--/seo-->
+    <meta name="theme-color" content="#0f1629" />
     <meta name="apple-itunes-app" content="app-id=6811782173" />
     <link rel="icon" type="image/png" href="%BASE_URL%favicon.png" />
     <link rel="apple-touch-icon" href="%BASE_URL%apple-touch-icon.png" />
@@ -28,7 +30,7 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

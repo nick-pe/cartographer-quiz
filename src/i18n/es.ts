@@ -20,7 +20,7 @@ export const es: Messages = {
   },
 
   nav: { play: "Jugar", trends: "Estadísticas", settings: "Ajustes", language: "Idioma" },
-  footer: { support: "Soporte", privacy: "Privacidad", iphone: "App para iPhone", noTracking: "Sin cuenta, sin rastreo" },
+  footer: { support: "Soporte", privacy: "Privacidad", iphone: "App para iPhone", noTracking: "Sin cuenta, sin rastreo", study: "Listas de estudio" },
 
   tiers: {
     explorer: { title: "Explorador", blurb: "Los lugares más conocidos, sin reloj" },
@@ -81,8 +81,11 @@ export const es: Messages = {
     yourAnswers: "Tus respuestas",
     noAnswer: "sin respuesta",
     share: "Compartir resultado",
-    copied: "Copiado al portapapeles",
+    copied: "Copiado: pégalo donde quieras",
     shareFailed: "No se pudo compartir",
+    copyPrompt: "Copia tu resultado",
+    copy: "Copiar",
+    close: "Cerrar",
     newBest: "⚡ NUEVO RÉCORD PERSONAL",
     noPenalty: "Sin errores, sin penalización",
     penalty: (answering, seconds) => `${answering} respondiendo  +  ${seconds} s de penalización`,
@@ -153,6 +156,44 @@ export const es: Messages = {
     privacyTitle: "Tus datos se quedan aquí",
     privacyBody:
       "Todo se guarda solo en este navegador. Cartographer no tiene cuentas, analíticas ni anuncios, y no envía nada a ningún servidor. Tu historial no se sincroniza con la app de iPhone ni entre navegadores.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `Juega al quiz «${title}»: ${subtitle}, en tres niveles de dificultad. Gratis, sin cuenta y sin anuncios.`,
+    daily: "Diez preguntas de geografía cada día, las mismas para todos. Un solo intento, una racha y una cuadrícula para compartir sin spoilers.",
+    learn: (title, subtitle) => `${title}: la lista completa (${subtitle}), con un quiz gratuito para ponerte a prueba.`,
+    learnIndex: "Listas de estudio para cada quiz: capitales del mundo, regiones de más de 40 países, banderas, ríos, montañas, mares e islas.",
+  },
+
+  learn: {
+    index: "Listas de estudio",
+    indexIntro: "Cada quiz tiene su lista completa. Apréndela y luego ponte a prueba.",
+    title: (title) => `${title}: la lista completa`,
+    intro: (subtitle) => `${subtitle}. Estudia la lista y luego ponte a prueba en tres niveles de dificultad.`,
+    takeQuiz: "Hacer el quiz",
+    studyList: "Estudiar la lista",
+    more: "Más listas",
+    columns: {
+      country: "País",
+      capital: "Capital",
+      city: "Ciudad",
+      region: "Región",
+      river: "Río",
+      length: "Longitud",
+      countries: "Países",
+      flowsInto: "Desemboca en",
+      mountain: "Montaña",
+      height: "Altura",
+      range: "Cordillera",
+      sea: "Mar",
+      area: "Superficie",
+      opensInto: "Se abre a",
+      borders: "Países ribereños",
+      island: "Isla",
+      water: "Aguas que la rodean",
+      divisions: "Divisiones",
+      count: "Número",
+    },
   },
 
   quizzes: {

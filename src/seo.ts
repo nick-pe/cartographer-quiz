@@ -1,15 +1,15 @@
-// Emits sitemap.xml and robots.txt at build time, from the same quiz and
-// language lists the site uses, so they never drift out of date.
-import type { Plugin } from "vite";
-import { LOCALES, localizePath } from "../src/i18n/locales";
-import { ALL_QUIZZES } from "../src/lib/engine/quizzes";
+// sitemap.xml and robots.txt, written by scripts/prerender.mjs at build time
+// from the same quiz and language lists the site uses, so they never drift.
+import { LOCALES, localizePath } from "./i18n/locales";
+import { ALL_QUIZZES } from "./lib/engine/quizzes";
+import { LEARNABLE } from "./lib/learn";
 
 /** The canonical site. The GitHub Pages copy points here too. */
 export const SITE = "https://cartographerquiz.com";
 
-/** Pages worth finding in search: the home page, the Daily and every quiz, in every language. */
+/** Pages worth finding in search: home, the Daily, every quiz and every study list, in every language. */
 export function pages(): string[] {
-  return ["/", "/daily", ...ALL_QUIZZES.map((q) => `/quiz/${q.slug}`)];
+  return ["/", "/daily", "/learn", ...ALL_QUIZZES.map((q) => `/quiz/${q.slug}`), ...LEARNABLE.map((q) => `/learn/${q.slug}`)];
 }
 
 const escape = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -24,7 +24,7 @@ export function sitemap(today = new Date().toISOString().slice(0, 10)): string {
     return LOCALES.map(
       (l) =>
         `  <url>\n    <loc>${escape(SITE + localizePath(page, l.code))}</loc>\n    <lastmod>${today}</lastmod>\n` +
-        `    <changefreq>${page === "/daily" ? "daily" : "weekly"}</changefreq>\n${alternates}\n  </url>`,
+        `    <changefreq>${page === "/daily" ? "daily" : page.startsWith("/learn") ? "monthly" : "weekly"}</changefreq>\n${alternates}\n  </url>`,
     );
   });
   return (
@@ -35,14 +35,3 @@ export function sitemap(today = new Date().toISOString().slice(0, 10)): string {
 }
 
 export const robots = () => `User-agent: *\nAllow: /\n\nSitemap: ${SITE}/sitemap.xml\n`;
-
-export function seo(): Plugin {
-  return {
-    name: "cartographer-seo",
-    apply: "build",
-    generateBundle() {
-      this.emitFile({ type: "asset", fileName: "sitemap.xml", source: sitemap() });
-      this.emitFile({ type: "asset", fileName: "robots.txt", source: robots() });
-    },
-  };
-}

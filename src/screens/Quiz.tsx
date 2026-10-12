@@ -11,12 +11,16 @@ import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
 import { recordAttempt, recordSpeedRun, updateSettings, useStore } from "../lib/store";
 import { SITE_URL } from "../lib/site";
 import { useTitle } from "../lib/useTitle";
+import { studySlugFor } from "../lib/learn";
+import { LinkButton, LocalLink } from "../components/ui";
 
 export function Quiz() {
   const { slug } = useParams();
   const quiz = slug ? QUIZ_BY_SLUG[slug] : undefined;
   const { path } = useI18n();
   if (!quiz) return <Navigate to={path("/")} replace />;
+  // Pre-rendered pages describe the quiz; the browser replaces this with a live game.
+  if (import.meta.env.SSR) return <QuizIntro quiz={quiz} />;
   return <Play key={quiz.slug} quiz={quiz} />;
 }
 
@@ -82,6 +86,7 @@ function Play({ quiz }: { quiz: QuizDef }) {
             restart();
           }}
           onPlayAgain={restart}
+          studySlug={studySlugFor(quiz)}
         />
       ) : (
         <>
@@ -90,6 +95,27 @@ function Play({ quiz }: { quiz: QuizDef }) {
         </>
       )}
     </>
+  );
+}
+
+function QuizIntro({ quiz }: { quiz: QuizDef }) {
+  const i18n = useI18n();
+  const title = i18n.quizTitle(quiz);
+  const study = studySlugFor(quiz);
+  return (
+    <section className="mx-auto max-w-[620px] space-y-4 py-6 text-center">
+      <div className="text-5xl" aria-hidden="true">{quiz.emoji}</div>
+      <h1 className="text-3xl font-bold">{title}</h1>
+      <p className="text-fg-2">{i18n.t.seo.quiz(title, i18n.quizSubtitle(quiz))}</p>
+      <LinkButton to={`/quiz/${quiz.slug}`}>▶ {i18n.t.nav.play}</LinkButton>
+      {study && (
+        <p>
+          <LocalLink to={`/learn/${study}`} className="text-sm font-semibold text-blue">
+            📖 {i18n.t.learn.studyList}
+          </LocalLink>
+        </p>
+      )}
+    </section>
   );
 }
 

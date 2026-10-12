@@ -15,7 +15,7 @@ export const tl: Messages = {
   },
 
   nav: { play: "Maglaro", trends: "Istatistika", settings: "Settings", language: "Wika" },
-  footer: { support: "Tulong", privacy: "Privacy", iphone: "iPhone app", noTracking: "Walang account, walang tracking" },
+  footer: { support: "Tulong", privacy: "Privacy", iphone: "iPhone app", noTracking: "Walang account, walang tracking", study: "Mga listahan" },
 
   tiers: {
     explorer: { title: "Explorer", blurb: "Mga pinakakilalang lugar, walang orasan" },
@@ -76,8 +76,11 @@ export const tl: Messages = {
     yourAnswers: "Mga sagot mo",
     noAnswer: "walang sagot",
     share: "I-share ang resulta",
-    copied: "Nakopya na",
+    copied: "Nakopya na — i-paste kahit saan",
     shareFailed: "Hindi ma-share",
+    copyPrompt: "Kopyahin ang resulta mo",
+    copy: "Kopyahin",
+    close: "Isara",
     newBest: "⚡ BAGONG PERSONAL BEST",
     noPenalty: "Walang maling sagot — walang penalty",
     penalty: (answering, seconds) => `${answering} sa pagsagot  +  ${seconds}s na penalty`,
@@ -148,6 +151,44 @@ export const tl: Messages = {
     privacyTitle: "Dito lang ang iyong datos",
     privacyBody:
       "Sa browser na ito lang naka-save ang lahat. Walang account, analytics o ads ang Cartographer, at wala itong ipinapadala sa anumang server. Hindi naka-sync ang iyong history sa iPhone app o sa ibang browser.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `Laruin ang quiz na ${title}: ${subtitle}, sa tatlong antas ng hirap. Libre, walang account, walang ads.`,
+    daily: "Sampung tanong sa heograpiya araw-araw, pareho para sa lahat. Isang subok lang, may streak, at may grid na puwedeng i-share nang walang spoiler.",
+    learn: (title, subtitle) => `${title}: ang buong listahan (${subtitle}), may libreng quiz para subukan ang sarili.`,
+    learnIndex: "Mga listahang pag-aaralan para sa bawat quiz: mga kabisera ng mundo, mga rehiyon ng mahigit 40 bansa, mga watawat, ilog, bundok, dagat at isla.",
+  },
+
+  learn: {
+    index: "Mga listahan",
+    indexIntro: "May buong listahan ang bawat quiz. Pag-aralan ito, saka subukan ang sarili.",
+    title: (title) => `${title}: ang buong listahan`,
+    intro: (subtitle) => `${subtitle}. Pag-aralan ang listahan, saka subukan ang sarili sa tatlong antas ng hirap.`,
+    takeQuiz: "Sagutan ang quiz",
+    studyList: "Pag-aralan ang listahan",
+    more: "Iba pang listahan",
+    columns: {
+      country: "Bansa",
+      capital: "Kabisera",
+      city: "Lungsod",
+      region: "Rehiyon",
+      river: "Ilog",
+      length: "Haba",
+      countries: "Mga bansa",
+      flowsInto: "Dumadaloy sa",
+      mountain: "Bundok",
+      height: "Taas",
+      range: "Bulubundukin",
+      sea: "Dagat",
+      area: "Lawak",
+      opensInto: "Bumubukas sa",
+      borders: "Mga katabing bansa",
+      island: "Isla",
+      water: "Nakapalibot na katubigan",
+      divisions: "Mga dibisyon",
+      count: "Bilang",
+    },
   },
 
   quizzes: {

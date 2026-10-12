@@ -26,7 +26,7 @@ export const en = {
   },
 
   nav: { play: "Play", trends: "Trends", settings: "Settings", language: "Language" },
-  footer: { support: "Support", privacy: "Privacy", iphone: "iPhone app", noTracking: "No account, no tracking" },
+  footer: { support: "Support", privacy: "Privacy", iphone: "iPhone app", noTracking: "No account, no tracking", study: "Study lists" },
 
   tiers: {
     explorer: { title: "Explorer", blurb: "Best-known places, no clock" },
@@ -87,8 +87,11 @@ export const en = {
     yourAnswers: "Your answers",
     noAnswer: "no answer",
     share: "Share result",
-    copied: "Copied to clipboard",
+    copied: "Copied — paste it anywhere",
     shareFailed: "Couldn’t share",
+    copyPrompt: "Copy your result",
+    copy: "Copy",
+    close: "Close",
     newBest: "⚡ NEW PERSONAL BEST",
     noPenalty: "No wrong answers — no penalty",
     penalty: (answering: string, seconds: number) => `${answering} answering  +  ${seconds}s penalty`,
@@ -157,6 +160,44 @@ export const en = {
     privacyTitle: "Your data stays here",
     privacyBody:
       "Everything is stored in this browser only. Cartographer has no accounts, no analytics and no ads, and sends nothing to any server. Your history doesn’t sync with the iPhone app or between browsers.",
+  },
+
+  seo: {
+    quiz: (title: string, subtitle: string) => `Play the ${title} quiz: ${subtitle}, at three difficulty levels. Free, no account, no ads.`,
+    daily: "Ten geography questions every day, the same for everyone. One try, a streak, and a spoiler-free grid to share.",
+    learn: (title: string, subtitle: string) => `${title}: the full list (${subtitle}), with a free quiz to test yourself.`,
+    learnIndex: "Study lists for every quiz: world capitals, regions of 40+ countries, flags, rivers, mountains, seas and islands.",
+  },
+
+  learn: {
+    index: "Study lists",
+    indexIntro: "Every quiz has a full list to study. Learn it, then test yourself.",
+    title: (title: string) => `${title}: the full list`,
+    intro: (subtitle: string) => `${subtitle}. Study the list, then test yourself at three difficulty levels.`,
+    takeQuiz: "Take the quiz",
+    studyList: "Study the list",
+    more: "More lists",
+    columns: {
+      country: "Country",
+      capital: "Capital",
+      city: "City",
+      region: "Region",
+      river: "River",
+      length: "Length",
+      countries: "Countries",
+      flowsInto: "Flows into",
+      mountain: "Mountain",
+      height: "Height",
+      range: "Range",
+      sea: "Sea",
+      area: "Area",
+      opensInto: "Opens into",
+      borders: "Bordering countries",
+      island: "Island",
+      water: "Surrounding water",
+      divisions: "Divisions",
+      count: "Number",
+    },
   },
 
   quizzes: {

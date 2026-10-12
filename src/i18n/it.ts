@@ -22,7 +22,7 @@ export const it: Messages = {
   },
 
   nav: { play: "Gioca", trends: "Statistiche", settings: "Impostazioni", language: "Lingua" },
-  footer: { support: "Assistenza", privacy: "Privacy", iphone: "App per iPhone", noTracking: "Senza account, senza tracciamento" },
+  footer: { support: "Assistenza", privacy: "Privacy", iphone: "App per iPhone", noTracking: "Senza account, senza tracciamento", study: "Elenchi da studiare" },
 
   tiers: {
     explorer: { title: "Esploratore", blurb: "I luoghi più noti, senza tempo" },
@@ -83,8 +83,11 @@ export const it: Messages = {
     yourAnswers: "Le tue risposte",
     noAnswer: "nessuna risposta",
     share: "Condividi il risultato",
-    copied: "Copiato negli appunti",
+    copied: "Copiato: incollalo dove vuoi",
     shareFailed: "Impossibile condividere",
+    copyPrompt: "Copia il tuo risultato",
+    copy: "Copia",
+    close: "Chiudi",
     newBest: "⚡ NUOVO RECORD PERSONALE",
     noPenalty: "Nessun errore, nessuna penalità",
     penalty: (answering, seconds) => `${answering} per rispondere  +  ${seconds} s di penalità`,
@@ -155,6 +158,44 @@ export const it: Messages = {
     privacyTitle: "I tuoi dati restano qui",
     privacyBody:
       "Tutto viene salvato solo in questo browser. Cartographer non ha account, statistiche o pubblicità e non invia nulla a nessun server. La cronologia non si sincronizza con l’app per iPhone né tra browser diversi.",
+  },
+
+  seo: {
+    quiz: (title, subtitle) => `Gioca al quiz «${title}»: ${subtitle}, su tre livelli di difficoltà. Gratis, senza account e senza pubblicità.`,
+    daily: "Dieci domande di geografia ogni giorno, le stesse per tutti. Un solo tentativo, una serie e una griglia da condividere senza spoiler.",
+    learn: (title, subtitle) => `${title}: l’elenco completo (${subtitle}), con un quiz gratuito per metterti alla prova.`,
+    learnIndex: "Elenchi da studiare per ogni quiz: capitali del mondo, regioni di oltre 40 paesi, bandiere, fiumi, montagne, mari e isole.",
+  },
+
+  learn: {
+    index: "Elenchi da studiare",
+    indexIntro: "Ogni quiz ha il suo elenco completo. Studialo, poi mettiti alla prova.",
+    title: (title) => `${title}: l’elenco completo`,
+    intro: (subtitle) => `${subtitle}. Studia l’elenco, poi mettiti alla prova su tre livelli di difficoltà.`,
+    takeQuiz: "Fai il quiz",
+    studyList: "Studia l’elenco",
+    more: "Altri elenchi",
+    columns: {
+      country: "Paese",
+      capital: "Capitale",
+      city: "Città",
+      region: "Regione",
+      river: "Fiume",
+      length: "Lunghezza",
+      countries: "Paesi",
+      flowsInto: "Sfocia in",
+      mountain: "Montagna",
+      height: "Altezza",
+      range: "Catena",
+      sea: "Mare",
+      area: "Superficie",
+      opensInto: "Si apre su",
+      borders: "Paesi bagnati",
+      island: "Isola",
+      water: "Acque circostanti",
+      divisions: "Suddivisioni",
+      count: "Numero",
+    },
   },
 
   quizzes: {

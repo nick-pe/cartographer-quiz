@@ -8,8 +8,9 @@
     "directory": "./dist",
     // Unknown paths (/daily, /quiz/german-states…) get index.html, so the app handles routing.
     "not_found_handling": "single-page-application",
-    // Serve support.html and privacy.html at exactly those URLs (the App Store links to them).
-    "html_handling": "none"
+    // Pre-rendered pages are files like fr/quiz/rivers.html, served at /fr/quiz/rivers.
+    // (support.html and privacy.html redirect to /support and /privacy.)
+    "html_handling": "drop-trailing-slash"
   },
   // Kept in this file so a deploy never drops the custom domains set up in the dashboard.
   "routes": [

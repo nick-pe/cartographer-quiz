@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { LOCALES } from "../src/i18n/locales";
-import { ALL_QUIZZES } from "../src/lib/engine/quizzes";
+import { LOCALES } from "./i18n/locales";
+import { ALL_QUIZZES } from "./lib/engine/quizzes";
+import { LEARNABLE } from "./lib/learn";
 import { pages, robots, sitemap } from "./seo";
 
 describe("sitemap", () => {
@@ -8,13 +9,14 @@ describe("sitemap", () => {
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
   it("lists every page in every language, once", () => {
-    expect(pages()).toHaveLength(ALL_QUIZZES.length + 2);
+    expect(pages()).toHaveLength(ALL_QUIZZES.length + LEARNABLE.length + 3);
     expect(locs).toHaveLength(pages().length * LOCALES.length);
     expect(new Set(locs).size).toBe(locs.length);
     expect(locs).toContain("https://cartographerquiz.com/");
     expect(locs).toContain("https://cartographerquiz.com/fr");
     expect(locs).toContain("https://cartographerquiz.com/de/daily");
     expect(locs).toContain("https://cartographerquiz.com/zh/quiz/world-capitals");
+    expect(locs).toContain("https://cartographerquiz.com/es/learn/rivers");
   });
 
   it("links each language version to all the others", () => {
