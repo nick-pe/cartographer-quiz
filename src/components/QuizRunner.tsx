@@ -1,7 +1,7 @@
 // Port of QuizViewModel + QuizView/QuestionView: one question at a time, a
 // per-question countdown on timed tiers, an automatic reveal pause, and a
 // Speed Run clock that counts only time spent answering.
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { TIERS, type Difficulty } from "../lib/engine/difficulty";
 import type { Question } from "../lib/engine/question";
 import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
@@ -50,7 +50,10 @@ function usePausableClock() {
     accum.current = 0;
     since.current = null;
   }, []);
-  return { elapsed, stop, start, reset };
+  // Stable identity: effects below depend on the clock, and a fresh object
+  // each render re-ran "reset + start" on every 100 ms tick, freezing the
+  // countdown and the Speed Run stopwatch.
+  return useMemo(() => ({ elapsed, stop, start, reset }), [elapsed, stop, start, reset]);
 }
 
 export function QuizRunner({ questions, difficulty, speedRun = false, onFinish }: Props) {
