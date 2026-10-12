@@ -10,6 +10,7 @@ import { dateKey } from "../lib/engine/dates";
 import { TIERS } from "../lib/engine/difficulty";
 import { recordAttempt, recordDaily, useStore, useStreaks } from "../lib/store";
 import { useTitle } from "../lib/useTitle";
+import { useHydrated } from "../lib/useHydrated";
 
 export function Daily() {
   const { t } = useI18n();
@@ -20,7 +21,12 @@ export function Daily() {
   const questions = useMemo(() => dailyQuiz(today), [today]);
   const result = useStore((s) => s.daily[today]);
   const [params] = useSearchParams();
-  const [playing, setPlaying] = useState(params.has("start"));
+  const hydrated = useHydrated();
+  // Starts after the pre-rendered page is taken over (/daily?start=1 is served the /daily HTML).
+  const [playing, setPlaying] = useState(false);
+  useEffect(() => {
+    if (params.has("start")) setPlaying(true);
+  }, [params]);
 
   const onFinish = ({ answers, totalMs }: RunResult) => {
     const grid = answers.map((a) => a.correct);
@@ -45,7 +51,10 @@ export function Daily() {
   else {
     body = (
       <Card className="mx-auto max-w-[620px] animate-rise p-8 text-center">
-        <div className="mb-2 text-xs font-black tracking-[.1em] text-flame">{t.daily.banner} · #{dailyNumber(today)}</div>
+        <div className="mb-2 text-xs font-black tracking-[.1em] text-flame">
+          {t.daily.banner}
+          {hydrated && ` · #${dailyNumber(today)}`}
+        </div>
         <h1 className="text-3xl font-bold">{t.daily.ready}</h1>
         <ul className="mx-auto mt-6 max-w-sm space-y-2 text-left text-fg-2">
           <li className="flex gap-3"><span className="text-gold">◆</span>{t.daily.point1(DAILY_LENGTH)}</li>

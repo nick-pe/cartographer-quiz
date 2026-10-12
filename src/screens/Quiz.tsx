@@ -11,6 +11,7 @@ import { PENALTY_PER_WRONG_MS, formatSpeed } from "../lib/engine/speedRun";
 import { recordAttempt, recordSpeedRun, updateSettings, useStore } from "../lib/store";
 import { SITE_URL } from "../lib/site";
 import { useTitle } from "../lib/useTitle";
+import { useHydrated } from "../lib/useHydrated";
 import { studySlugFor } from "../lib/learn";
 import { LinkButton, LocalLink } from "../components/ui";
 
@@ -18,9 +19,10 @@ export function Quiz() {
   const { slug } = useParams();
   const quiz = slug ? QUIZ_BY_SLUG[slug] : undefined;
   const { path } = useI18n();
+  const hydrated = useHydrated();
   if (!quiz) return <Navigate to={path("/")} replace />;
-  // Pre-rendered pages describe the quiz; the browser replaces this with a live game.
-  if (import.meta.env.SSR) return <QuizIntro quiz={quiz} />;
+  // Pre-rendered pages describe the quiz; once the browser has taken over, the live game starts.
+  if (!hydrated) return <QuizIntro quiz={quiz} />;
   return <Play key={quiz.slug} quiz={quiz} />;
 }
 

@@ -10,6 +10,7 @@ import { DAILY_QUIZ, HOME_SECTIONS, gradientCss, type QuizDef, type QuizSection 
 import { formatSpeed } from "../lib/engine/speedRun";
 import { updateSettings, useStore, useStreaks } from "../lib/store";
 import { useTitle } from "../lib/useTitle";
+import { useHydrated } from "../lib/useHydrated";
 
 export function Home() {
   const { t } = useI18n();
@@ -52,6 +53,8 @@ export function Home() {
 function DailyBanner({ streak }: { streak: number }) {
   const { t, dailyShare } = useI18n();
   const today = dateKey();
+  // Today's number isn't known when the page is built; it appears once the app takes over.
+  const hydrated = useHydrated();
   const result = useStore((s) => s.daily[today]);
   const score = result?.grid.filter(Boolean).length ?? 0;
 
@@ -65,7 +68,7 @@ function DailyBanner({ streak }: { streak: number }) {
         <span className="text-[22px]" aria-hidden="true">📅</span>
         <div>
           <div className="text-xs font-black tracking-[.1em]">{t.daily.banner}</div>
-          <div className="text-xs font-medium text-white/75">{t.daily.sameForEveryone(dailyNumber(today))}</div>
+          <div className="text-xs font-medium text-white/75">{hydrated ? t.daily.sameForEveryone(dailyNumber(today)) : "\u00a0"}</div>
         </div>
       </div>
       {result ? (

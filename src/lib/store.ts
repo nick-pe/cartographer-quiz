@@ -119,8 +119,10 @@ function subscribe(listener: () => void) {
 }
 
 export function useStore<T>(select: (s: State) => T): T {
-  // The third argument serves pre-rendering at build time, where the defaults stand.
-  return useSyncExternalStore(subscribe, () => select(state), () => select(state));
+  // The third argument is what pages were pre-rendered with: the defaults. React
+  // uses it while taking over a pre-rendered page, then re-renders with this
+  // browser's saved progress, so the two never mismatch.
+  return useSyncExternalStore(subscribe, () => select(state), () => select(DEFAULT));
 }
 
 export function getState(): State {

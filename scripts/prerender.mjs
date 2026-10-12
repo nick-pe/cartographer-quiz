@@ -9,7 +9,15 @@ const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
 const { routes, render, head, sitemap, robots } = await import(join(root, "dist-ssr", "entry-server.js"));
 
-const template = readFileSync(join(dist, "index.html"), "utf8");
+let template = readFileSync(join(dist, "index.html"), "utf8");
+
+// Put the (small) stylesheet inside each page: one less request blocking the
+// first paint on slow mobile connections.
+template = template.replace(/<link rel="stylesheet"[^>]*href="\/(assets\/[^"]+\.css)"[^>]*>/, (_, file) => {
+  const css = readFileSync(join(dist, file), "utf8");
+  if (!css.includes("url(/assets/")) throw new Error("prerender: expected absolute asset URLs in the CSS");
+  return `<style>${css}</style>`;
+});
 if (!template.includes("<!--app-->") || !/<!--seo[\s\S]*?<!--\/seo-->/.test(template)) {
   throw new Error("prerender: index.html is missing its <!--seo--> or <!--app--> markers");
 }
