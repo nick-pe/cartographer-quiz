@@ -10,6 +10,7 @@ export function Layout({ children }: { children: ReactNode }) {
   // Phones show icons (like the app's toolbar); wider screens show the labels.
   const nav = [
     { to: "/", label: t.nav.play, icon: <path d="M8 5.5v13l10-6.5z" fill="currentColor" stroke="none" /> },
+    { to: "/learn", label: t.nav.study, icon: <path d="M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5m0-13c2-1.5 5-2 8.5-1.5v13c-3.5-.5-6.5 0-8.5 1.5m0-13v13" /> },
     { to: "/trends", label: t.nav.trends, icon: <path d="M4 4v16h16M8 15l3.5-4.5 3 3L19 8" /> },
     {
       to: "/settings",
@@ -36,7 +37,7 @@ export function Layout({ children }: { children: ReactNode }) {
               <NavLink
                 key={n.to}
                 to={path(n.to)}
-                end
+                end={n.to === "/"}
                 aria-label={n.label}
                 title={n.label}
                 className={({ isActive }) =>

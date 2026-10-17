@@ -25,7 +25,7 @@ export const en = {
     pageTitle: (page: string) => `${page} · Cartographer`,
   },
 
-  nav: { play: "Play", trends: "Trends", settings: "Settings", language: "Language" },
+  nav: { play: "Play", study: "Study", trends: "Trends", settings: "Settings", language: "Language" },
   footer: { support: "Support", privacy: "Privacy", iphone: "iPhone app", noTracking: "No account, no tracking", study: "Study lists" },
 
   tiers: {

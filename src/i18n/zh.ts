@@ -12,7 +12,7 @@ export const zh: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "开始", trends: "统计", settings: "设置", language: "语言" },
+  nav: { play: "开始", study: "学习", trends: "统计", settings: "设置", language: "语言" },
   footer: { support: "帮助", privacy: "隐私政策", iphone: "iPhone 应用", noTracking: "无需注册，不做追踪", study: "学习列表" },
 
   tiers: {

@@ -19,7 +19,7 @@ export const es: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "Jugar", trends: "Estadísticas", settings: "Ajustes", language: "Idioma" },
+  nav: { play: "Jugar", study: "Estudiar", trends: "Estadísticas", settings: "Ajustes", language: "Idioma" },
   footer: { support: "Ayuda", privacy: "Privacidad", iphone: "App para iPhone", noTracking: "Sin cuenta, sin rastreo", study: "Listas de estudio" },
 
   tiers: {

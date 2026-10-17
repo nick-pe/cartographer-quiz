@@ -13,7 +13,7 @@ export const ja: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "プレイ", trends: "成績", settings: "設定", language: "言語" },
+  nav: { play: "プレイ", study: "学習", trends: "成績", settings: "設定", language: "言語" },
   footer: { support: "ヘルプ", privacy: "プライバシーポリシー", iphone: "iPhoneアプリ", noTracking: "アカウント不要・追跡なし", study: "学習リスト" },
 
   tiers: {

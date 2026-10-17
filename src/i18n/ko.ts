@@ -26,7 +26,7 @@ export const ko: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "플레이", trends: "통계", settings: "설정", language: "언어" },
+  nav: { play: "플레이", study: "학습", trends: "통계", settings: "설정", language: "언어" },
   footer: { support: "도움말", privacy: "개인정보 처리방침", iphone: "iPhone 앱", noTracking: "계정 없음 · 추적 없음", study: "학습 목록" },
 
   tiers: {

@@ -14,7 +14,7 @@ export const tl: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "Maglaro", trends: "Istatistika", settings: "Mga Setting", language: "Wika" },
+  nav: { play: "Maglaro", study: "Mag-aral", trends: "Istatistika", settings: "Mga Setting", language: "Wika" },
   footer: { support: "Tulong", privacy: "Patakaran sa Pagkapribado", iphone: "App para sa iPhone", noTracking: "Walang account, walang pagsubaybay", study: "Mga listahan" },
 
   tiers: {

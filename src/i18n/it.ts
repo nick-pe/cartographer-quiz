@@ -21,7 +21,7 @@ export const it: Messages = {
     pageTitle: (page) => `${page} · Cartographer`,
   },
 
-  nav: { play: "Gioca", trends: "Statistiche", settings: "Impostazioni", language: "Lingua" },
+  nav: { play: "Gioca", study: "Studia", trends: "Statistiche", settings: "Impostazioni", language: "Lingua" },
   footer: { support: "Assistenza", privacy: "Informativa sulla privacy", iphone: "App per iPhone", noTracking: "Senza account, senza tracciamento", study: "Elenchi da studiare" },
 
   tiers: {
