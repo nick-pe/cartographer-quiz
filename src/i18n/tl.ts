@@ -191,6 +191,28 @@ export const tl: Messages = {
     },
   },
 
+  facts: {
+    capitals: (n, k, multi) => `${n} bansa at ang kanilang mga kabisera.${k ? ` ${k} sa mga ito ang may higit sa isang kabisera (${multi}); ang nakalista ay ang itinatanong sa quiz.` : ""}`,
+    divisions: (n, units, country, same) => `Saklaw ng listahang ito ang ${n} ${units} ng ${country}.${same ? ` Sa ${same} sa mga ito, kapareho ng pangalan ang kabisera.` : ""}`,
+    towns: (n, groups, countries) => `${n} lungsod sa ${groups} na ${countries ? "bansa" : "rehiyon"}.`,
+    rivers: (n, longest, km, shortest, km2) => `${n} malalaking ilog, ayon sa haba: mula sa ${longest} (${km}) hanggang sa ${shortest} (${km2}).`,
+    mountains: (n, highest, m, over8000, ranges) => `${n} kilalang bundok mula sa ${ranges} bulubundukin. Pinakamataas ang ${highest}, ${m}; ${over8000} sa mga ito ang lampas 8,000 m.`,
+    seas: (n, largest, area) => `${n} dagat at golpo, ayon sa lawak. Pinakamalawak dito ang ${largest}, ${area}.`,
+    islands: (n, largest, area, shared) => `${n} isla, ayon sa lawak: pinakamalaki ang ${largest}, ${area}. ${shared} sa mga ito ang hati sa dalawa o higit pang bansa.`,
+    flags: (n, breakdown) => `Ang mga watawat ng lahat ng ${n} kasaping bansa ng UN: ${breakdown}.`,
+    flagsPart: (count, region) => `${region} (${count})`,
+    howMany: (most, mostN, mostUnits, fewest, fewestN, fewestUnits) => `Ilan ang pangunahing dibisyon ng bawat bansa. Pinakamarami: ${most} (${mostN} ${mostUnits}); pinakakaunti: ${fewest} (${fewestN} ${fewestUnits}).`,
+  },
+
+  quizPage: {
+    about: "Tungkol sa quiz na ito",
+    sample: "Halimbawa ng mga tanong",
+    seeAll: "Tingnan ang buong listahan",
+    levels: "Tatlong antas",
+    related: "Mga katulad na quiz",
+    mixFrom: "Mula sa lahat ng uri ng quiz ang mga tanong, kasama ang:",
+  },
+
   quizzes: {
     titles: {
       randomMix: "Halo-halong Tanong",

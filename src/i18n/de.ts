@@ -191,6 +191,28 @@ export const de: Messages = {
     },
   },
 
+  facts: {
+    capitals: (n, k, multi) => `${n} Länder und ihre Hauptstädte.${k ? ` ${k} davon haben mehr als eine Hauptstadt (${multi}); die Liste nennt die, nach der das Quiz fragt.` : ""}`,
+    divisions: (n, units, country, same) => `Diese Liste umfasst ${n} ${units} dieses Landes: ${country}.${same ? ` ${same === 1 ? "Eine davon trägt denselben Namen wie ihre Hauptstadt." : `${same} davon tragen denselben Namen wie ihre Hauptstadt.`}` : ""}`,
+    towns: (n, groups, countries) => `${n} Städte in ${groups} ${countries ? "Ländern" : "Regionen"}.`,
+    rivers: (n, longest, km, shortest, km2) => `${n} große Flüsse, nach Länge geordnet – vom längsten (${longest}, ${km}) bis zum kürzesten (${shortest}, ${km2}).`,
+    mountains: (n, highest, m, over8000, ranges) => `${n} berühmte Gipfel aus ${ranges} Gebirgen. Der höchste: ${highest} mit ${m}; ${over8000} davon sind höher als 8000 m.`,
+    seas: (n, largest, area) => `${n} Meere und Golfe, nach Fläche geordnet. Das größte hier: ${largest} (${area}).`,
+    islands: (n, largest, area, shared) => `${n} Inseln, nach Fläche geordnet; die größte ist ${largest} (${area}). ${shared} davon teilen sich mehrere Länder.`,
+    flags: (n, breakdown) => `Die Flaggen aller ${n} UN-Mitgliedstaaten: ${breakdown}.`,
+    flagsPart: (count, region) => `${region} (${count})`,
+    howMany: (most, mostN, mostUnits, fewest, fewestN, fewestUnits) => `Wie viele Verwaltungseinheiten der obersten Ebene jedes Land hat. Am meisten: ${most} (${mostN} ${mostUnits}); am wenigsten: ${fewest} (${fewestN} ${fewestUnits}).`,
+  },
+
+  quizPage: {
+    about: "Über dieses Quiz",
+    sample: "Ein Vorgeschmack auf die Fragen",
+    seeAll: "Zur vollständigen Liste",
+    levels: "Drei Stufen",
+    related: "Ähnliche Quiz",
+    mixFrom: "Die Fragen stammen aus allen Quizarten, darunter:",
+  },
+
   quizzes: {
     titles: {
       randomMix: "Zufallsmix",

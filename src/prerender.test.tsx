@@ -3,7 +3,8 @@ import { head, render, routes } from "./entry-server";
 import { i18nFor } from "./i18n/core";
 import { LOCALES } from "./i18n/locales";
 import { ALL_QUIZZES, QUIZ_BY_SLUG } from "./lib/engine/quizzes";
-import { LEARNABLE, learnTable, studySlugFor } from "./lib/learn";
+import { LEARNABLE, learnTable, sampleRows, studySlugFor } from "./lib/learn";
+import { factText } from "./lib/facts";
 
 describe("study lists", () => {
   it("exist for every quiz except the mixed ones", () => {
@@ -61,5 +62,29 @@ describe("pre-rendered pages", () => {
     expect(html).toContain("Pekín");
     expect(html).toContain("Afganistán");
     expect(render("/zh")).toContain(i18nFor("zh").t.home.tagline);
+  });
+
+  it("give every study list a facts introduction in every language", () => {
+    const withoutFacts = LEARNABLE.filter((q) => !factText(i18nFor("en"), q)).map((q) => q.id);
+    expect(withoutFacts).toEqual([]);
+    for (const { code } of LOCALES) {
+      for (const quiz of LEARNABLE) {
+        const text = factText(i18nFor(code), quiz)!;
+        expect(text, `${code} ${quiz.id}`).not.toMatch(/undefined|null|NaN|\$\{|\[object/);
+      }
+    }
+    expect(factText(i18nFor("en"), QUIZ_BY_SLUG.rivers)).toContain("Nile (6,650 km)");
+    expect(render("/ja/learn/japanese-prefectures")).toContain(factText(i18nFor("ja"), QUIZ_BY_SLUG["japanese-prefectures"])!);
+  });
+
+  it("describe each quiz below the game, with a sample, the levels and similar quizzes", () => {
+    for (const quiz of ALL_QUIZZES) if (studySlugFor(quiz)) expect(sampleRows(quiz).length, quiz.id).toBeGreaterThan(3);
+    const fr = i18nFor("fr");
+    const html = render("/fr/quiz/rivers");
+    expect(html).toContain(fr.t.quizPage.about);
+    expect(html).toContain(fr.t.tiers.cartographer.blurb);
+    expect(html).toContain('href="/fr/learn/rivers"');
+    expect(html).toContain('href="/fr/quiz/mountains"');
+    expect(render("/quiz/random-mix")).toContain('href="/learn/world-capitals"');
   });
 });

@@ -187,6 +187,28 @@ export const zh: Messages = {
     },
   },
 
+  facts: {
+    capitals: (n, k, multi) => `${n} 个国家及其首都。${k ? `其中 ${k} 个国家有不止一个首都（${multi}），列表给出的是测验所问的那一个。` : ""}`,
+    divisions: (n, units, country, same) => `本列表收录${country}的 ${n} 个${units}。${same ? `其中 ${same} 个的首府与其同名。` : ""}`,
+    towns: (n, groups, countries) => `${n} 座城市，分布在 ${groups} 个${countries ? "国家" : "大区"}。`,
+    rivers: (n, longest, km, shortest, km2) => `${n} 条大河，按长度排列：最长的是${longest}（${km}），最短的是${shortest}（${km2}）。`,
+    mountains: (n, highest, m, over8000, ranges) => `来自 ${ranges} 座山脉的 ${n} 座名山。最高的是${highest}，海拔 ${m}；其中 ${over8000} 座超过 8,000 m。`,
+    seas: (n, largest, area) => `${n} 个海和海湾，按面积排列。这里最大的是${largest}，面积 ${area}。`,
+    islands: (n, largest, area, shared) => `${n} 座岛屿，按面积排列：最大的是${largest}，面积 ${area}。其中 ${shared} 座岛分属两个或更多国家。`,
+    flags: (n, breakdown) => `全部 ${n} 个联合国会员国的国旗：${breakdown}。`,
+    flagsPart: (count, region) => `${region} ${count} 面`,
+    howMany: (most, mostN, mostUnits, fewest, fewestN, fewestUnits) => `每个国家有多少个一级行政区。最多的是${most}（${mostN} 个${mostUnits}），最少的是${fewest}（${fewestN} 个${fewestUnits}）。`,
+  },
+
+  quizPage: {
+    about: "关于这个测验",
+    sample: "题目示例",
+    seeAll: "查看完整列表",
+    levels: "三个难度",
+    related: "类似的测验",
+    mixFrom: "题目来自所有类型的测验，包括：",
+  },
+
   quizzes: {
     titles: {
       randomMix: "随机混合",

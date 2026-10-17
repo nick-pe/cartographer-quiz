@@ -201,6 +201,28 @@ export const ko: Messages = {
     },
   },
 
+  facts: {
+    capitals: (n, k, multi) => `${n}개 나라와 그 수도.${k ? ` 그중 ${k}개 나라는 수도가 둘 이상이며(${multi}), 목록에는 퀴즈에서 묻는 수도를 적었습니다.` : ""}`,
+    divisions: (n, units, country, same) => `이 목록에는 ${country}의 ${units} ${n}개가 있습니다.${same ? ` 그중 ${same}곳은 중심 도시의 이름이 같습니다.` : ""}`,
+    towns: (n, groups, countries) => `${groups}개 ${countries ? "나라" : "지역"}에 걸친 도시 ${n}곳.`,
+    rivers: (n, longest, km, shortest, km2) => `큰 강 ${n}개를 길이순으로 정리했습니다. 가장 긴 강은 ${longest}(${km}), 가장 짧은 강은 ${shortest}(${km2})입니다.`,
+    mountains: (n, highest, m, over8000, ranges) => `${ranges}개 산맥의 유명한 산 ${n}개. 가장 높은 산은 ${highest}(${m})이며, ${over8000}개가 8,000m를 넘습니다.`,
+    seas: (n, largest, area) => `바다와 만 ${n}개를 면적순으로 정리했습니다. 가장 넓은 곳은 ${largest}(${area})입니다.`,
+    islands: (n, largest, area, shared) => `섬 ${n}개를 면적순으로 정리했습니다. 가장 큰 섬은 ${largest}(${area})이고, ${shared}개는 두 나라 이상에 나뉘어 있습니다.`,
+    flags: (n, breakdown) => `유엔 회원국 ${n}개국의 국기: ${breakdown}.`,
+    flagsPart: (count, region) => `${region} ${count}개국`,
+    howMany: (most, mostN, mostUnits, fewest, fewestN, fewestUnits) => `나라별 1급 행정구역의 수. 가장 많은 나라는 ${most}(${mostUnits} ${mostN}개), 가장 적은 나라는 ${fewest}(${fewestUnits} ${fewestN}개)입니다.`,
+  },
+
+  quizPage: {
+    about: "퀴즈 소개",
+    sample: "문제 미리 보기",
+    seeAll: "전체 목록 보기",
+    levels: "세 가지 난이도",
+    related: "비슷한 퀴즈",
+    mixFrom: "모든 유형의 퀴즈에서 문제가 나옵니다. 예:",
+  },
+
   quizzes: {
     titles: {
       randomMix: "랜덤 믹스",

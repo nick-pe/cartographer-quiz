@@ -200,6 +200,28 @@ export const en = {
     },
   },
 
+  facts: {
+    capitals: (n: number, k: number, multi: string) => `${n} countries and their capitals.${k ? ` ${k} of them have more than one capital (${multi}); the list gives the one the quiz asks about.` : ""}`,
+    divisions: (n: number, units: string, country: string, same: number) => `This list covers ${n} ${units} of ${country}.${same ? ` ${same === 1 ? "One of them shares its name with its capital." : `${same} of them share their name with their capital.`}` : ""}`,
+    towns: (n: number, groups: number, countries: boolean) => `${n} cities, spread across ${groups} ${countries ? "countries" : "regions"}.`,
+    rivers: (n: number, longest: string, km: string, shortest: string, km2: string) => `${n} great rivers, ranked by length: from the ${longest} (${km}) down to the ${shortest} (${km2}).`,
+    mountains: (n: number, highest: string, m: string, over8000: number, ranges: number) => `${n} famous peaks from ${ranges} mountain ranges. The highest is ${highest}, at ${m}; ${over8000} of them rise above 8,000 m.`,
+    seas: (n: number, largest: string, area: string) => `${n} seas and gulfs, ranked by area. The largest here is the ${largest}, at ${area}.`,
+    islands: (n: number, largest: string, area: string, shared: number) => `${n} islands, ranked by area: the largest is ${largest}, at ${area}. ${shared} of them are divided between two or more countries.`,
+    flags: (n: number, breakdown: string) => `The flags of all ${n} UN member states: ${breakdown}.`,
+    flagsPart: (count: number, region: string) => `${region} (${count})`,
+    howMany: (most: string, mostN: number, mostUnits: string, fewest: string, fewestN: number, fewestUnits: string) => `How many first-level divisions each country has. The most here: ${most} (${mostN} ${mostUnits}); the fewest: ${fewest} (${fewestN} ${fewestUnits}).`,
+  },
+
+  quizPage: {
+    about: "About this quiz",
+    sample: "A taste of the questions",
+    seeAll: "See the full list",
+    levels: "Three levels",
+    related: "More quizzes like this",
+    mixFrom: "Questions are drawn from every kind of quiz, including:",
+  },
+
   quizzes: {
     titles: {
       randomMix: "Random Mix",

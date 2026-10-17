@@ -188,6 +188,28 @@ export const ja: Messages = {
     },
   },
 
+  facts: {
+    capitals: (n, k, multi) => `${n}か国とその首都。${k ? `そのうち${k}か国には複数の首都があり（${multi}）、リストにはクイズで問われる方を載せています。` : ""}`,
+    divisions: (n, units, country, same) => `このリストには${country}の${units}を${n}件収録しています。${same ? `そのうち${same}件は、中心都市が同じ名前です。` : ""}`,
+    towns: (n, groups, countries) => `${n}の都市を${groups}の${countries ? "国" : "地域圏"}に分けて収録。`,
+    rivers: (n, longest, km, shortest, km2) => `${n}の大河を長さ順に。最も長いのは${longest}（${km}）、最も短いのは${shortest}（${km2}）。`,
+    mountains: (n, highest, m, over8000, ranges) => `${ranges}の山脈から選んだ${n}の名山。最も高いのは${highest}（${m}）で、${over8000}座が8,000mを超えます。`,
+    seas: (n, largest, area) => `${n}の海と湾を面積順に。この中で最も広いのは${largest}（${area}）。`,
+    islands: (n, largest, area, shared) => `${n}の島を面積順に。最大は${largest}（${area}）。そのうち${shared}島は複数の国に分かれています。`,
+    flags: (n, breakdown) => `国連加盟${n}か国すべての国旗：${breakdown}。`,
+    flagsPart: (count, region) => `${region}${count}か国`,
+    howMany: (most, mostN, mostUnits, fewest, fewestN, fewestUnits) => `各国の第一級行政区画の数。最も多いのは${most}（${mostUnits}${mostN}）、最も少ないのは${fewest}（${fewestUnits}${fewestN}）。`,
+  },
+
+  quizPage: {
+    about: "このクイズについて",
+    sample: "出題例",
+    seeAll: "完全リストを見る",
+    levels: "3つの難易度",
+    related: "似ているクイズ",
+    mixFrom: "問題はすべての種類のクイズから出題されます。例：",
+  },
+
   quizzes: {
     titles: {
       randomMix: "ランダムミックス",

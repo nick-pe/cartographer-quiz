@@ -4,9 +4,10 @@ import { useMemo } from "react";
 import { Navigate, useParams } from "react-router";
 import { Flag } from "../components/Flag";
 import { Card, LinkButton, LocalLink } from "../components/ui";
-import { useI18n, type I18n } from "../i18n";
+import { useI18n } from "../i18n";
 import { HOME_SECTIONS, QUIZ_BY_SLUG, gradientCss, type QuizDef } from "../lib/engine/quizzes";
-import { LEARNABLE, learnTable, type Cell } from "../lib/learn";
+import { cellText, factText } from "../lib/facts";
+import { LEARNABLE, learnTable } from "../lib/learn";
 import { sectionsFor } from "../lib/sections";
 import { useTitle } from "../lib/useTitle";
 
@@ -19,20 +20,13 @@ export function Learn() {
   return <LearnPage quiz={quiz} />;
 }
 
-function cellText(i18n: I18n, cell: Cell): string {
-  if ("term" in cell) return i18n.name(cell.term, "option");
-  if ("num" in cell) return i18n.number(cell.num) + (cell.unit ? ` ${cell.unit}` : "");
-  if ("terms" in cell) return cell.terms.map((t) => i18n.name(t, "option")).join(", ");
-  if ("regionCountry" in cell) return i18n.regionCountry(cell.regionCountry);
-  return i18n.unitFor(cell.unitsOf).many;
-}
-
 function LearnPage({ quiz }: { quiz: QuizDef }) {
   const i18n = useI18n();
   const { t } = i18n;
   const title = i18n.quizTitle(quiz);
   useTitle(t.learn.title(title));
   const table = useMemo(() => learnTable(quiz)!, [quiz]);
+  const facts = factText(i18n, quiz);
   const rows = useMemo(() => {
     const text = table.rows.map((r) => ({ cells: r, text: r.map((c) => cellText(i18n, c)) }));
     if (table.ranked) return text;
@@ -52,6 +46,7 @@ function LearnPage({ quiz }: { quiz: QuizDef }) {
           <h1 className="text-2xl font-bold sm:text-3xl">{t.learn.title(title)}</h1>
         </div>
         <p className="text-fg-2">{t.learn.intro(i18n.quizSubtitle(quiz))}</p>
+        {facts && <p className="text-fg-2">{facts}</p>}
         <LinkButton to={`/quiz/${quiz.slug}`}>▶ {t.learn.takeQuiz}</LinkButton>
       </header>
 

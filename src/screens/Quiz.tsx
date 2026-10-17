@@ -12,7 +12,11 @@ import { recordAttempt, recordSpeedRun, updateSettings, useStore } from "../lib/
 import { SITE_URL } from "../lib/site";
 import { useTitle } from "../lib/useTitle";
 import { useHydrated } from "../lib/useHydrated";
-import { studySlugFor } from "../lib/learn";
+import { Flag } from "../components/Flag";
+import { DIFFICULTIES } from "../lib/engine/difficulty";
+import { cellText, factText } from "../lib/facts";
+import { LEARNABLE, sampleRows, studySlugFor } from "../lib/learn";
+import { sectionsFor } from "../lib/sections";
 import { LinkButton, LocalLink } from "../components/ui";
 
 export function Quiz() {
@@ -22,8 +26,12 @@ export function Quiz() {
   const hydrated = useHydrated();
   if (!quiz) return <Navigate to={path("/")} replace />;
   // Pre-rendered pages describe the quiz; once the browser has taken over, the live game starts.
-  if (!hydrated) return <QuizIntro quiz={quiz} />;
-  return <Play key={quiz.slug} quiz={quiz} />;
+  return (
+    <>
+      {hydrated ? <Play key={quiz.slug} quiz={quiz} /> : <QuizIntro quiz={quiz} />}
+      <QuizAbout key={`about-${quiz.slug}`} quiz={quiz} />
+    </>
+  );
 }
 
 interface Finished {
@@ -108,7 +116,6 @@ function QuizIntro({ quiz }: { quiz: QuizDef }) {
     <section className="mx-auto max-w-[620px] space-y-4 py-6 text-center">
       <div className="text-5xl" aria-hidden="true">{quiz.emoji}</div>
       <h1 className="text-3xl font-bold">{title}</h1>
-      <p className="text-fg-2">{i18n.t.seo.quiz(title, i18n.quizSubtitle(quiz))}</p>
       <LinkButton to={`/quiz/${quiz.slug}`}>▶ {i18n.t.nav.play}</LinkButton>
       {study && (
         <p>
@@ -120,6 +127,89 @@ function QuizIntro({ quiz }: { quiz: QuizDef }) {
     </section>
   );
 }
+
+/** Below the game: what the quiz covers, a sample, the levels and similar quizzes.
+ *  The same on the server and in the browser, so search engines index it with the game. */
+function QuizAbout({ quiz }: { quiz: QuizDef }) {
+  const i18n = useI18n();
+  const { t } = i18n;
+  const title = i18n.quizTitle(quiz);
+  const study = studySlugFor(quiz);
+  const facts = study ? factText(i18n, QUIZ_BY_SLUG[study]) : null;
+  const sample = sampleRows(quiz);
+  const section = sectionsFor(i18n.code).find((s) => s.quizzes.includes(quiz));
+  const related = (section?.quizzes ?? []).filter((q) => q !== quiz).slice(0, 10);
+  // Mixed quizzes have no list of their own: point at the lists they draw from.
+  const sources = study ? [] : LEARNABLE.filter((q) => MIX_SOURCES.includes(q.id));
+  const chip = "inline-block rounded-full bg-fg/8 px-3 py-1.5 text-sm font-medium hover:bg-fg/14";
+
+  return (
+    <section aria-labelledby="about-quiz" className="mx-auto mt-12 max-w-[620px] space-y-6 border-t border-surface-line pt-8 text-sm">
+      <div className="space-y-2">
+        <h2 id="about-quiz" className="text-lg font-bold">{t.quizPage.about}</h2>
+        <p className="text-fg-2">{t.seo.quiz(title, i18n.quizSubtitle(quiz))}</p>
+        {facts && <p className="text-fg-2">{facts}</p>}
+      </div>
+
+      {sample.length > 0 && (
+        <div className="space-y-2">
+          <h3 className="font-bold">{t.quizPage.sample}</h3>
+          <ul className="grid gap-x-4 gap-y-1.5 sm:grid-cols-2">
+            {sample.map((row) => (
+              <li key={row.map((c) => cellText(i18n, c)).join("|")} className="flex items-center gap-2">
+                {"flag" in row[0] && row[0].flag && <Flag code={row[0].flag} alt="" lazy className="w-6 shrink-0 rounded-sm shadow-none" />}
+                <span className="font-semibold">{cellText(i18n, row[0])}</span>
+                {row[1] && <span className="text-fg-2">· {cellText(i18n, row[1])}</span>}
+              </li>
+            ))}
+          </ul>
+          <p>
+            <LocalLink to={`/learn/${study}`} className="font-semibold text-blue">📖 {t.quizPage.seeAll} →</LocalLink>
+          </p>
+        </div>
+      )}
+
+      {sources.length > 0 && (
+        <div className="space-y-2">
+          <p className="text-fg-2">{t.quizPage.mixFrom}</p>
+          <ul className="flex flex-wrap gap-2">
+            {sources.map((q) => (
+              <li key={q.id}>
+                <LocalLink to={`/learn/${q.slug}`} className={chip}>{q.emoji} {i18n.quizTitle(q)}</LocalLink>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="space-y-2">
+        <h3 className="font-bold">{t.quizPage.levels}</h3>
+        <ul className="space-y-1">
+          {DIFFICULTIES.map((d) => (
+            <li key={d}>
+              <span className="font-semibold">{t.tiers[d].title}</span> <span className="text-fg-2">· {t.tiers[d].blurb}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {related.length > 0 && (
+        <nav aria-label={t.quizPage.related} className="space-y-2">
+          <h3 className="font-bold">{t.quizPage.related}</h3>
+          <ul className="flex flex-wrap gap-2">
+            {related.map((q) => (
+              <li key={q.id}>
+                <LocalLink to={`/quiz/${q.slug}`} className={chip}>{q.emoji} {i18n.quizTitle(q)}</LocalLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      )}
+    </section>
+  );
+}
+
+const MIX_SOURCES = ["category.worldCapitals", "flags", "howManyRegions", "rivers", "mountains", "seas", "islands"];
 
 function resultText(i18n: I18n, quiz: QuizDef, { run, difficulty, speed }: Finished): string {
   const { t } = i18n;
