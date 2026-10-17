@@ -4,21 +4,12 @@ import { COUNTRIES } from "../data/ios/countries";
 import { CATEGORY_BY_ID } from "../lib/engine/categories";
 import type { Prompt, Question, Term } from "../lib/engine/question";
 import type { QuizDef } from "../lib/engine/quizzes";
-import { de } from "./de";
 import { en, type Messages, type Unit } from "./en";
-import { es } from "./es";
-import { fr } from "./fr";
-import { it } from "./it";
-import { ja } from "./ja";
-import { ko } from "./ko";
 import { SITE_URL } from "../lib/site";
 import { shareText } from "../lib/engine/daily";
 import { localeInfo, localizePath, type LocaleCode, type LocaleInfo } from "./locales";
-import { PLACES, type Places } from "./places";
-import { tl } from "./tl";
-import { zh } from "./zh";
-
-export const MESSAGES: Record<LocaleCode, Messages> = { en, de, fr, es, it, zh, ja, ko, tl };
+import type { Places } from "./places";
+import { localeBundle } from "./registry";
 
 const CODE_BY_COUNTRY: Record<string, string> = Object.fromEntries(COUNTRIES.map((c) => [c.name, c.code]));
 
@@ -58,8 +49,7 @@ export interface I18n {
 
 export function createI18n(code: LocaleCode): I18n {
   const info = localeInfo(code);
-  const t = MESSAGES[code];
-  const places: Places = PLACES[code];
+  const { messages: t, places }: { messages: Messages; places: Places } = localeBundle(code);
   const regionNames = new Intl.DisplayNames([info.intl, "en"], { type: "region" });
   const numbers = new Intl.NumberFormat(info.intl);
 

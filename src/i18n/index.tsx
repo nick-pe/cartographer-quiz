@@ -1,9 +1,10 @@
 // The active language comes from the URL (/fr/…).
-import { createContext, useContext, useEffect, useMemo, type ReactNode } from "react";
+import { createContext, use, useContext, useEffect, useMemo, type ReactNode } from "react";
 import { useLocation } from "react-router";
 import { SITE_URL } from "../lib/site";
 import { i18nFor, type I18n } from "./core";
 import { LOCALES, localeFromPath, localizePath, stripLocale } from "./locales";
+import { isLoaded, loadLocale } from "./registry";
 
 export * from "./core";
 
@@ -12,6 +13,8 @@ const Context = createContext<I18n>(i18nFor("en"));
 export function LocaleProvider({ children }: { children: ReactNode }) {
   const { pathname } = useLocation();
   const code = localeFromPath(pathname);
+  // Normally loaded already (by main.tsx or the language picker); else wait for it.
+  if (!isLoaded(code)) use(loadLocale(code));
   const value = useMemo(() => i18nFor(code), [code]);
   useEffect(() => {
     document.documentElement.lang = code;

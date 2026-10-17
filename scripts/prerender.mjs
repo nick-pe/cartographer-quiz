@@ -1,7 +1,7 @@
 // Writes a finished HTML file for every page in every language (dist/fr/quiz/rivers.html…),
 // using the server build of the app (dist-ssr/). Cloudflare serves /fr/quiz/rivers from
 // fr/quiz/rivers.html; the app then takes over in the browser.
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -22,12 +22,19 @@ if (!template.includes("<!--app-->") || !/<!--seo[\s\S]*?<!--\/seo-->/.test(temp
   throw new Error("prerender: index.html is missing its <!--seo--> or <!--app--> markers");
 }
 
+// Each language's text is its own file, which the app fetches before starting:
+// announce it in the page so the browser downloads it alongside the app.
+const manifestFile = join(dist, ".vite", "manifest.json");
+const manifest = JSON.parse(readFileSync(manifestFile, "utf8"));
+rmSync(join(dist, ".vite"), { recursive: true });
+const languageFile = (lang) => manifest[`src/i18n/bundles/${lang}.ts`]?.file;
+
 let count = 0;
 for (const url of routes()) {
   const { lang, html: tags } = head(url);
   const page = template
     .replace(/<html lang="[^"]*"/, `<html lang="${lang}"`)
-    .replace(/<!--seo[\s\S]*?<!--\/seo-->/, tags)
+    .replace(/<!--seo[\s\S]*?<!--\/seo-->/, tags + (languageFile(lang) ? `\n    <link rel="modulepreload" href="/${languageFile(lang)}" />` : ""))
     .replace("<!--app-->", render(url));
   const file = url === "/" ? join(dist, "index.html") : join(dist, `${url.slice(1)}.html`);
   mkdirSync(dirname(file), { recursive: true });

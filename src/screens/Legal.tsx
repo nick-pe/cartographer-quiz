@@ -3,7 +3,8 @@ import { Fragment, type ReactNode } from "react";
 import { Link } from "react-router";
 import { Card, LocalLink } from "../components/ui";
 import { useI18n } from "../i18n";
-import { LEGAL, type Block } from "../i18n/legal";
+import type { Block } from "../i18n/legal";
+import { localeBundle } from "../i18n/registry";
 import { useTitle } from "../lib/useTitle";
 
 /** Renders **bold** and [links](url). "/page" stays in this language; "en:/page" is the English version. */
@@ -55,7 +56,7 @@ function Page({ title, children }: { title: string; children: ReactNode }) {
 
 export function Support() {
   const { code } = useI18n();
-  const s = LEGAL[code].support;
+  const s = localeBundle(code).legal.support;
   useTitle(s.title);
   return (
     <Page title={s.title}>
@@ -79,7 +80,7 @@ export function Support() {
 
 export function Privacy() {
   const { code } = useI18n();
-  const p = LEGAL[code].privacy;
+  const p = localeBundle(code).legal.privacy;
   useTitle(p.title);
   return (
     <Page title={p.title}>

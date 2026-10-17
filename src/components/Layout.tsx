@@ -30,7 +30,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <div className="mx-auto flex max-w-[860px] items-center justify-between gap-2 px-4 py-2.5 sm:gap-4">
           <LocalLink to="/" className="flex shrink-0 items-center gap-2.5 font-bold">
             <Logo className="size-8" />
-            <span className="text-lg max-[380px]:hidden">Cartographer</span>
+            <span className="text-lg max-[390px]:hidden">Cartographer</span>
           </LocalLink>
           <nav className="flex min-w-0 items-center gap-0.5 text-sm font-semibold sm:gap-1">
             {nav.map((n) => (
@@ -41,7 +41,7 @@ export function Layout({ children }: { children: ReactNode }) {
                 aria-label={n.label}
                 title={n.label}
                 className={({ isActive }) =>
-                  `flex items-center rounded-lg px-2.5 py-1.5 transition sm:px-3 ${isActive ? "bg-fg/10 text-fg" : "text-fg-2 hover:text-fg"}`
+                  `flex items-center rounded-lg px-2 py-1.5 transition sm:px-3 ${isActive ? "bg-fg/10 text-fg" : "text-fg-2 hover:text-fg"}`
                 }
               >
                 <svg viewBox="0 0 24 24" className="size-5 sm:hidden" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -59,7 +59,7 @@ export function Layout({ children }: { children: ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="mx-auto w-full max-w-[860px] flex-1 px-4 pb-16 pt-5 sm:pt-8">{children}</main>
+      <main className="mx-auto w-full max-w-[860px] flex-1 overflow-x-clip px-4 pb-16 pt-5 sm:pt-8">{children}</main>
       <footer className="border-t border-surface-line px-4 py-6 text-center text-sm text-fg-2">
         <LocalLink className="hover:text-fg" to="/learn">{t.footer.study}</LocalLink>
         <span className="mx-2">·</span>

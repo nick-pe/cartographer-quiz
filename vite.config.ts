@@ -1,3 +1,4 @@
+/// <reference types="vitest/config" />
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
@@ -8,4 +9,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   base: "/",
   plugins: [react(), tailwindcss()],
+  // Lets the pre-render step find each language's file (scripts/prerender.mjs).
+  build: { manifest: true },
+  // Tests see every language, like the build does.
+  test: { setupFiles: ["src/i18n/all.ts"] },
 });

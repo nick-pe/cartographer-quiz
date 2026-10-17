@@ -106,9 +106,20 @@ function DailyBanner({ streak }: { streak: number }) {
 function Section({ section }: { section: QuizSection }) {
   const { t } = useI18n();
   const [open, setOpen] = useState(true);
+  // Animate a section the visitor reopens, not the whole page on arrival
+  // (a grid fading in from transparent delays the first meaningful paint).
+  const [toggled, setToggled] = useState(false);
   return (
-    <section className="space-y-3">
-      <button onClick={() => setOpen(!open)} aria-expanded={open} className="flex min-h-11 w-full items-center gap-2.5 text-left">
+    // Sections below the fold are laid out and painted only once scrolled to.
+    <section className="space-y-3 [contain-intrinsic-size:auto_640px] [content-visibility:auto]">
+      <button
+        onClick={() => {
+          setOpen(!open);
+          setToggled(true);
+        }}
+        aria-expanded={open}
+        className="flex min-h-11 w-full items-center gap-2.5 text-left"
+      >
         <h2 className="text-xl font-bold">{t.home.sections[section.id]}</h2>
         <span className="rounded-full bg-fg/12 px-2 py-0.5 text-[13px] font-bold text-fg-2">{section.quizzes.length}</span>
         <span className="flex-1" />
@@ -117,7 +128,7 @@ function Section({ section }: { section: QuizSection }) {
         </svg>
       </button>
       {open && (
-        <div className="grid animate-rise grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className={`grid grid-cols-2 ${toggled ? "animate-rise" : ""} gap-4 lg:grid-cols-4`}>
           {section.quizzes.map((q) => (
             <Tile key={q.id} quiz={q} />
           ))}

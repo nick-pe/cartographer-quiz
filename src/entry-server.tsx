@@ -2,6 +2,7 @@
 // every language, so search engines and link previews (WhatsApp, iMessage,
 // Discord…) get a real title, description, image and content without running
 // JavaScript. In the browser the app then takes over (src/main.tsx).
+import "./i18n/all";
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router";
 import { App } from "./App";

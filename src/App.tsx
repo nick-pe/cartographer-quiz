@@ -1,4 +1,4 @@
-import { useEffect, useRef, type ReactElement } from "react";
+import { Suspense, useEffect, useRef, type ReactElement } from "react";
 import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router";
 import { Layout } from "./components/Layout";
 import { LocaleProvider, useI18n } from "./i18n";
@@ -68,18 +68,20 @@ export function App() {
   }, [pathname]);
 
   return (
-    <LocaleProvider>
-      <Layout>
-        <Routes>
-          {LOCALES.flatMap((l) => PAGES.map(([path, element]) => <Route key={l.code + path} path={localizePath(path, l.code)} element={element} />))}
-          {/* Links from the first version of the site. */}
-          <Route path="/history" element={<Navigate to="/trends" replace />} />
-          <Route path="/speed/*" element={<Navigate to="/quiz/speed-run" replace />} />
-          <Route path="/play/:kind/*" element={<LegacyPlay />} />
-          <Route path="*" element={<ToHome />} />
-        </Routes>
-      </Layout>
-    </LocaleProvider>
+    <Suspense>
+      <LocaleProvider>
+        <Layout>
+          <Routes>
+            {LOCALES.flatMap((l) => PAGES.map(([path, element]) => <Route key={l.code + path} path={localizePath(path, l.code)} element={element} />))}
+            {/* Links from the first version of the site. */}
+            <Route path="/history" element={<Navigate to="/trends" replace />} />
+            <Route path="/speed/*" element={<Navigate to="/quiz/speed-run" replace />} />
+            <Route path="/play/:kind/*" element={<LegacyPlay />} />
+            <Route path="*" element={<ToHome />} />
+          </Routes>
+        </Layout>
+      </LocaleProvider>
+    </Suspense>
   );
 }
 
