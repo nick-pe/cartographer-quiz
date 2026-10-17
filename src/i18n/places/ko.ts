@@ -1,4 +1,5 @@
 import type { Places } from ".";
+import { regions } from "./regions/ko";
 
 // Korean names follow the National Institute of Korean Language's
 // foreign-word transcription (외래어 표기법).
@@ -414,6 +415,7 @@ export const ko: Places = {
   },
   // South Korea's provinces and their capitals, in the reader's own script.
   divisions: {
+    ...regions.divisions,
     "Gyeonggi": "경기도",
     "Gangwon": "강원특별자치도",
     "North Chungcheong": "충청북도",
@@ -425,6 +427,7 @@ export const ko: Places = {
     "Jeju": "제주특별자치도",
   },
   towns: {
+    ...regions.towns,
     "Suwon": "수원시",
     "Chuncheon": "춘천시",
     "Cheongju": "청주시",

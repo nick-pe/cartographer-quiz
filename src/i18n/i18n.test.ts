@@ -182,16 +182,25 @@ describe("Section order", () => {
   });
 });
 
-describe("Home-country divisions", () => {
-  it.each([
-    ["ja", "japanesePrefectures"],
-    ["zh", "chineseProvinces"],
-    ["ko", "koreanProvinces"],
-  ] as const)("%s names every division of %s and its capital", (code, id) => {
-    const c = CATEGORY_LIST.find((x) => x.id === id)!;
-    const { divisions = {}, towns = {} } = PLACES[code];
-    expect(c.pairs.filter((p) => !divisions[p.prompt]).map((p) => p.prompt)).toEqual([]);
-    expect(c.pairs.filter((p) => !towns[p.answer]).map((p) => p.answer)).toEqual([]);
-    expect(Object.keys(divisions).length).toBe(c.pairs.length);
+describe("Regional names", () => {
+  it.each(["zh", "ja", "ko"] as const)("%s names every division and capital of every regional quiz", (code) => {
+    const i18n = i18nFor(code);
+    const english: string[] = [];
+    for (const c of CATEGORY_LIST) {
+      if ("capitals" in c.source) continue;
+      for (const p of c.pairs) {
+        const terms = [p.place, c.optionKind === "country" ? null : { kind: c.optionKind, id: p.answer }];
+        for (const term of terms) if (term && i18n.name(term as Parameters<typeof i18n.name>[0]) === term.id) english.push(`${c.id}: ${term.id}`);
+      }
+    }
+    expect(english).toEqual([]);
+  });
+
+  it("keeps each language's own country in its own script", () => {
+    expect(i18nFor("ja").name({ kind: "division", id: "Kanagawa" })).toBe("神奈川県");
+    expect(i18nFor("zh").name({ kind: "division", id: "Kanagawa" })).toBe("神奈川县");
+    expect(i18nFor("ko").name({ kind: "local", id: "Yokohama" })).toBe("요코하마");
+    expect(i18nFor("ko").name({ kind: "division", id: "Shaanxi" })).not.toBe(i18nFor("ko").name({ kind: "division", id: "Shanxi" }));
+    expect(i18nFor("de").name({ kind: "local", id: "Vienna" })).toBe("Wien");
   });
 });

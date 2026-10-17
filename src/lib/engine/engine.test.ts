@@ -120,7 +120,7 @@ describe("Question generation", () => {
         }
       }
     }
-  }, 30_000); // Every quiz × tier × many seeds: slow on a busy machine.
+  });
 
   it("shows more options on harder tiers", () => {
     for (const d of DIFFICULTIES) {

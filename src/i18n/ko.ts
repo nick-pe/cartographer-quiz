@@ -17,6 +17,13 @@ const eun = (w: string) => josa(w, "은", "는");
 const eul = (w: string) => josa(w, "을", "를");
 const iga = (w: string) => josa(w, "이", "가");
 
+/** What Korean calls a division's capital, where "주도" (a state's) doesn't fit. */
+const KO_CAPITAL_WORD: Record<string, string> = {
+  koreanProvinces: "도청 소재지",
+  japanesePrefectures: "현청 소재지",
+  chineseProvinces: "성도",
+};
+
 export const ko: Messages = {
   bare: (name) => name,
 
@@ -355,7 +362,7 @@ export const ko: Messages = {
   extraCountries: { England: "잉글랜드" },
 
   prompts: {
-    capitalOf: (p, isCountry, category) => `${p}의 ${isCountry ? "수도" : category === "koreanProvinces" ? "도청 소재지" : "주도"}는 어디인가요?`,
+    capitalOf: (p, isCountry, category) => `${p}의 ${isCountry ? "수도" : (KO_CAPITAL_WORD[category ?? ""] ?? "주도")}는 어디인가요?`,
     usStateWithCapital: (p) => `${eun(p)} 미국 어느 주의 주도인가요?`,
     regionOfCity: (p) => `${eun(p)} 어느 지역에 있나요?`,
     countyTownOf: (p) => `${p}의 중심 도시는 어디인가요?`,

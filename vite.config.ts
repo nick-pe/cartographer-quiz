@@ -12,5 +12,6 @@ export default defineConfig({
   // Lets the pre-render step find each language's file (scripts/prerender.mjs).
   build: { manifest: true },
   // Tests see every language, like the build does.
-  test: { setupFiles: ["src/i18n/all.ts"] },
+  // The engine tests sweep every quiz at every level: allow for a busy machine.
+  test: { setupFiles: ["src/i18n/all.ts"], testTimeout: 30_000 },
 });

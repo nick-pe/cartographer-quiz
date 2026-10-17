@@ -76,7 +76,8 @@ export function createI18n(code: LocaleCode): I18n {
       case "division":
         return places.divisions?.[term.id] ?? term.id;
       case "local":
-        return places.towns?.[term.id] ?? term.id;
+        // Regional capitals that are also national capitals (Vienna, Lisbon…) share their name.
+        return places.towns?.[term.id] ?? places.names[term.id] ?? term.id;
     }
   };
 

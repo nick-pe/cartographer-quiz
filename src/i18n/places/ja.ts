@@ -1,4 +1,5 @@
 import type { Places } from ".";
+import { regions } from "./regions/ja";
 
 // Japanese names, following common usage (外務省・地図帳の表記).
 
@@ -413,6 +414,7 @@ export const ja: Places = {
   },
   // Japan's prefectures and their capitals, in the reader's own script.
   divisions: {
+    ...regions.divisions,
     "Hokkaido": "北海道",
     "Aomori": "青森県",
     "Iwate": "岩手県",
@@ -462,6 +464,7 @@ export const ja: Places = {
     "Okinawa": "沖縄県",
   },
   towns: {
+    ...regions.towns,
     "Sapporo": "札幌市",
     "Aomori": "青森市",
     "Morioka": "盛岡市",

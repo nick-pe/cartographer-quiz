@@ -1,4 +1,5 @@
 import type { Places } from ".";
+import { regions } from "./regions/zh";
 
 // Simplified Chinese names, following standard mainland usage (新华社译名).
 
@@ -413,6 +414,7 @@ export const zh: Places = {
   },
   // China's provinces and their capitals, in the reader's own script.
   divisions: {
+    ...regions.divisions,
     "Anhui": "安徽省",
     "Fujian": "福建省",
     "Gansu": "甘肃省",
@@ -446,6 +448,7 @@ export const zh: Places = {
     "Tianjin": "天津市",
   },
   towns: {
+    ...regions.towns,
     "Hefei": "合肥",
     "Fuzhou": "福州",
     "Lanzhou": "兰州",
