@@ -163,6 +163,8 @@ export const fr: Messages = {
     quiz: (title, subtitle) => `Jouez au quiz « ${title} » : ${subtitle}, sur trois niveaux de difficulté. Gratuit, sans compte, sans publicité.`,
     daily: "Dix questions de géographie chaque jour, les mêmes pour tout le monde. Une seule tentative, une série et une grille à partager sans rien dévoiler.",
     learn: (title, subtitle) => `${title} : la liste complète (${subtitle}), avec un quiz gratuit pour vous tester.`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title} : les ${count}${capitals ? " et leurs capitales" : ""}, liste complète`,
     learnIndex: "Des listes à étudier pour chaque quiz : capitales du monde, régions de plus de 40 pays, drapeaux, fleuves, montagnes, mers et îles.",
   },
 

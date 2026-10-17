@@ -174,6 +174,8 @@ export const ko: Messages = {
     quiz: (title, subtitle) => `${title} 퀴즈: ${subtitle}, 세 가지 난이도. 무료, 계정 없음, 광고 없음.`,
     daily: "매일 모두에게 같은 지리 문제 10개. 기회는 한 번, 연속 기록, 스포일러 없는 결과 공유.",
     learn: (title, subtitle) => `${title}: 전체 목록(${subtitle})과 실력을 확인할 무료 퀴즈.`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title}: ${count}${capitals === "regional" ? " 및 주도" : capitals ? " 및 수도" : ""} 전체 목록`,
     learnIndex: "모든 퀴즈의 학습 목록: 세계의 수도, 40여 개국의 행정구역, 국기, 강, 산, 바다와 섬.",
   },
 

@@ -153,6 +153,8 @@ export const zh: Messages = {
     quiz: (title, subtitle) => `玩「${title}」测验：${subtitle}，三个难度等级。免费，无需注册，没有广告。`,
     daily: "每天十道地理题，人人题目相同。只有一次机会，记录连续天数，还能分享不剧透的成绩格子。",
     learn: (title, subtitle) => `${title}：完整列表（${subtitle}），并附免费测验检验你的掌握程度。`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title}：${count}${capitals === "regional" ? "及首府" : capitals ? "及首都" : ""}完整列表`,
     learnIndex: "每个测验都有可供学习的列表：世界首都、40 多个国家的行政区、国旗、河流、山峰、海洋和岛屿。",
   },
 

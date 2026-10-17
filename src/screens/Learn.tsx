@@ -7,7 +7,7 @@ import { Card, LinkButton, LocalLink } from "../components/ui";
 import { useI18n } from "../i18n";
 import { HOME_SECTIONS, QUIZ_BY_SLUG, gradientCss, type QuizDef } from "../lib/engine/quizzes";
 import { cellText, factText } from "../lib/facts";
-import { LEARNABLE, learnTable } from "../lib/learn";
+import { LEARNABLE, capitalsOf, learnTable } from "../lib/learn";
 import { sectionsFor } from "../lib/sections";
 import { useTitle } from "../lib/useTitle";
 
@@ -24,7 +24,7 @@ function LearnPage({ quiz }: { quiz: QuizDef }) {
   const i18n = useI18n();
   const { t } = i18n;
   const title = i18n.quizTitle(quiz);
-  useTitle(t.learn.title(title));
+  useTitle(t.seo.learnTitle(title, i18n.quizSubtitle(quiz), capitalsOf(quiz)));
   const table = useMemo(() => learnTable(quiz)!, [quiz]);
   const facts = factText(i18n, quiz);
   const rows = useMemo(() => {

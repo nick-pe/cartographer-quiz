@@ -1,4 +1,5 @@
 import type { Places } from ".";
+import { regions } from "./regions/es";
 
 export const es: Places = {
   names: {
@@ -254,4 +255,6 @@ export const es: Places = {
     "Baffin Island": "la isla de Baffin",
     Zealand: "Selandia",
   },
+  divisions: regions.divisions,
+  towns: regions.towns,
 };

@@ -157,6 +157,8 @@ export const tl: Messages = {
     quiz: (title, subtitle) => `Laruin ang quiz na ${title}: ${subtitle}, sa tatlong antas ng hirap. Libre, walang account, walang ads.`,
     daily: "Sampung tanong sa heograpiya araw-araw, pareho para sa lahat. Isang subok lang, may bilang ng sunod-sunod na araw, at may grid na puwedeng i-share nang walang spoiler.",
     learn: (title, subtitle) => `${title}: ang buong listahan (${subtitle}), may libreng quiz para subukan ang sarili.`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title}: ${count}${capitals ? " at ang mga kabisera" : ""}, buong listahan`,
     learnIndex: "Mga listahang pag-aaralan para sa bawat quiz: mga kabisera ng mundo, mga rehiyon ng mahigit 40 bansa, mga watawat, ilog, bundok, dagat at isla.",
   },
 

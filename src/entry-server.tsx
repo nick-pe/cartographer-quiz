@@ -10,7 +10,7 @@ import { i18nFor } from "./i18n/core";
 import { LEGAL } from "./i18n/legal";
 import { LOCALES, localeFromPath, localizePath, stripLocale } from "./i18n/locales";
 import { ALL_QUIZZES, QUIZ_BY_SLUG } from "./lib/engine/quizzes";
-import { LEARNABLE } from "./lib/learn";
+import { LEARNABLE, capitalsOf } from "./lib/learn";
 import { SITE_URL } from "./lib/site";
 
 export { robots, sitemap } from "./seo";
@@ -74,7 +74,7 @@ export function head(url: string): { lang: string; html: string } {
     [title, description] = [t.site.pageTitle(name), t.seo.quiz(name, i18n.quizSubtitle(quiz))];
   } else if (quiz && section === "learn") {
     const name = i18n.quizTitle(quiz);
-    [title, description] = [t.site.pageTitle(t.learn.title(name)), t.seo.learn(name, i18n.quizSubtitle(quiz))];
+    [title, description] = [t.site.pageTitle(t.seo.learnTitle(name, i18n.quizSubtitle(quiz), capitalsOf(quiz))), t.seo.learn(name, i18n.quizSubtitle(quiz))];
   }
 
   const canonical = SITE_URL + url;

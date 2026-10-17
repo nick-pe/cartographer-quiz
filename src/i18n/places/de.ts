@@ -1,4 +1,5 @@
 import type { Places } from ".";
+import { regions } from "./regions/de";
 
 // German names, without articles: German prompts name places after a colon.
 
@@ -160,4 +161,6 @@ export const de: Places = {
     Tenerife: "Teneriffa",
     Zealand: "Seeland",
   },
+  divisions: regions.divisions,
+  towns: regions.towns,
 };

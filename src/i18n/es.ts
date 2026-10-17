@@ -162,6 +162,8 @@ export const es: Messages = {
     quiz: (title, subtitle) => `Juega al quiz «${title}»: ${subtitle}, en tres niveles de dificultad. Gratis, sin cuenta y sin anuncios.`,
     daily: "Diez preguntas de geografía cada día, las mismas para todos. Un solo intento, una racha y una cuadrícula para compartir sin spoilers.",
     learn: (title, subtitle) => `${title}: la lista completa (${subtitle}), con un quiz gratuito para ponerte a prueba.`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title}: ${count}${capitals ? " y sus capitales" : ""}, lista completa`,
     learnIndex: "Listas de estudio para cada quiz: capitales del mundo, regiones de más de 40 países, banderas, ríos, montañas, mares e islas.",
   },
 

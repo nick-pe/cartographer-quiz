@@ -88,6 +88,13 @@ export function learnTable(quiz: Pick<QuizDef, "id">): LearnTable | null {
 /** Quizzes with their own study page, in home-screen order. */
 export const LEARNABLE: QuizDef[] = ALL_QUIZZES.filter((q) => learnTable(q));
 
+/** Whether a study list pairs places with national capitals, regional ones, or neither. */
+export function capitalsOf(quiz: Pick<QuizDef, "id">): "national" | "regional" | null {
+  const columns = learnTable(quiz)?.columns ?? [];
+  if (columns[1] !== "capital") return null;
+  return columns[0] === "country" ? "national" : "regional";
+}
+
 /** The study page for a quiz, including quizzes that share another's list. */
 export function studySlugFor(quiz: QuizDef): string | null {
   if (quiz.id === "findTheFlag") return "flags";

@@ -154,6 +154,8 @@ export const ja: Messages = {
     quiz: (title, subtitle) => `「${title}」クイズ：${subtitle}を3つの難易度で。無料、アカウント不要、広告なし。`,
     daily: "毎日10問の地理クイズ。全員が同じ問題に挑戦。挑戦は1回だけ、連続記録と、答えがわからない結果の共有つき。",
     learn: (title, subtitle) => `${title}：完全リスト（${subtitle}）。無料のクイズで実力をチェック。`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title, count, capitals) => `${title}：${count}${capitals === "regional" ? "と中心都市" : capitals ? "と首都" : ""}の一覧`,
     learnIndex: "すべてのクイズの学習リスト：世界の首都、40か国以上の地域、国旗、川、山、海、島。",
   },
 

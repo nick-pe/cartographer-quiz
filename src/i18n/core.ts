@@ -59,6 +59,9 @@ export function createI18n(code: LocaleCode): I18n {
     return (iso && (places.countries?.[iso] ?? regionNames.of(iso))) || id;
   };
 
+  // English names carry a hint for English readers ("Bayern (Bavaria)"); other languages drop it.
+  const localName = (id: string) => (code === "en" ? id : id.replace(/ \([^)]*\)$/, ""));
+
   const name = (term: Term, as: "text" | "option" = "text"): string => {
     switch (term.kind) {
       case "country": {
@@ -74,10 +77,13 @@ export function createI18n(code: LocaleCode): I18n {
       case "number":
         return numbers.format(Number(term.id));
       case "division":
-        return places.divisions?.[term.id] ?? term.id;
-      case "local":
-        // Regional capitals that are also national capitals (Vienna, Lisbon…) share their name.
-        return places.towns?.[term.id] ?? places.names[term.id] ?? term.id;
+        return places.divisions?.[term.id] ?? localName(term.id);
+      case "local": {
+        // A city also named elsewhere (a national capital, a river city) shares that name,
+        // without the article a river would take ("le Paraná" → "Paraná").
+        const known = places.names[term.id];
+        return places.towns?.[term.id] ?? (known ? t.bare(known) : localName(term.id));
+      }
     }
   };
 

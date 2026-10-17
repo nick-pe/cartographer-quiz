@@ -166,6 +166,8 @@ export const en = {
     quiz: (title: string, subtitle: string) => `Play the ${title} quiz: ${subtitle}, at three difficulty levels. Free, no account, no ads.`,
     daily: "Ten geography questions every day, the same for everyone. One try, a streak, and a spoiler-free grid to share.",
     learn: (title: string, subtitle: string) => `${title}: the full list (${subtitle}), with a free quiz to test yourself.`,
+    /** A study list's title in search results: with the count people search for. */
+    learnTitle: (title: string, count: string, capitals: "national" | "regional" | null) => `${title}: ${count}${capitals ? " and their capitals" : ""}, full list`,
     learnIndex: "Study lists for every quiz: world capitals, regions of 40+ countries, flags, rivers, mountains, seas and islands.",
   },
 
