@@ -362,6 +362,7 @@ export const regions = {
     "Valencia": "Valência",
     "Venice": "Veneza",
     "Versailles": "Versalhes",
+    "Victoria": "Victoria",
     "Vitoria-Gasteiz": "Vitória",
     "Wrocław": "Breslávia",
     "Yekaterinburg": "Ecaterimburgo",

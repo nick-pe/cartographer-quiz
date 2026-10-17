@@ -12,7 +12,7 @@ import { chromium } from "playwright-core";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const { ogText } = await import(join(root, "dist-ssr", "entry-server.js"));
-const LOCALES = ["en", "de", "fr", "es", "it", "zh", "ja", "ko", "tl"];
+const LOCALES = ["en", "de", "fr", "es", "it", "pt", "zh", "ja", "ko", "tl"];
 const FLAGS = ["jp", "br", "ke", "is", "ca", "kr", "mx"];
 const data = (file, type) => `data:${type};base64,${readFileSync(join(root, "public", file)).toString("base64")}`;
 const icon = data("icon-512.png", "image/png");

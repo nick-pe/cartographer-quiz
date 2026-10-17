@@ -8,6 +8,8 @@ export const LOCALES = [
   { code: "fr", name: "Français", intl: "fr" },
   { code: "es", name: "Español", intl: "es" },
   { code: "it", name: "Italiano", intl: "it" },
+  // Brazilian Portuguese: most Portuguese-speaking visitors come from Brazil.
+  { code: "pt", name: "Português", intl: "pt-BR" },
   { code: "zh", name: "中文", intl: "zh-Hans" },
   { code: "ja", name: "日本語", intl: "ja" },
   { code: "ko", name: "한국어", intl: "ko" },

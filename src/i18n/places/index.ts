@@ -12,6 +12,7 @@ import { de } from "./de";
 import { es } from "./es";
 import { fr } from "./fr";
 import { it } from "./it";
+import { pt } from "./pt";
 import { ja } from "./ja";
 import { ko } from "./ko";
 import { zh } from "./zh";
@@ -31,6 +32,7 @@ export const PLACES: Record<LocaleCode, Places> = {
   fr,
   es,
   it,
+  pt,
   zh,
   ja,
   ko,

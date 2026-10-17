@@ -40,7 +40,7 @@ export function render(url: string): string {
 }
 
 /** Open Graph wants underscores and a region: fr_FR. */
-const OG_LOCALE: Record<string, string> = { en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", it: "it_IT", zh: "zh_CN", ja: "ja_JP", ko: "ko_KR", tl: "tl_PH" };
+const OG_LOCALE: Record<string, string> = { en: "en_US", de: "de_DE", fr: "fr_FR", es: "es_ES", it: "it_IT", pt: "pt_BR", zh: "zh_CN", ja: "ja_JP", ko: "ko_KR", tl: "tl_PH" };
 
 /** Legal text without its **bold** and [link](url) markup, cut to a search-result length. */
 const plain = (s: string) => {
